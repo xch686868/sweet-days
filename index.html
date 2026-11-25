@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
-<title>他们的小日子</title>
+<title>甜甜小日子</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="他们的小日子">
-<meta name="theme-color" content="#FFF6F7" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#140C10" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-title" content="甜甜">
+<meta name="theme-color" content="#F7FEFC" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0D1312" media="(prefers-color-scheme: dark)">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="icon" href="icons/icon-192.png">
@@ -20,13 +20,13 @@
 <style>
 /* 设计：像 iPhone 原生 App —— 大标题、毛玻璃底部导航、底部弹出面板；玫瑰色点缀，合照做首页主角。 */
 :root{
-  --bg:#FFF6F7; --bg2:#FDECEF; --card:#FFFFFF; --ink:#2A1820; --ink2:#5E4652; --muted:#9A8590;
-  --line:rgba(120,40,70,.10); --fill:rgba(120,40,70,.06);
-  --rose:#E8466F; --rose-ink:#FFFFFF; --rose-soft:#FFE3EA; --coral:#FF8A72;
+  --bg:#F7FEFC; --bg2:#EEFBF8; --card:#FFFFFF; --ink:#1A2825; --ink2:#41524E; --muted:#657671;
+  --line:rgba(43,101,87,.10); --fill:rgba(43,101,87,.06);
+  --rose:#1F9C7E; --rose-ink:#FFFFFF; --rose-soft:#E6FCF7; --coral:#4FC7A6;
   --mint:#2FA37E; --mint-soft:#DDF4EC; --gold:#E9A23B; --gold-soft:#FFF0D6;
-  --glass:rgba(255,250,251,.78);
-  --shadow:0 1px 2px rgba(90,20,45,.05),0 8px 24px rgba(90,20,45,.07);
-  --n1:#FFF0B8; --n2:#FFDCE5; --n3:#DCEBFF; --n4:#DFF4DA; --note-ink:#3A2A1E;
+  --glass:rgba(251,254,254,.78);
+  --shadow:0 1px 2px rgba(27,83,69,.05),0 8px 24px rgba(27,83,69,.07);
+  --n1:#FFF0B8; --n2:#E0FCF4; --n3:#DCEBFF; --n4:#DFF4DA; --note-ink:#3A2A1E;
   --f-ui:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif;
   --f-title:"Noto Serif SC","Songti SC","STSong",serif;
   --f-num:"Fraunces","Didot","Georgia",serif;
@@ -36,13 +36,13 @@
   color-scheme:light;
 }
 @media (prefers-color-scheme: dark){:root{
-  --bg:#140C10; --bg2:#1E1218; --card:#22161C; --ink:#F7EAF0; --ink2:#D5BFCA; --muted:#A08A96;
-  --line:rgba(255,200,220,.10); --fill:rgba(255,200,220,.07);
-  --rose:#FF6189; --rose-ink:#FFFFFF; --rose-soft:#3E1D29; --coral:#FF9A85;
+  --bg:#0D1312; --bg2:#131D1A; --card:#17211E; --ink:#EBF6F3; --ink2:#B9CDC8; --muted:#6C7F7A;
+  --line:rgba(205,250,238,.10); --fill:rgba(205,250,238,.07);
+  --rose:#2AAE8D; --rose-ink:#FFFFFF; --rose-soft:#203B34; --coral:#7EF1D4;
   --mint:#5ACCA6; --mint-soft:#183A2F; --gold:#F2B85C; --gold-soft:#3A2C14;
-  --glass:rgba(30,18,24,.78);
+  --glass:rgba(19,29,26,.78);
   --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.3);
-  --n1:#EBD58E; --n2:#F0BFCC; --n3:#BCD4EE; --n4:#C5E3BD; --note-ink:#2B2016;
+  --n1:#EBD58E; --n2:#C3EBE1; --n3:#BCD4EE; --n4:#C5E3BD; --note-ink:#2B2016;
   color-scheme:dark;
 }}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -85,10 +85,10 @@ svg{display:block}
 .hello{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:6px 0 14px}
 .hello .t{font-size:14px;color:var(--muted)}
 .hello .n{font-family:var(--f-title);font-size:22px;font-weight:700;line-height:1.2}
-.hero{position:relative;border-radius:28px;overflow:hidden;aspect-ratio:4/5;max-height:62vh;width:100%;background:linear-gradient(160deg,#FFB3C1 0%,#FF8A9E 45%,#E8466F 100%);color:#fff;box-shadow:0 18px 40px -18px rgba(232,70,111,.55)}
+.hero{position:relative;border-radius:28px;overflow:hidden;aspect-ratio:4/5;max-height:62vh;width:100%;background:linear-gradient(160deg,#BBF7E8 0%,#85F1D6 45%,#1F9C7E 100%);color:#fff;box-shadow:0 18px 40px -18px rgba(45,195,158,.55)}
 .hero.short{aspect-ratio:auto;min-height:300px}
 .hero img.cover{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.hero .shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.18) 0%,rgba(0,0,0,0) 30%,rgba(0,0,0,0) 45%,rgba(40,5,20,.72) 100%)}
+.hero .shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.18) 0%,rgba(0,0,0,0) 30%,rgba(0,0,0,0) 45%,rgba(8,36,29,.72) 100%)}
 .hero .blob{position:absolute;border-radius:50%;filter:blur(2px);background:rgba(255,255,255,.18)}
 .hero .top{position:absolute;top:16px;left:16px;right:16px;display:flex;justify-content:space-between;align-items:center}
 .pair{display:flex;align-items:center}
@@ -196,13 +196,13 @@ svg{display:block}
 .btn:disabled{opacity:.5}
 .wall{columns:2;column-gap:12px}
 @media (max-width:340px){.wall{columns:1}}
-.note{break-inside:avoid;margin-bottom:12px;border-radius:6px 6px 22px 6px;padding:14px 14px 10px;color:var(--note-ink);box-shadow:0 1px 2px rgba(0,0,0,.05),0 6px 16px rgba(60,20,30,.08);display:flex;flex-direction:column;gap:8px;transform:rotate(var(--r,0deg))}
+.note{break-inside:avoid;margin-bottom:12px;border-radius:6px 6px 22px 6px;padding:14px 14px 10px;color:var(--note-ink);box-shadow:0 1px 2px rgba(0,0,0,.05),0 6px 16px rgba(24,56,48,.08);display:flex;flex-direction:column;gap:8px;transform:rotate(var(--r,0deg))}
 .note p{margin:0;font-family:var(--f-hand);font-size:21px;line-height:1.45;white-space:pre-wrap;overflow-wrap:anywhere}
 .note .meta{display:flex;justify-content:space-between;align-items:center;font-size:11.5px;opacity:.7;gap:6px}
 .note .acts{display:flex;justify-content:space-between;align-items:center}
 .like{display:flex;align-items:center;gap:4px;font-size:13px;padding:4px 8px;border-radius:999px;background:rgba(255,255,255,.5)}
 .like svg{width:16px;height:16px}
-.like.on{color:#D6335E}
+.like.on{color:#2F9A7F}
 .c1{background:var(--n1)}.c2{background:var(--n2)}.c3{background:var(--n3)}.c4{background:var(--n4)}
 
 .inapp{background:var(--rose);color:#fff;padding:calc(var(--sat) + 10px) max(18px,var(--sar)) 10px max(18px,var(--sal));display:flex;flex-direction:column;gap:2px;font-size:14px;line-height:1.5}
@@ -220,23 +220,23 @@ svg{display:block}
 .envs{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .env{position:relative;aspect-ratio:1.45;border-radius:14px;overflow:hidden;box-shadow:var(--shadow);display:block;width:100%;background:var(--envc,var(--n2))}
 .env .flap{position:absolute;left:0;right:0;top:0;height:56%;background:var(--envc,var(--n2));filter:brightness(.92);clip-path:polygon(0 0,100% 0,50% 100%);transition:clip-path .4s}
-.env .seal{position:absolute;left:50%;top:56%;transform:translate(-50%,-50%);width:34px;height:34px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#F06A8C,#C9244F);color:#fff;display:grid;place-items:center;box-shadow:0 2px 6px rgba(120,10,40,.35)}
+.env .seal{position:absolute;left:50%;top:56%;transform:translate(-50%,-50%);width:34px;height:34px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#56DCBA,#299177);color:#fff;display:grid;place-items:center;box-shadow:0 2px 6px rgba(21,108,86,.35)}
 .env .seal svg{width:16px;height:16px}
 .env .lab{position:absolute;left:8px;right:8px;bottom:7px;font-family:var(--f-hand);font-size:16px;line-height:1.2;color:var(--note-ink);text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .env.opened .flap{clip-path:polygon(0 0,100% 0,50% 22%)}
 .env.opened .seal{background:rgba(0,0,0,.12);box-shadow:none;color:var(--note-ink);width:auto;height:auto;padding:2px 8px;border-radius:999px;font-size:11px;top:44%}
 .env.opened{opacity:.82}
 .e1{--envc:var(--n1)}.e2{--envc:var(--n2)}.e3{--envc:var(--n3)}.e4{--envc:var(--n4)}
-.paper{background:#FFFBF2;color:#3A2A1E;border-radius:18px;padding:22px 20px 18px;box-shadow:0 10px 30px -10px rgba(90,40,20,.35);background-image:repeating-linear-gradient(180deg,transparent 0 33px,rgba(190,120,90,.2) 33px 34px);background-position:0 58px;margin-bottom:16px}
-.paper .lab{font-size:12px;letter-spacing:.08em;color:#B0705A;font-weight:700}
+.paper{background:#FFFBF2;color:#3A2A1E;border-radius:18px;padding:22px 20px 18px;box-shadow:0 10px 30px -10px rgba(27,83,69,.35);background-image:repeating-linear-gradient(180deg,transparent 0 33px,rgba(68,141,123,.2) 33px 34px);background-position:0 58px;margin-bottom:16px}
+.paper .lab{font-size:12px;letter-spacing:.08em;color:#488173;font-weight:700}
 .paper .to,.paper .sign{font-family:var(--f-hand);font-size:22px;line-height:34px}
 .paper .sign{text-align:right}
 .paper p{font-family:var(--f-hand);font-size:22px;line-height:34px;white-space:pre-wrap;overflow-wrap:anywhere;margin:0}
-.paper .when{font-size:12px;color:#A0857A;text-align:right}
+.paper .when{font-size:12px;color:#5C7871;text-align:right}
 .lcard{display:flex;gap:14px;align-items:center;padding:16px;width:100%;text-align:left}
 .lcard .mini-env{width:54px;height:40px;flex:none;border-radius:8px;position:relative;overflow:hidden;background:var(--n2)}
 .lcard .mini-env::before{content:"";position:absolute;inset:0 0 45% 0;background:var(--n2);filter:brightness(.9);clip-path:polygon(0 0,100% 0,50% 100%)}
-.lcard .mini-env::after{content:"";position:absolute;left:50%;top:55%;width:14px;height:14px;border-radius:50%;background:#D6335E;transform:translate(-50%,-50%)}
+.lcard .mini-env::after{content:"";position:absolute;left:50%;top:55%;width:14px;height:14px;border-radius:50%;background:#2F9A7F;transform:translate(-50%,-50%)}
 .lcard .txt{flex:1;min-width:0}
 .lcard .t{font-weight:700;font-size:16px}
 .lcard .s{font-size:13px;color:var(--ink2);margin-top:2px}
@@ -276,7 +276,7 @@ svg{display:block}
 .scard .pz{font-family:var(--f-title);font-weight:700;font-size:26px;line-height:1.3;color:var(--ink);overflow-wrap:anywhere}
 .scard .by{font-size:13px;color:var(--ink2)}
 .scard canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:grab;transition:opacity .45s}
-.scard.t1{background:linear-gradient(150deg,#FFE8A3,#FFC2D1)}
+.scard.t1{background:linear-gradient(150deg,#FFE8A3,#C8F9ED)}
 .scard.t1 .tier{background:var(--gold);color:#fff}
 .shint{font-size:13px;color:var(--muted);text-align:center;margin:0 0 18px}
 .odds{display:grid;grid-template-columns:auto 1fr auto;gap:6px 10px;align-items:center;margin-bottom:12px}
@@ -291,22 +291,22 @@ svg{display:block}
 .wheel{width:100%;height:100%;border-radius:50%;box-shadow:var(--shadow),0 0 0 6px var(--card);transition:transform 4.2s cubic-bezier(.12,.75,.12,1)}
 .wheel svg{width:100%;height:100%;display:block}
 .wheelbox .pin{position:absolute;left:50%;top:-6px;transform:translateX(-50%);width:0;height:0;border-left:13px solid transparent;border-right:13px solid transparent;border-top:24px solid var(--rose);filter:drop-shadow(0 2px 3px rgba(0,0,0,.2));z-index:2}
-.wheelbox .hub{position:absolute;left:50%;top:50%;width:76px;height:76px;margin:-38px 0 0 -38px;border-radius:50%;background:var(--rose);color:#fff;font-family:var(--f-title);font-weight:700;font-size:17px;box-shadow:0 4px 14px rgba(232,70,111,.35),0 0 0 5px var(--card);z-index:2}
+.wheelbox .hub{position:absolute;left:50%;top:50%;width:76px;height:76px;margin:-38px 0 0 -38px;border-radius:50%;background:var(--rose);color:#fff;font-family:var(--f-title);font-weight:700;font-size:17px;box-shadow:0 4px 14px rgba(45,195,158,.35),0 0 0 5px var(--card);z-index:2}
 .wheelbox .hub:disabled{opacity:.85}
 .dlv{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:-4px 0 12px}
 .dlv button{display:flex;align-items:center;justify-content:center;gap:4px;padding:10px 0;border-radius:14px;background:var(--fill);font-weight:700;font-size:14px;color:var(--ink2);white-space:nowrap}
 .dlv button span{font-size:16px}
-.dlv button[aria-pressed="true"].lv1{background:linear-gradient(135deg,#FFB3C7,#FF8FAB);color:#fff}
-.dlv button[aria-pressed="true"].lv2{background:linear-gradient(135deg,#B57BFF,#E8466F);color:#fff}
-.dlv button[aria-pressed="true"].lv3{background:linear-gradient(135deg,#FF5E62,#B3123E);color:#fff}
-.dlv button[aria-pressed="true"].lv4{background:linear-gradient(135deg,#C2185B,#2A0A1E);color:#fff}
+.dlv button[aria-pressed="true"].lv1{background:linear-gradient(135deg,#BBF7E8,#8BF2D8);color:#fff}
+.dlv button[aria-pressed="true"].lv2{background:linear-gradient(135deg,#B57BFF,#1F9C7E);color:#fff}
+.dlv button[aria-pressed="true"].lv3{background:linear-gradient(135deg,#4BEBC3,#1C886D);color:#fff}
+.dlv button[aria-pressed="true"].lv4{background:linear-gradient(135deg,#218F73,#0D2720);color:#fff}
 .dturn{display:flex;align-items:center;justify-content:space-between;margin:0 4px 12px;font-size:15px;color:var(--ink2)}
 .dturn b{color:var(--rose);font-weight:700}
 .dbox{border-radius:24px;padding:18px 16px 14px;color:#fff;box-shadow:var(--shadow)}
-.dbox.lv1{background:linear-gradient(160deg,#FF9DB5 0%,#FF7A9C 100%)}
-.dbox.lv2{background:linear-gradient(160deg,#9B5DE5 0%,#E8466F 100%)}
-.dbox.lv3{background:linear-gradient(160deg,#E8344E 0%,#7A0B2C 100%)}
-.dbox.lv4{background:linear-gradient(160deg,#A0124F 0%,#2A0A1E 100%)}
+.dbox.lv1{background:linear-gradient(160deg,#9EF4DF 0%,#70EFCF 100%)}
+.dbox.lv2{background:linear-gradient(160deg,#9B5DE5 0%,#1F9C7E 100%)}
+.dbox.lv3{background:linear-gradient(160deg,#27AF8D 0%,#166D57 100%)}
+.dbox.lv4{background:linear-gradient(160deg,#1C7E66 0%,#0D2720 100%)}
 .dice3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
 .die{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.28);border-radius:18px;padding:12px 6px;min-height:104px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center}
 .die .k{font-size:12px;opacity:.8;font-weight:600}
@@ -321,8 +321,8 @@ svg{display:block}
 .dcard.rolling{animation:dshake .18s infinite}
 @keyframes dflip{from{transform:rotateY(90deg);opacity:.3}to{transform:none;opacity:1}}
 .dgo{background:#fff;color:var(--rose)}
-.dbox.lv3 .dgo{color:#B3123E}
-.dbox.lv4 .dgo{color:#A0124F}
+.dbox.lv3 .dgo{color:#1C886D}
+.dbox.lv4 .dgo{color:#1C7E66}
 .dmine{margin-top:16px;padding:14px 14px 6px}
 .dmine summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-weight:700;font-size:15px;padding-bottom:8px}
 .dmine summary::-webkit-details-marker{display:none}
@@ -345,13 +345,13 @@ svg{display:block}
 .dopt:active{background:rgba(255,255,255,.3)}
 .dpts{display:flex;justify-content:center;align-items:center;gap:8px;margin-top:14px;font-size:14px;font-weight:600}
 .dpts b{font-family:var(--f-title);font-size:22px;min-width:36px;text-align:center;background:rgba(255,255,255,.2);border-radius:10px;padding:2px 8px}
-.dpts b.w{background:#fff;color:#B3123E}
+.dpts b.w{background:#fff;color:#1C886D}
 .dpts i{font-style:normal;opacity:.8}
 .pun{margin:14px 0 14px;background:rgba(0,0,0,.16);border-radius:18px;padding:14px}
 .pun .pl{text-align:center;font-size:14.5px;font-weight:600;margin-bottom:10px;line-height:1.5}
 .psec{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:12px}
 .psec button{padding:8px 0;border-radius:12px;background:rgba(255,255,255,.18);color:#fff;font-weight:700;font-size:14px}
-.psec button[aria-pressed="true"]{background:#fff;color:#B3123E}
+.psec button[aria-pressed="true"]{background:#fff;color:#1C886D}
 .pcount{font-family:var(--f-title);font-size:68px;font-weight:700;text-align:center;line-height:1.1;margin-bottom:4px}
 .dfail{background:rgba(255,255,255,.16);color:#fff;border:1px solid rgba(255,255,255,.55)}
 .pres{text-align:center;font-weight:700;font-size:16px;padding:4px 0;line-height:1.5}
@@ -394,12 +394,12 @@ svg{display:block}
 .pstats span{font-size:13px;color:var(--muted)}
 .stamps{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .stamp{background:var(--card);border-radius:6px;padding:7px;box-shadow:var(--shadow);transform:rotate(var(--r,0deg));text-align:left;width:100%}
-.stamp .in{border:1.5px dashed rgba(232,70,111,.4);border-radius:3px;padding:14px 10px 10px;min-height:128px;display:flex;flex-direction:column;gap:3px;position:relative;overflow:hidden}
+.stamp .in{border:1.5px dashed rgba(45,195,158,.4);border-radius:3px;padding:14px 10px 10px;min-height:128px;display:flex;flex-direction:column;gap:3px;position:relative;overflow:hidden}
 .stamp .city{font-family:var(--f-title);font-size:24px;font-weight:700;color:var(--rose);line-height:1.15;overflow-wrap:anywhere;padding-right:30px}
 .stamp .pl{font-size:14px;font-weight:600;overflow-wrap:anywhere}
 .stamp .dt{font-size:12px;color:var(--muted);margin-top:auto;padding-top:6px}
-.stamp .mark{position:absolute;right:-14px;top:-14px;width:60px;height:60px;border:2px solid rgba(232,70,111,.28);border-radius:50%;display:grid;place-items:center;transform:rotate(-18deg)}
-.stamp .mark::after{content:"";width:42px;height:42px;border:1.5px solid rgba(232,70,111,.22);border-radius:50%}
+.stamp .mark{position:absolute;right:-14px;top:-14px;width:60px;height:60px;border:2px solid rgba(45,195,158,.28);border-radius:50%;display:grid;place-items:center;transform:rotate(-18deg)}
+.stamp .mark::after{content:"";width:42px;height:42px;border:1.5px solid rgba(45,195,158,.22);border-radius:50%}
 
 /* ---------- manual ---------- */
 .mwho{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
@@ -415,7 +415,7 @@ svg{display:block}
 .mrow .v.dim{color:var(--muted);font-size:15px}
 
 /* ---------- sheet ---------- */
-.scrim{position:fixed;inset:0;background:rgba(20,5,12,.38);z-index:40;opacity:0;transition:opacity .25s}
+.scrim{position:fixed;inset:0;background:rgba(7,18,15,.38);z-index:40;opacity:0;transition:opacity .25s}
 .scrim.show{opacity:1}
 .sheet{position:fixed;left:0;right:0;bottom:0;z-index:41;max-height:calc(100% - var(--sat) - 24px);overflow:auto;background:var(--bg);border-radius:24px 24px 0 0;padding:8px max(18px,var(--sar)) calc(var(--sab) + 22px) max(18px,var(--sal));transform:translateY(100%);transition:transform .32s cubic-bezier(.2,.8,.2,1)}
 .sheet.show{transform:none}
@@ -446,7 +446,7 @@ svg{display:block}
 .input{width:100%;border:0;background:var(--card);border-radius:14px;padding:13px 16px;outline:none;font-size:16px}
 .codebox{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:17px;letter-spacing:.06em;text-align:center;padding:14px;background:var(--card);border-radius:14px;user-select:all;-webkit-user-select:all;overflow-wrap:anywhere}
 .hint{font-size:13px;color:var(--muted);margin:8px 4px 16px;line-height:1.55}
-.danger{color:#D6335E}
+.danger{color:#2F9A7F}
 .actions{display:flex;flex-direction:column;gap:10px}
 .who2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
 .who2 button{background:var(--card);border-radius:20px;padding:18px 10px;display:flex;flex-direction:column;align-items:center;gap:10px;font-weight:700;font-size:17px;box-shadow:var(--shadow)}
@@ -456,7 +456,7 @@ svg{display:block}
 /* ---------- onboarding ---------- */
 .ob{min-height:100%;display:flex;flex-direction:column;padding:calc(var(--sat) + 24px) max(24px,var(--sar)) calc(var(--sab) + 28px) max(24px,var(--sal));max-width:480px;margin:0 auto;animation:pageIn .3s ease both}
 .ob .art{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:16px;padding:20px 0}
-.ob .logo{width:112px;height:112px;border-radius:26px;box-shadow:0 18px 40px -14px rgba(232,70,111,.6);overflow:hidden}
+.ob .logo{width:112px;height:112px;border-radius:26px;box-shadow:0 18px 40px -14px rgba(45,195,158,.6);overflow:hidden}
 .ob h1{font-family:var(--f-title);font-size:34px;margin:6px 0 0}
 .ob p.lead{color:var(--ink2);margin:0;font-size:16px;max-width:300px}
 .ob .feat{display:grid;gap:10px;margin:8px 0 0;text-align:left;width:100%;max-width:320px}
@@ -705,7 +705,7 @@ $('#scrim').addEventListener('click', closeSheet);
 /* confirm inside a sheet (the page can't use system dialogs reliably) */
 function confirmSheet(title, okText, onOk){
   openSheet(title, h('div', {class: 'actions'},
-    h('button', {class: 'btn block', style: {background: '#D6335E'}, text: okText, onclick: () => { onOk(); closeSheet(); }}),
+    h('button', {class: 'btn block', style: {background: '#2F9A7F'}, text: okText, onclick: () => { onOk(); closeSheet(); }}),
     h('button', {class: 'btn block ghost', text: '取消', onclick: closeSheet})));
 }
 
@@ -1210,13 +1210,19 @@ const DICE_LEVELS = [['1', '甜蜜', '💗'], ['2', '暧昧', '🌙']];
 // 摇骰子：一句话 = 谁：怎样，在对方的「哪里」上「怎么做」
 const DICE_ACT = [
   ['轻轻摸一摸', 1], ['捏一捏', 1], ['蹭一蹭', 1], ['画一个爱心', 1], ['吹一口气', 1], ['写一个字', 1],
-  ['亲一下', 2], ['啵一口', 2], ['轻轻亲', 2], ['慢慢亲三下', 2], ['亲完再抱住', 2], ['贴着脸蹭一蹭', 2]];
+  ['亲一下', 2], ['啵一口', 2], ['轻轻亲', 2], ['慢慢亲三下', 2], ['亲完再抱住', 2], ['贴着脸蹭一蹭', 2],
+  ['轻轻戳一戳', 1], ['用手指点一下', 1], ['贴一贴', 1],
+  ['亲一下再看着对方笑', 2], ['偷亲一下', 2], ['亲完说「好喜欢」', 2]];
 const DICE_PART = [
   ['额头', 1], ['脸颊', 1], ['鼻尖', 1], ['手心', 1], ['手背', 1], ['头发', 1], ['肩膀', 1], ['下巴', 1],
-  ['嘴唇', 2], ['耳朵', 2], ['眼睛', 2], ['额头', 2], ['脸颊', 2], ['手背', 2], ['鼻尖', 2]];
+  ['嘴唇', 2], ['耳朵', 2], ['眼睛', 2], ['额头', 2], ['脸颊', 2], ['手背', 2], ['鼻尖', 2],
+  ['手腕', 1], ['手指', 1],
+  ['手心', 2], ['下巴', 2]];
 const DICE_WAY = [
   ['闭上眼睛', 1], ['看着对方的眼睛', 1], ['偷偷地', 1], ['笑着', 1], ['先说一句「喜欢你」', 1], ['慢慢地', 1],
-  ['抱着对方', 2], ['把对方搂进怀里', 2], ['闭上眼睛', 2], ['先看着对方的眼睛 5 秒', 2], ['坐在对方腿上', 2], ['先在对方耳边说「我想你」', 2]];
+  ['抱着对方', 2], ['把对方搂进怀里', 2], ['闭上眼睛', 2], ['先看着对方的眼睛 5 秒', 2], ['坐在对方腿上', 2], ['先在对方耳边说「我想你」', 2],
+  ['数到三再', 1], ['搂着对方的腰', 1],
+  ['把对方抵在墙边', 2], ['让对方闭上眼睛', 2]];
 // 摇出来不合理的搭配，重新摇：[怎么做, 哪里, 怎样]
 const DICE_BAD = [
   [/画一个爱心|写一个字/, /嘴唇|耳朵|鼻尖|头发|眼睛/],
@@ -1225,20 +1231,28 @@ const DICE_BAD = [
   [/捏一捏/, /嘴唇|眼睛|耳朵|头发/],
   [/摸一摸/, /嘴唇|眼睛/],
   [/亲一下|啵一口|轻轻亲/, /头发/],
-  [/贴着脸蹭/, /嘴唇|眼睛|耳朵|手背|鼻尖/]];
+  [/贴着脸蹭/, /嘴唇|眼睛|耳朵|手背|鼻尖|手心|下巴/],
+  [/点一下|戳一戳|贴一贴|写一个字/, /头发/],
+  [/吹一口气/, /手指|手腕/]];
 function diceBad(v){ return DICE_BAD.some(r => r.every((re, i) => !re || re.test(v[i]))); }
 // 挑战卡：轮到谁，谁受着，另一个人来做。「你」= 抽到的人，TA = 另一个人
 const DICE_DARE = [
   ['TA 摸摸你的头，说一句「乖」，你要笑着回答「嗯」', 1], ['TA 从背后抱住你 30 秒，你不许动', 1], ['你和 TA 十指相扣，对视 20 秒，谁先笑谁输', 1], ['TA 捏捏你的脸，说三个你可爱的地方', 1], ['你给 TA 一个大大的熊抱，抱满 30 秒', 1], ['TA 在你手心写一个字，你要猜出来，猜错再写一次', 1], ['你靠在 TA 肩膀上，听 TA 讲一件今天开心的事', 1], ['TA 给你喂一口吃的，你要说「好甜」', 1], ['你用撒娇的语气叫 TA 三声「宝贝」', 1], ['TA 帮你整理头发，你要一直看着 TA', 1], ['你和 TA 额头碰额头，安静待 10 秒', 1], ['TA 牵着你的手转一圈，像跳舞一样', 1], ['你学一个小动物逗 TA 笑，TA 不笑就再学一个', 1], ['TA 给你比一个爱心，你要比一个更大的回去', 1], ['你夸 TA 一句，要具体，不许说「你很好」', 1],
-  ['TA 亲一下你的额头，你要闭着眼睛等', 2], ['TA 把你搂进怀里，贴着你耳朵说一句悄悄话', 2], ['你坐在 TA 腿上，抱着 TA 的脖子 1 分钟', 2], ['TA 亲你的脸颊三下，左边一下、右边一下、再随便一下', 2], ['你主动亲 TA 一下，亲在哪里你自己选', 2], ['TA 公主抱你走三步，你要搂紧 TA', 2], ['TA 把你轻轻抵在墙边，看着你的眼睛 10 秒，不许笑', 2], ['你和 TA 鼻尖碰鼻尖，慢慢说「我喜欢你」', 2], ['TA 从背后抱着你，下巴搁在你肩膀上，一起晃 30 秒', 2], ['你亲一下 TA 的手背，像骑士那样', 2], ['TA 搂着你的腰，你们慢慢跳一小段舞', 2], ['你给 TA 一个 5 秒的亲亲，不许中途笑场', 2], ['TA 枕在你腿上，你摸着 TA 的头发说三句喜欢 TA 的话', 2], ['你闭上眼睛，TA 亲你一下，你要猜亲在哪里', 2], ['TA 抱着你，你们一起数 30 下心跳', 2]];
+  ['TA 亲一下你的额头，你要闭着眼睛等', 2], ['TA 把你搂进怀里，贴着你耳朵说一句悄悄话', 2], ['你坐在 TA 腿上，抱着 TA 的脖子 1 分钟', 2], ['TA 亲你的脸颊三下，左边一下、右边一下、再随便一下', 2], ['你主动亲 TA 一下，亲在哪里你自己选', 2], ['TA 公主抱你走三步，你要搂紧 TA', 2], ['TA 把你轻轻抵在墙边，看着你的眼睛 10 秒，不许笑', 2], ['你和 TA 鼻尖碰鼻尖，慢慢说「我喜欢你」', 2], ['TA 从背后抱着你，下巴搁在你肩膀上，一起晃 30 秒', 2], ['你亲一下 TA 的手背，像骑士那样', 2], ['TA 搂着你的腰，你们慢慢跳一小段舞', 2], ['你给 TA 一个 5 秒的亲亲，不许中途笑场', 2], ['TA 枕在你腿上，你摸着 TA 的头发说三句喜欢 TA 的话', 2], ['你闭上眼睛，TA 亲你一下，你要猜亲在哪里', 2], ['TA 抱着你，你们一起数 30 下心跳', 2],
+  ['TA 用手指在你脸上慢慢画一个爱心，你要猜 TA 画的是什么', 1], ['你和 TA 背靠背坐着，一起数到 30，谁先回头谁输', 1], ['TA 喂你一口吃的，你要喂回去一口', 1], ['TA 帮你把头发别到耳后，说一句「今天好好看」', 1], ['你闻一闻 TA 的头发，说一说是什么味道', 1], ['TA 背着你走五步，你要在 TA 耳边说「加油」', 1], ['你帮 TA 理一理衣领，再拍拍 TA 的胸口说「帅（美）死了」', 1], ['TA 握着你的手，用拇指在你手背上画圈 20 秒', 1], ['你给 TA 起一个只有你能叫的昵称，今晚都这么叫', 1], ['TA 学你撒娇的样子，你要打分', 1],
+  ['TA 搂着你的腰，把你拉近到鼻尖快碰到，停 5 秒', 2], ['你轻轻咬一下 TA 的手指，再亲一下当作道歉', 2], ['TA 在你耳边轻轻吹一口气，再说一句「想你了」', 2], ['你们鼻尖蹭鼻尖，像小猫一样蹭 10 下', 2], ['TA 用额头抵着你的额头，看着你说一句情话', 2], ['你坐到 TA 身边，把头靠在 TA 肩上，让 TA 摸摸你的头 1 分钟', 2], ['TA 双手捧着你的脸，慢慢靠近，最后亲一下你的鼻尖', 2], ['你主动牵起 TA 的手，亲一下 TA 的手心', 2], ['TA 把你圈在怀里，你们一起看一首歌的时间', 2], ['你从背后蒙住 TA 的眼睛，亲 TA 一下，让 TA 猜亲在哪里', 2], ['TA 一边抱着你一边慢慢摇，像哄小朋友睡觉', 2], ['你和 TA 交换一个只有你们知道的暗号手势，以后想亲就比', 2]];
 // 真心话：「你」= 回答的人
 const DICE_TRUTH = [
   ['你第一次见我是什么感觉？', 1], ['我做过最让你心动的一件小事是什么？', 1], ['你最喜欢我身上哪个地方？', 1], ['你偷偷看过我睡觉的样子吗？', 1], ['你最想和我一起去哪里？', 1], ['我哪个小习惯你觉得特别可爱？', 1], ['你有没有偷偷吃过我的醋？', 1], ['你什么时候最想我？', 1], ['用三个词形容我', 1], ['你手机里我的照片，最喜欢哪一张？', 1], ['如果今天可以许一个关于我的愿望，你许什么？', 1], ['我哪句话让你记到现在？', 1],
-  ['你第一次想亲我是什么时候？', 2], ['你最喜欢我们哪一次抱抱？', 2], ['你觉得我们的初吻甜不甜？', 2], ['你最喜欢我怎么叫你？', 2], ['你会在什么时候突然很想抱我？', 2], ['你偷偷想过我们以后的样子吗？说一个画面', 2], ['你最喜欢我哪种眼神？', 2], ['如果现在可以让我做一件事，你会让我做什么？', 2], ['你觉得我什么时候最好看？', 2], ['你最想让我多做哪一件小事？', 2], ['我们哪一次约会你最难忘？', 2], ['你会用哪首歌形容我们？', 2]];
+  ['你第一次想亲我是什么时候？', 2], ['你最喜欢我们哪一次抱抱？', 2], ['你觉得我们的初吻甜不甜？', 2], ['你最喜欢我怎么叫你？', 2], ['你会在什么时候突然很想抱我？', 2], ['你偷偷想过我们以后的样子吗？说一个画面', 2], ['你最喜欢我哪种眼神？', 2], ['如果现在可以让我做一件事，你会让我做什么？', 2], ['你觉得我什么时候最好看？', 2], ['你最想让我多做哪一件小事？', 2], ['我们哪一次约会你最难忘？', 2], ['你会用哪首歌形容我们？', 2],
+  ['你觉得我们俩谁更粘人？', 1], ['你第一次牵我的手紧张吗？', 1], ['你最喜欢我穿哪件衣服？', 1], ['我有哪个表情你特别喜欢？', 1], ['你会偷偷保存我的聊天截图吗？', 1], ['你觉得我们最像哪一对动画里的情侣？', 1],
+  ['你最喜欢我亲你哪里？', 2], ['你会在什么时候特别想被我抱？', 2], ['我们第一次牵手，你心跳有多快？', 2], ['有没有哪次你很想亲我但忍住了？', 2], ['你最喜欢我们哪个时刻的拥抱？', 2], ['你觉得什么样的亲亲最甜？', 2]];
 // 「比大小」：两个人各摇一个，点数大的从三张里挑一张来罚输的。「你」= 输的人，{w} = 赢的人
 const DICE_CMD = [
   ['给{w}捶背 1 分钟，还要问「力度可以吗」', 1], ['用最肉麻的语气夸{w} 30 秒', 1], ['给{w}唱两句歌，跑调也要唱完', 1], ['学一个{w}指定的小动物叫三声', 1], ['给{w}倒一杯水，双手递过去', 1], ['让{w}捏你的脸 10 下，你要一直笑', 1], ['对着{w}比十个不一样的爱心', 1], ['给{w}讲一个冷笑话，{w}不笑就再讲一个', 1],
-  ['主动抱住{w} 1 分钟，不许先松手', 2], ['亲一下{w}的额头，再说「晚安」', 2], ['让{w}亲你的脸颊一下，你不许躲', 2], ['坐在{w}腿上撒娇 30 秒', 2], ['在{w}耳边说三句悄悄话', 2], ['公主抱{w}，或者让{w}公主抱你（{w}选）', 2], ['牵着{w}的手，深情地说一段告白', 2], ['给{w}一个 5 秒的亲亲', 2]];
+  ['主动抱住{w} 1 分钟，不许先松手', 2], ['亲一下{w}的额头，再说「晚安」', 2], ['让{w}亲你的脸颊一下，你不许躲', 2], ['坐在{w}腿上撒娇 30 秒', 2], ['在{w}耳边说三句悄悄话', 2], ['公主抱{w}，或者让{w}公主抱你（{w}选）', 2], ['牵着{w}的手，深情地说一段告白', 2], ['给{w}一个 5 秒的亲亲', 2],
+  ['给{w}按摩手 1 分钟', 1], ['用三个可爱的词夸{w}', 1], ['给{w}拍一张最好看的照片', 1], ['模仿{w}最常说的一句话', 1],
+  ['从背后抱住{w}，下巴搁在{w}肩上 1 分钟', 2], ['牵着{w}的手，亲一下{w}的手背', 2], ['对着{w}眨眼放电 10 秒', 2], ['靠在{w}怀里撒娇说「抱抱」', 2]];
 function diceCmds(lv, n, loser){
   let all = DICE_CMD.filter(x => x[1] === lv).map(x => x[0]);
   const keep = all.filter(t => !diceHide().has(hkey(t, loser)));
@@ -1271,7 +1285,7 @@ function duelView(lv){
     }, 70);
   };
   if (!d){
-    box.append(h('div', {class: 'dsent', text: '两个人各摇一个，点数大的罚点数小的'}));
+    box.append(h('div', {class: 'dsent', text: '两个人各摇一个，点数大的挑一张给点数小的做'}));
     box.append(h('button', {class: 'btn block dgo', text: '一起摇', onclick: roll}));
   } else if (!d.win){
     box.append(h('div', {class: 'dsent', text: '平了！再摇一次'}));
@@ -1279,26 +1293,18 @@ function duelView(lv){
   } else {
     const W = nameOf(d.win), L = nameOf(other(d.win)), fill = t => gtext(t, other(d.win)).replace(/\{w\}/g, W);
     if (d.pick == null){
-      box.append(h('div', {class: 'dsent', text: W + ' 赢了！挑一张，用来罚 ' + L}));
+      box.append(h('div', {class: 'dsent', text: W + ' 赢了！挑一张让 ' + L + ' 来做'}));
       d.opts.forEach((t, i) => box.append(h('button', {class: 'dopt', text: fill(t), onclick: () => { d.pick = i; haptic(); render(); }})));
       box.append(h('button', {class: 'dskip', text: '三张都不想要，换三张', onclick: () => { d.opts = diceCmds(lv, 3, other(d.win)); haptic(); render(); }}));
     } else {
-      box.append(h('div', {class: 'dcard show', style: {marginTop: '14px'}}, h('div', {class: 'tag', text: W + ' 罚 ' + L}), h('div', {class: 't', text: fill(d.opts[d.pick])})));
-      if (d.fail){
-        if (!punView(box, {key: d.key, loser: other(d.win), win: d.win}, lv, d.why || ' 没撑住')) box.append(h('button', {class: 'btn block dgo', text: '下一局', onclick: roll}));
-      } else {
-        const cdb = cdBtn(fill(d.opts[d.pick])); if (cdb) box.append(cdb);
-        box.append(hideBtn(() => { diceHideAdd(hkey(d.opts[d.pick], other(d.win)));
-          const nw = diceCmds(lv, 12, other(d.win)).find(x => !d.opts.includes(x));
-          if (nw) d.opts[d.pick] = nw; else d.opts.splice(d.pick, 1);
-          if (!d.opts.length) d.opts = diceCmds(lv, 3, other(d.win));
-          d.pick = null; render(); }));
-        box.append(h('div', {class: 'prow'},
-          h('button', {class: 'btn dgo', text: '✅ ' + L + ' 撑住了，下一局', onclick: roll}),
-          /不许笑/.test(fill(d.opts[d.pick])) && lv >= 4 && other(d.win) === diceMale()
-            ? h('button', {class: 'btn dfail', text: '❌ ' + L + ' 没撑住', onclick: () => { d.fail = true; d.why = ' 没撑住'; haptic(); render(); }})
-            : h('button', {class: 'btn dfail', text: '❌ ' + L + ' 没撑住', onclick: () => { d.fail = true; haptic(); render(); }})));
-      }
+      box.append(h('div', {class: 'dcard show', style: {marginTop: '14px'}}, h('div', {class: 'tag', text: W + ' 选给 ' + L}), h('div', {class: 't', text: fill(d.opts[d.pick])})));
+      const cdb = cdBtn(fill(d.opts[d.pick])); if (cdb) box.append(cdb);
+      box.append(h('button', {class: 'btn block dgo', text: '💗 做完了，下一局', onclick: roll}));
+      box.append(hideBtn(() => { diceHideAdd(hkey(d.opts[d.pick], other(d.win)));
+        const nw = diceCmds(lv, 12, other(d.win)).find(x => !d.opts.includes(x));
+        if (nw) d.opts[d.pick] = nw; else d.opts.splice(d.pick, 1);
+        if (!d.opts.length) d.opts = diceCmds(lv, 3, other(d.win));
+        d.pick = null; render(); }));
     }
   }
   if (sc.A || sc.B) box.append(h('button', {class: 'dskip', text: '比分清零', onclick: () => { S.duelScore = {A: 0, B: 0}; S.duel = null; render(); }}));
@@ -1442,10 +1448,7 @@ function cdTick(){
   }, 250);
 }
 
-// 惩罚卡：赢的人来做，输的人受着。「你」= 输的人，{w} = 赢的人
-const PUN_DARE = [
-  ['让{w}捏你的脸 30 秒，你不许躲', 1], ['让{w}挠你痒痒 20 秒，你不许笑出声', 1], ['给{w}做 1 分钟肩膀按摩', 1], ['让{w}在你脸上画一个小爱心（用手指）', 1], ['学{w}说话的样子，学到{w}满意', 1], ['让{w}弹你的额头一下（轻轻的）', 1],
-  ['让{w}抱着你，你要说 5 个喜欢{w}的理由', 2], ['让{w}亲你一下，亲在哪里{w}决定', 2], ['主动亲{w}三下，脸颊、额头、手背各一下', 2], ['让{w}从背后抱你 1 分钟，你要一直说「我错了」', 2], ['让{w}公主抱你，你要喊「我是你的小宝贝」', 2], ['坐在{w}腿上 1 分钟，乖乖不许动', 2]];
+const PUN_DARE = [];
 const PUN_SEC = [30, 60, 90, 120];
 const CLIMAX = {m: [], f: []};
 function punTick(){
@@ -1545,8 +1548,7 @@ function diceView(p){
     male ? h('button', {class: 'btn sm ghost', style: {marginRight: 'auto'}, text: '♂ 男生：' + nameOf(male), onclick: () => { setDiceMale(other(male)); S.diceRes = null; S.duel = null; toast('改成 ' + nameOf(other(male)) + ' 是男生'); render(); }}) : null,
     diceHide().size ? h('button', {class: 'btn sm ghost', text: '恢复藏起的 ' + diceHide().size + ' 张', onclick: () => {
       if (!confirm('把藏起来的 ' + diceHide().size + ' 张卡都放回去吗？')) return; diceHideClear(); toast('都放回去了'); render(); }}) : null,
-    h('button', {class: 'btn sm ghost', text: '改密码', onclick: () => { diceLock(); S.pinChange = true; render(); }}),
-    h('button', {class: 'btn sm ghost', text: '🔒 锁上', onclick: () => { diceLock(); haptic(); render(); }})));
+    null));
   // 档位
   const lvRow = h('div', {class: 'dlv'});
   DICE_LEVELS.forEach(([k, label, ic]) => lvRow.append(h('button', {'aria-pressed': String(S.diceLv === k), class: 'lv' + k, onclick: () => {
@@ -1574,7 +1576,7 @@ function diceView(p){
   const rollMode = S.diceMode === 'dice';
   const who = diceTurn();
   p.append(rollMode
-    ? h('div', {class: 'dturn'}, h('span', null, '两个人一起摇，', h('b', {text: '点数大的惩罚点数小的'})))
+    ? h('div', {class: 'dturn'}, h('span', null, '两个人一起摇，', h('b', {text: '点数大的对点数小的做'})))
     : h('div', {class: 'dturn'},
       h('span', null, '这一轮：', h('b', {text: nameOf(who)}), S.diceMode === 'truth' ? ' 来回答，' + nameOf(other(who)) + ' 来问' : ' 受着，' + nameOf(other(who)) + ' 来做'),
       h('button', {class: 'btn sm ghost', text: '换人', onclick: () => { S.diceTurn = other(who); render(); }})));
@@ -1592,20 +1594,16 @@ function diceView(p){
     box.append(h('div', {class: 'dpts'}, h('span', {text: nameOf('A')}), ptA, h('i', {text: ':'}), ptB, h('span', {text: nameOf('B')})));
     box.ptA = ptA; box.ptB = ptB;
     box.append(h('div', {class: 'dsent', text: !res ? '摇一下，看看这一轮做什么'
-      : nameOf(win) + ' 惩罚 ' + nameOf(res.loser) + '：' + res.v[2] + '，在' + pron(res.loser) + '的' + res.v[1] + '上' + res.v[0]}));
-    S.punBusy = res ? punView(box, res, lv) : false;
+      : nameOf(win) + ' 对 ' + nameOf(res.loser) + '：' + res.v[2] + '，在' + pron(res.loser) + '的' + res.v[1] + '上' + res.v[0]}));
+    S.punBusy = false;
   } else {
     const card = h('div', {class: 'dcard' + (res ? ' show' : '')},
       h('div', {class: 'tag', text: S.diceMode === 'dare' ? (res ? nameOf(other(res.actor)) + ' 对 ' + nameOf(res.actor) + ' 做' : '挑战') : (res ? nameOf(other(res.actor)) + ' 问 ' + nameOf(res.actor) : '真心话')}),
-      h('div', {class: 't', text: res ? res.v : (S.diceMode === 'dare' ? '抽一张，撑住才算过关' : '抽一个问题，念给对方听，不许说谎')}));
+      h('div', {class: 't', text: res ? res.v : (S.diceMode === 'dare' ? '抽一张，看看要做什么' : '抽一个问题，念给对方听，要说真心话哦')}));
     dice = [card];
     box.append(card);
-    if (res && S.diceMode === 'dare' && !res.fail){ const cdb = cdBtn(res.v); if (cdb) box.append(cdb); }
+    if (res && S.diceMode === 'dare'){ const cdb = cdBtn(res.v); if (cdb) box.append(cdb); }
     S.punBusy = false;
-    if (res && res.fail) S.punBusy = punView(box, {key: res.key, loser: res.actor, win: other(res.actor)}, lv, S.diceMode === 'truth' ? ' 不想说' : (res.why || ' 没撑住'));
-    else if (res){ const cum = S.diceMode === 'dare' && lv >= 4 && res.actor === diceMale() && /不许笑/.test(res.v);
-      box.append(h('button', {class: 'btn block dfail', style: {marginTop: '10px'}, text: S.diceMode === 'truth' ? '🤐 ' + nameOf(res.actor) + ' 不想说，接受惩罚' : cum ? '❌ ' + nameOf(res.actor) + ' 没撑住，接受惩罚' : '❌ ' + nameOf(res.actor) + ' 没撑住，接受惩罚',
-      onclick: () => { res.fail = true; if (cum) res.why = ' 没撑住'; haptic(); render(); }})); }
   }
   const go = h('button', {class: 'btn block dgo', text: rollMode ? (res ? '再摇一次' : '摇一摇') : (res ? '再抽一张' : '抽一张')});
   go.onclick = (e, skip) => {
@@ -1699,13 +1697,13 @@ function togetherPage(){
   const s = seenAt('coupons');
   const todos = Store.all('todo'), places = Store.all('place');
   const sub = S.togetherSeg === 'wish' ? (todos.length ? '一起完成了 ' + todos.filter(x => x.done).length + ' 个心愿' : '想和 TA 一起做的事')
-    : S.togetherSeg === 'places' ? '一起走过的地方' : S.togetherSeg === 'scratch' ? '每天一张，看看今天手气' : S.togetherSeg === 'wheel' ? '不知道去哪？转一下' : S.togetherSeg === 'dice' ? (S.diceOpen ? '只属于我们俩的小游戏' : '上了锁的小秘密') : '送给对方的小特权';
-  pageHead(p, '一起', sub, [['wish', '心愿清单'], ['places', '去过的地方'], ['coupons', '爱的小券', Store.all('coupon').some(c => (c.to === S.me && (c.at || 0) > s) || (c.from === S.me && (c.usedAt || 0) > s))], ['scratch', '刮刮乐', newScratch() > 0 || !(Store.get(todayCardId()) || {}).scratchedAt], ['wheel', '约会转盘', newDatePlans() > 0], ['dice', '🔒 小秘密']], 'togetherSeg');
+    : S.togetherSeg === 'places' ? '一起走过的地方' : S.togetherSeg === 'scratch' ? '每天一张，看看今天手气' : S.togetherSeg === 'wheel' ? '不知道去哪？转一下' : S.togetherSeg === 'dice' ? '只属于我们俩的小游戏' : '送给对方的小特权';
+  pageHead(p, '一起', sub, [['wish', '心愿清单'], ['places', '去过的地方'], ['coupons', '爱的小券', Store.all('coupon').some(c => (c.to === S.me && (c.at || 0) > s) || (c.from === S.me && (c.usedAt || 0) > s))], ['scratch', '刮刮乐', newScratch() > 0 || !(Store.get(todayCardId()) || {}).scratchedAt], ['wheel', '约会转盘', newDatePlans() > 0], ['dice', '💗 心动骰子']], 'togetherSeg');
   if (S.togetherSeg === 'wish') todoView(p);
   else if (S.togetherSeg === 'places') placesView(p);
   else if (S.togetherSeg === 'scratch'){ scratchView(p); seenLater('scratch'); }
   else if (S.togetherSeg === 'wheel'){ wheelView(p); seenLater('wheel'); }
-  else if (S.togetherSeg === 'dice') (S.diceOpen ? diceView : lockView)(p);
+  else if (S.togetherSeg === 'dice') diceView(p);
   else { couponsView(p); seenLater('coupons'); }
   return p;
 }
@@ -1902,7 +1900,7 @@ const DATE_IDEAS = [
   ['♨️', '泡个温泉', '找个温泉或钱汤，好好放松一下'],
   ['🌸', '赏季节限定', '去看当季的花、红叶、灯光秀、花火大会或祭典'],
 ];
-const WHEEL_COLORS = ['#FFE3EA', '#FFF0D6', '#DDF4EC', '#DCEBFF', '#FFE3EA', '#FFF0D6', '#DDF4EC', '#DCEBFF'];
+const WHEEL_COLORS = ['#E6FCF7', '#FFF0D6', '#DDF4EC', '#DCEBFF', '#E6FCF7', '#FFF0D6', '#DDF4EC', '#DCEBFF'];
 function hiddenIdeas(){ return (Store.get('datecfg') || {}).hidden || []; }
 function dateIdeas(){ const hid = hiddenIdeas(); return DATE_IDEAS.filter(x => !hid.includes(x[1])).map(x => ({ic: x[0], t: x[1], d: x[2]})).concat(Store.all('dateidea').map(x => ({ic: x.ic || '💗', t: x.t, d: x.d || '', custom: x.id}))); }
 function newWheelSet(){ const all = dateIdeas().slice(); for (let i = all.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [all[i], all[j]] = [all[j], all[i]]; } S.wheelSet = all.slice(0, 8);
@@ -1918,7 +1916,7 @@ function wheelSvg(set){
     const mid = (i / n) * 360;
     const esc = t => t.replace(/[&<>"]/g, ch => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[ch]));
     out += '<g transform="rotate(' + mid + ' 160 160)"><text x="160" y="40" text-anchor="middle" font-size="22">' + esc(it.ic) + '</text>' +
-      '<text x="160" y="66" text-anchor="middle" font-size="13" font-weight="700" fill="#5E4652">' + esc(it.t.length > 6 ? it.t.slice(0, 6) : it.t) + '</text></g>';
+      '<text x="160" y="66" text-anchor="middle" font-size="13" font-weight="700" fill="#41524E">' + esc(it.t.length > 6 ? it.t.slice(0, 6) : it.t) + '</text></g>';
   });
   return out + '</svg>';
 }
@@ -2099,7 +2097,7 @@ function inviteBlock(){
   if (!REMOTE) return h('p', {class: 'hint', text: '同步功能还没开通。开通后这里会出现一个邀请链接，发给对方，两个人就能看到同一份内容。'});
   const link = inviteLink();
   const copy = async (txt, ok) => { try { await navigator.clipboard.writeText(txt); toast(ok); } catch { toast('长按上面的文字也能复制'); } };
-  const share = async () => { if (navigator.share){ try { await navigator.share({title: '他们的小日子', text: '点开这个链接，加入他们的小日子：', url: link}); } catch {} } else copy(link, '链接已复制，发给 TA 吧'); };
+  const share = async () => { if (navigator.share){ try { await navigator.share({title: '甜甜小日子', text: '点开这个链接，加入甜甜小日子：', url: link}); } catch {} } else copy(link, '链接已复制，发给 TA 吧'); };
   return h('div', null,
     h('div', {class: 'codebox', text: fmtCode(S.room)}),
     h('p', {class: 'hint', text: '把邀请链接发给 ' + nameOf(other(S.me)) + '，TA 点开就能进来，不用注册。也可以在开始页选“我有邀请码”，输入上面这串暗号。别把它发给别人哦。'}),
@@ -2116,7 +2114,7 @@ function welcomePage(){
   root.append(h('div', {class: 'ob'},
     h('div', {class: 'art'},
       h('img', {class: 'logo', src: 'icons/icon-512.png', alt: ''}),
-      h('h1', {text: '他们的小日子'}),
+      h('h1', {text: '甜甜小日子'}),
       h('p', {class: 'lead', text: '只属于你们两个人的小本子'}),
       h('div', {class: 'feat'},
         feat('mail', 'rose', '提前写好的信，TA 累了委屈了就能拆开'),

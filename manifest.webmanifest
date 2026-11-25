@@ -1,6 +1,6 @@
 {
-  "name": "我们的小日子",
-  "short_name": "小日子",
+  "name": "他们的小日子",
+  "short_name": "他们的小日子",
   "description": "两个人的纪念日、清单和悄悄话",
   "display": "standalone",
   "scope": "./",

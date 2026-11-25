@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
-<title>我们的小日子</title>
+<title>他们的小日子</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="小日子">
+<meta name="apple-mobile-web-app-title" content="他们的小日子">
 <meta name="theme-color" content="#FFF6F7" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#140C10" media="(prefers-color-scheme: dark)">
 <link rel="manifest" href="manifest.webmanifest">
@@ -2099,7 +2099,7 @@ function inviteBlock(){
   if (!REMOTE) return h('p', {class: 'hint', text: '同步功能还没开通。开通后这里会出现一个邀请链接，发给对方，两个人就能看到同一份内容。'});
   const link = inviteLink();
   const copy = async (txt, ok) => { try { await navigator.clipboard.writeText(txt); toast(ok); } catch { toast('长按上面的文字也能复制'); } };
-  const share = async () => { if (navigator.share){ try { await navigator.share({title: '我们的小日子', text: '点开这个链接，加入我们的小日子：', url: link}); } catch {} } else copy(link, '链接已复制，发给 TA 吧'); };
+  const share = async () => { if (navigator.share){ try { await navigator.share({title: '他们的小日子', text: '点开这个链接，加入他们的小日子：', url: link}); } catch {} } else copy(link, '链接已复制，发给 TA 吧'); };
   return h('div', null,
     h('div', {class: 'codebox', text: fmtCode(S.room)}),
     h('p', {class: 'hint', text: '把邀请链接发给 ' + nameOf(other(S.me)) + '，TA 点开就能进来，不用注册。也可以在开始页选“我有邀请码”，输入上面这串暗号。别把它发给别人哦。'}),
@@ -2116,7 +2116,7 @@ function welcomePage(){
   root.append(h('div', {class: 'ob'},
     h('div', {class: 'art'},
       h('img', {class: 'logo', src: 'icons/icon-512.png', alt: ''}),
-      h('h1', {text: '我们的小日子'}),
+      h('h1', {text: '他们的小日子'}),
       h('p', {class: 'lead', text: '只属于你们两个人的小本子'}),
       h('div', {class: 'feat'},
         feat('mail', 'rose', '提前写好的信，TA 累了委屈了就能拆开'),

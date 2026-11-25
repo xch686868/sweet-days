@@ -1,0 +1,2209 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>我们的小日子</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="小日子">
+<meta name="theme-color" content="#FFF6F7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#140C10" media="(prefers-color-scheme: dark)">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@1,9..144,500;1,9..144,600&family=Noto+Serif+SC:wght@600;700&family=Ma+Shan+Zheng&display=swap">
+<script src="config.js"></script>
+<style>
+/* 设计：像 iPhone 原生 App —— 大标题、毛玻璃底部导航、底部弹出面板；玫瑰色点缀，合照做首页主角。 */
+:root{
+  --bg:#FFF6F7; --bg2:#FDECEF; --card:#FFFFFF; --ink:#2A1820; --ink2:#5E4652; --muted:#9A8590;
+  --line:rgba(120,40,70,.10); --fill:rgba(120,40,70,.06);
+  --rose:#E8466F; --rose-ink:#FFFFFF; --rose-soft:#FFE3EA; --coral:#FF8A72;
+  --mint:#2FA37E; --mint-soft:#DDF4EC; --gold:#E9A23B; --gold-soft:#FFF0D6;
+  --glass:rgba(255,250,251,.78);
+  --shadow:0 1px 2px rgba(90,20,45,.05),0 8px 24px rgba(90,20,45,.07);
+  --n1:#FFF0B8; --n2:#FFDCE5; --n3:#DCEBFF; --n4:#DFF4DA; --note-ink:#3A2A1E;
+  --f-ui:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif;
+  --f-title:"Noto Serif SC","Songti SC","STSong",serif;
+  --f-num:"Fraunces","Didot","Georgia",serif;
+  --f-hand:"Ma Shan Zheng","Kaiti SC","STKaiti",cursive;
+  --sat:env(safe-area-inset-top,0px); --sab:env(safe-area-inset-bottom,0px);
+  --sal:env(safe-area-inset-left,0px); --sar:env(safe-area-inset-right,0px);
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root{
+  --bg:#140C10; --bg2:#1E1218; --card:#22161C; --ink:#F7EAF0; --ink2:#D5BFCA; --muted:#A08A96;
+  --line:rgba(255,200,220,.10); --fill:rgba(255,200,220,.07);
+  --rose:#FF6189; --rose-ink:#FFFFFF; --rose-soft:#3E1D29; --coral:#FF9A85;
+  --mint:#5ACCA6; --mint-soft:#183A2F; --gold:#F2B85C; --gold-soft:#3A2C14;
+  --glass:rgba(30,18,24,.78);
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.3);
+  --n1:#EBD58E; --n2:#F0BFCC; --n3:#BCD4EE; --n4:#C5E3BD; --note-ink:#2B2016;
+  color-scheme:dark;
+}}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+[hidden]{display:none!important}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font-family:var(--f-ui);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+body{overscroll-behavior-y:none}
+button,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer;border:0;background:none;padding:0}
+:focus-visible{outline:2px solid var(--rose);outline-offset:2px}
+.tnum{font-variant-numeric:tabular-nums}
+svg{display:block}
+
+/* ---------- shell ---------- */
+.page{min-height:100%;padding:calc(var(--sat) + 10px) max(18px,var(--sar)) calc(var(--sab) + 104px) max(18px,var(--sal));max-width:560px;margin:0 auto}
+.page.enter{animation:pageIn .28s ease both}
+@keyframes pageIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+.bigtitle{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin:8px 0 16px}
+.bigtitle h1{font-family:var(--f-title);font-size:32px;line-height:1.15;margin:0;letter-spacing:.01em}
+.bigtitle .sub{font-size:13px;color:var(--muted);margin-bottom:2px}
+.round{width:38px;height:38px;border-radius:50%;background:var(--card);box-shadow:var(--shadow);display:grid;place-items:center;color:var(--ink2);flex:none}
+.round svg{width:20px;height:20px}
+.round.rose{background:var(--rose);color:var(--rose-ink)}
+
+.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--glass);-webkit-backdrop-filter:saturate(1.6) blur(20px);backdrop-filter:saturate(1.6) blur(20px);border-top:.5px solid var(--line);padding:6px max(10px,var(--sar)) calc(var(--sab) + 6px) max(10px,var(--sal))}
+.tabbar .in{max-width:560px;margin:0 auto;display:grid;grid-template-columns:repeat(5,1fr)}
+.tab{display:flex;flex-direction:column;align-items:center;gap:2px;padding:4px 0;color:var(--muted);font-size:10.5px;font-weight:500;position:relative}
+.tab svg{width:26px;height:26px}
+.tab .on{display:none}
+.tab[aria-current="page"]{color:var(--rose)}
+.tab[aria-current="page"] .off{display:none}
+.tab[aria-current="page"] .on{display:block}
+.badge{position:absolute;top:0;left:calc(50% + 6px);min-width:16px;height:16px;border-radius:8px;background:var(--rose);color:#fff;font-size:10px;line-height:16px;text-align:center;padding:0 4px}
+
+.card{background:var(--card);border-radius:22px;box-shadow:var(--shadow)}
+.stack{display:flex;flex-direction:column;gap:14px}
+.label{font-size:13px;color:var(--muted);font-weight:600;letter-spacing:.04em;margin:6px 4px -4px}
+
+/* ---------- home ---------- */
+.hello{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:6px 0 14px}
+.hello .t{font-size:14px;color:var(--muted)}
+.hello .n{font-family:var(--f-title);font-size:22px;font-weight:700;line-height:1.2}
+.hero{position:relative;border-radius:28px;overflow:hidden;aspect-ratio:4/5;max-height:62vh;width:100%;background:linear-gradient(160deg,#FFB3C1 0%,#FF8A9E 45%,#E8466F 100%);color:#fff;box-shadow:0 18px 40px -18px rgba(232,70,111,.55)}
+.hero.short{aspect-ratio:auto;min-height:300px}
+.hero img.cover{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.hero .shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.18) 0%,rgba(0,0,0,0) 30%,rgba(0,0,0,0) 45%,rgba(40,5,20,.72) 100%)}
+.hero .blob{position:absolute;border-radius:50%;filter:blur(2px);background:rgba(255,255,255,.18)}
+.hero .top{position:absolute;top:16px;left:16px;right:16px;display:flex;justify-content:space-between;align-items:center}
+.pair{display:flex;align-items:center}
+.ava{width:44px;height:44px;border-radius:50%;border:2.5px solid #fff;background:#fff center/cover no-repeat;color:var(--rose);display:grid;place-items:center;font-family:var(--f-title);font-weight:700;font-size:18px;box-shadow:0 4px 12px rgba(0,0,0,.15);overflow:hidden}
+.pair .ava + .ava{margin-left:-12px}
+.pair .heart{width:22px;height:22px;margin:0 -4px 0 6px;color:#fff;filter:drop-shadow(0 2px 4px rgba(0,0,0,.2));animation:beat 1.8s ease-in-out infinite}
+@keyframes beat{0%,100%{transform:scale(1)}14%{transform:scale(1.2)}28%{transform:scale(1)}42%{transform:scale(1.12)}}
+.photo-btn{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;background:rgba(255,255,255,.22);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-radius:999px;padding:7px 12px;color:#fff}
+.photo-btn svg{width:16px;height:16px}
+.hero .bottom{position:absolute;left:20px;right:20px;bottom:18px}
+.hero .lbl{font-size:14px;letter-spacing:.2em;opacity:.92}
+.hero .days{font-family:var(--f-num);font-style:italic;font-weight:600;font-size:clamp(76px,24vw,112px);line-height:.95;letter-spacing:-.02em;text-shadow:0 4px 24px rgba(0,0,0,.18)}
+.hero .days small{font-family:var(--f-title);font-style:normal;font-size:22px;font-weight:700;margin-left:6px;letter-spacing:0}
+.hero .since{font-size:13px;opacity:.9;margin-top:4px}
+.pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.pill{font-size:12px;background:rgba(255,255,255,.2);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-radius:999px;padding:4px 10px}
+
+.next{display:flex;align-items:center;gap:14px;padding:16px}
+.ring{width:64px;height:64px;flex:none;position:relative}
+.ring svg{width:64px;height:64px;transform:rotate(-90deg)}
+.ring .v{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--f-num);font-style:italic;font-weight:600;font-size:22px;color:var(--rose)}
+.next .txt{min-width:0;flex:1}
+.next .k{font-size:12px;color:var(--muted)}
+.next .t{font-weight:700;font-size:17px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.next .d{font-size:13px;color:var(--ink2)}
+.chev{color:var(--muted);flex:none}
+.chev svg{width:18px;height:18px;flex:none;color:var(--muted)}
+.install .share svg{width:15px;height:15px}
+
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.mood{padding:14px;display:flex;flex-direction:column;gap:8px;text-align:left;min-width:0;min-height:120px}
+.mood .row{display:flex;align-items:center;gap:8px}
+.mood .ava{width:26px;height:26px;border-width:1.5px;font-size:12px;box-shadow:none;border-color:var(--card)}
+.mood .who{font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mood .face{font-size:34px;line-height:1}
+.mood .say{font-size:14px;font-weight:600;color:var(--ink);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
+.mood .say.dim{color:var(--muted);font-weight:500}
+.mood.mine{outline:2px solid var(--rose-soft)}
+
+.mini{padding:16px;display:flex;flex-direction:column;gap:10px;text-align:left;width:100%}
+.mini .head{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--muted);font-weight:600}
+.bar{height:8px;border-radius:4px;background:var(--fill);overflow:hidden}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--coral),var(--rose));border-radius:4px}
+.quote{font-family:var(--f-hand);font-size:22px;line-height:1.4;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.install{padding:14px 16px;display:flex;gap:12px;align-items:flex-start;background:var(--gold-soft)}
+.install .ic{width:40px;height:40px;border-radius:10px;flex:none;overflow:hidden}
+.install b{display:block;font-size:15px}
+.install p{margin:2px 0 0;font-size:13px;color:var(--ink2)}
+.install .share{display:inline-block;width:15px;height:15px;vertical-align:-2px;color:#0A84FF}
+.install .x{margin-left:auto;color:var(--muted);font-size:20px;line-height:1;padding:0 4px}
+
+/* ---------- dates ---------- */
+.dlist{display:flex;flex-direction:column;gap:12px}
+.ditem{display:flex;align-items:center;gap:14px;padding:14px 16px}
+.dic{width:46px;height:46px;border-radius:15px;display:grid;place-items:center;flex:none}
+.dic svg{width:24px;height:24px}
+.dic.rose{background:var(--rose-soft);color:var(--rose)}
+.dic.mint{background:var(--mint-soft);color:var(--mint)}
+.dic.gold{background:var(--gold-soft);color:var(--gold)}
+.ditem .txt{flex:1;min-width:0}
+.ditem .t{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ditem .s{font-size:13px;color:var(--muted)}
+.ditem .n{text-align:right;line-height:1;flex:none}
+.ditem .n b{font-family:var(--f-num);font-style:italic;font-weight:600;font-size:30px;color:var(--rose)}
+.ditem .n small{display:block;font-size:11px;color:var(--muted);margin-top:4px}
+.ditem .n .today{font-family:var(--f-title);font-size:16px;font-weight:700;color:var(--rose)}
+.ditem.past .n b{color:var(--muted)}
+.ditem.first{background:linear-gradient(135deg,var(--rose) 0%,var(--coral) 100%);color:#fff}
+.ditem.first .s,.ditem.first .n small{color:rgba(255,255,255,.85)}
+.ditem.first .n b,.ditem.first .n .today{color:#fff}
+.ditem.first .dic{background:rgba(255,255,255,.22);color:#fff}
+
+/* ---------- todos ---------- */
+.seg{display:grid;grid-template-columns:1fr 1fr;background:var(--fill);border-radius:10px;padding:2px;margin-bottom:14px}
+.seg button{border-radius:8px;padding:6px;font-size:14px;font-weight:600;color:var(--ink2)}
+.seg button[aria-pressed="true"]{background:var(--card);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.adder{display:flex;align-items:center;gap:10px;padding:8px 8px 8px 16px;margin-bottom:14px}
+.adder input{flex:1;border:0;background:transparent;padding:8px 0;min-width:0;outline:none;font-size:16px}
+.tlist{list-style:none;margin:0;padding:0;overflow:hidden}
+.titem{display:flex;align-items:center;gap:12px;padding:13px 16px;border-top:.5px solid var(--line);transition:opacity .3s}
+.titem:first-child{border-top:0}
+.check{width:26px;height:26px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;color:transparent;flex:none;transition:all .2s}
+.check svg{width:15px;height:15px}
+.titem.done .check{background:var(--mint);border-color:var(--mint);color:#fff}
+.titem .txt{flex:1;min-width:0;overflow-wrap:anywhere}
+.titem .s{display:block;font-size:12px;color:var(--muted);margin-top:1px}
+.titem.done .txt>span{color:var(--muted);text-decoration:line-through}
+.sugg{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.sugg button{border:1.5px dashed var(--rose);color:var(--rose);border-radius:999px;padding:6px 12px;font-size:14px}
+.empty{text-align:center;color:var(--muted);padding:28px 16px;display:flex;flex-direction:column;align-items:center;gap:12px;font-size:15px}
+.empty svg{width:56px;height:56px;color:var(--rose);opacity:.55}
+.more{color:var(--muted);padding:4px 6px;flex:none}
+.more svg{width:20px;height:20px}
+
+/* ---------- notes ---------- */
+.composer{padding:14px;display:flex;flex-direction:column;gap:10px;margin-bottom:18px}
+.composer textarea{border:0;background:var(--fill);border-radius:14px;padding:12px;min-height:88px;resize:none;outline:none;font-size:16px}
+.composer .row{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.sw{display:flex;gap:8px}
+.sw button{width:28px;height:28px;border-radius:50%;box-shadow:inset 0 0 0 1px rgba(0,0,0,.06)}
+.sw button[aria-pressed="true"]{box-shadow:0 0 0 2px var(--card),0 0 0 4px var(--rose)}
+.btn{background:var(--rose);color:var(--rose-ink);border-radius:999px;padding:10px 20px;font-weight:700;font-size:15px}
+.btn.block{width:100%;padding:14px;border-radius:16px;font-size:17px}
+.btn.ghost{background:var(--fill);color:var(--ink)}
+.btn:disabled{opacity:.5}
+.wall{columns:2;column-gap:12px}
+@media (max-width:340px){.wall{columns:1}}
+.note{break-inside:avoid;margin-bottom:12px;border-radius:6px 6px 22px 6px;padding:14px 14px 10px;color:var(--note-ink);box-shadow:0 1px 2px rgba(0,0,0,.05),0 6px 16px rgba(60,20,30,.08);display:flex;flex-direction:column;gap:8px;transform:rotate(var(--r,0deg))}
+.note p{margin:0;font-family:var(--f-hand);font-size:21px;line-height:1.45;white-space:pre-wrap;overflow-wrap:anywhere}
+.note .meta{display:flex;justify-content:space-between;align-items:center;font-size:11.5px;opacity:.7;gap:6px}
+.note .acts{display:flex;justify-content:space-between;align-items:center}
+.like{display:flex;align-items:center;gap:4px;font-size:13px;padding:4px 8px;border-radius:999px;background:rgba(255,255,255,.5)}
+.like svg{width:16px;height:16px}
+.like.on{color:#D6335E}
+.c1{background:var(--n1)}.c2{background:var(--n2)}.c3{background:var(--n3)}.c4{background:var(--n4)}
+
+.inapp{background:var(--rose);color:#fff;padding:calc(var(--sat) + 10px) max(18px,var(--sar)) 10px max(18px,var(--sal));display:flex;flex-direction:column;gap:2px;font-size:14px;line-height:1.5}
+.inapp b{font-size:15px}
+.install .btn.sm{display:inline-block}
+
+/* ---------- top chips ---------- */
+.chips{display:flex;gap:8px;margin:-4px 0 16px;overflow-x:auto;scrollbar-width:none;padding:2px}
+.chips::-webkit-scrollbar{display:none}
+.chips button{flex:none;padding:7px 14px;border-radius:999px;background:var(--fill);font-size:14px;font-weight:600;color:var(--ink2);position:relative}
+.chips button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.chips .dot{position:absolute;top:3px;right:3px;width:8px;height:8px;border-radius:50%;background:var(--rose);box-shadow:0 0 0 2px var(--bg)}
+
+/* ---------- letters ---------- */
+.envs{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.env{position:relative;aspect-ratio:1.45;border-radius:14px;overflow:hidden;box-shadow:var(--shadow);display:block;width:100%;background:var(--envc,var(--n2))}
+.env .flap{position:absolute;left:0;right:0;top:0;height:56%;background:var(--envc,var(--n2));filter:brightness(.92);clip-path:polygon(0 0,100% 0,50% 100%);transition:clip-path .4s}
+.env .seal{position:absolute;left:50%;top:56%;transform:translate(-50%,-50%);width:34px;height:34px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#F06A8C,#C9244F);color:#fff;display:grid;place-items:center;box-shadow:0 2px 6px rgba(120,10,40,.35)}
+.env .seal svg{width:16px;height:16px}
+.env .lab{position:absolute;left:8px;right:8px;bottom:7px;font-family:var(--f-hand);font-size:16px;line-height:1.2;color:var(--note-ink);text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.env.opened .flap{clip-path:polygon(0 0,100% 0,50% 22%)}
+.env.opened .seal{background:rgba(0,0,0,.12);box-shadow:none;color:var(--note-ink);width:auto;height:auto;padding:2px 8px;border-radius:999px;font-size:11px;top:44%}
+.env.opened{opacity:.82}
+.e1{--envc:var(--n1)}.e2{--envc:var(--n2)}.e3{--envc:var(--n3)}.e4{--envc:var(--n4)}
+.paper{background:#FFFBF2;color:#3A2A1E;border-radius:18px;padding:22px 20px 18px;box-shadow:0 10px 30px -10px rgba(90,40,20,.35);background-image:repeating-linear-gradient(180deg,transparent 0 33px,rgba(190,120,90,.2) 33px 34px);background-position:0 58px;margin-bottom:16px}
+.paper .lab{font-size:12px;letter-spacing:.08em;color:#B0705A;font-weight:700}
+.paper .to,.paper .sign{font-family:var(--f-hand);font-size:22px;line-height:34px}
+.paper .sign{text-align:right}
+.paper p{font-family:var(--f-hand);font-size:22px;line-height:34px;white-space:pre-wrap;overflow-wrap:anywhere;margin:0}
+.paper .when{font-size:12px;color:#A0857A;text-align:right}
+.lcard{display:flex;gap:14px;align-items:center;padding:16px;width:100%;text-align:left}
+.lcard .mini-env{width:54px;height:40px;flex:none;border-radius:8px;position:relative;overflow:hidden;background:var(--n2)}
+.lcard .mini-env::before{content:"";position:absolute;inset:0 0 45% 0;background:var(--n2);filter:brightness(.9);clip-path:polygon(0 0,100% 0,50% 100%)}
+.lcard .mini-env::after{content:"";position:absolute;left:50%;top:55%;width:14px;height:14px;border-radius:50%;background:#D6335E;transform:translate(-50%,-50%)}
+.lcard .txt{flex:1;min-width:0}
+.lcard .t{font-weight:700;font-size:16px}
+.lcard .s{font-size:13px;color:var(--ink2);margin-top:2px}
+.lcard.hot{background:linear-gradient(135deg,var(--rose) 0%,var(--coral) 100%);color:#fff}
+.lcard.hot .s{color:rgba(255,255,255,.9)}
+.lcard .ok{background:rgba(255,255,255,.25);color:#fff;border-radius:999px;padding:6px 12px;font-size:13px;font-weight:700;flex:none}
+.typegrid{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.typegrid button{padding:7px 12px;border-radius:999px;background:var(--card);font-size:14px;color:var(--ink2);box-shadow:inset 0 0 0 1px var(--line)}
+.typegrid button[aria-pressed="true"]{background:var(--rose);color:#fff;box-shadow:none}
+.tip{background:var(--gold-soft);border-radius:14px;padding:12px 14px;font-size:14px;color:var(--ink2);margin-bottom:12px;line-height:1.6}
+.tip b{color:var(--ink)}
+.bigta{width:100%;border:0;background:var(--card);border-radius:14px;padding:14px;min-height:180px;resize:vertical;outline:none;font-size:16px;line-height:1.6;margin-bottom:12px}
+.status{font-size:12px;font-weight:700;border-radius:999px;padding:3px 9px;flex:none}
+.status.wait{background:var(--fill);color:var(--muted)}
+.status.open{background:var(--rose-soft);color:var(--rose)}
+
+/* ---------- coupons ---------- */
+.tickets{display:flex;flex-direction:column;gap:14px}
+.ticket{display:flex;border-radius:16px;overflow:hidden;box-shadow:var(--shadow);background:var(--card);position:relative}
+.ticket .l{width:86px;flex:none;background:linear-gradient(160deg,var(--coral),var(--rose));color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:12px 4px;font-family:var(--f-title);font-weight:700;font-size:13px;letter-spacing:.1em}
+.ticket .l svg{width:28px;height:28px}
+.ticket .r{flex:1;min-width:0;padding:14px 16px;border-left:2px dashed var(--line);display:flex;flex-direction:column;gap:2px}
+.ticket::before,.ticket::after{content:"";position:absolute;left:78px;width:16px;height:16px;border-radius:50%;background:var(--bg)}
+.ticket::before{top:-8px}.ticket::after{bottom:-8px}
+.ticket .t{font-family:var(--f-title);font-weight:700;font-size:19px;overflow-wrap:anywhere}
+.ticket .s{font-size:13px;color:var(--muted)}
+.ticket .n{font-size:14px;color:var(--ink2);overflow-wrap:anywhere}
+.ticket .row{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:8px}
+.ticket.used .l{background:var(--muted)}
+.ticket.used .t{color:var(--muted)}
+.btn.sm{padding:7px 14px;font-size:13px}
+
+/* ---------- scratch cards ---------- */
+.scard{position:relative;border-radius:20px;overflow:hidden;box-shadow:var(--shadow);background:linear-gradient(150deg,var(--gold-soft),var(--rose-soft));aspect-ratio:16/10;margin-bottom:10px;user-select:none;-webkit-user-select:none}
+.scard .prize{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:18px;text-align:center}
+.scard .tier{font-family:var(--f-title);font-weight:700;font-size:15px;letter-spacing:.2em;color:var(--rose);background:var(--card);border-radius:999px;padding:3px 14px}
+.scard .pz{font-family:var(--f-title);font-weight:700;font-size:26px;line-height:1.3;color:var(--ink);overflow-wrap:anywhere}
+.scard .by{font-size:13px;color:var(--ink2)}
+.scard canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:grab;transition:opacity .45s}
+.scard.t1{background:linear-gradient(150deg,#FFE8A3,#FFC2D1)}
+.scard.t1 .tier{background:var(--gold);color:#fff}
+.shint{font-size:13px;color:var(--muted);text-align:center;margin:0 0 18px}
+.odds{display:grid;grid-template-columns:auto 1fr auto;gap:6px 10px;align-items:center;margin-bottom:12px}
+.odds b{font-family:var(--f-title);font-size:14px;color:var(--rose);white-space:nowrap}
+.odds span{font-size:13px;color:var(--muted);text-align:right;white-space:nowrap}
+.burst{position:fixed;inset:0;pointer-events:none;z-index:60;overflow:hidden}
+.burst i{position:absolute;top:-30px;font-style:normal;font-size:22px;animation:fallDown 2.6s ease-in forwards}
+@keyframes fallDown{to{transform:translateY(110vh) rotate(var(--rot,180deg));opacity:.2}}
+
+/* ---------- date wheel ---------- */
+.wheelbox{position:relative;width:min(100%,330px);aspect-ratio:1;margin:4px auto 14px}
+.wheel{width:100%;height:100%;border-radius:50%;box-shadow:var(--shadow),0 0 0 6px var(--card);transition:transform 4.2s cubic-bezier(.12,.75,.12,1)}
+.wheel svg{width:100%;height:100%;display:block}
+.wheelbox .pin{position:absolute;left:50%;top:-6px;transform:translateX(-50%);width:0;height:0;border-left:13px solid transparent;border-right:13px solid transparent;border-top:24px solid var(--rose);filter:drop-shadow(0 2px 3px rgba(0,0,0,.2));z-index:2}
+.wheelbox .hub{position:absolute;left:50%;top:50%;width:76px;height:76px;margin:-38px 0 0 -38px;border-radius:50%;background:var(--rose);color:#fff;font-family:var(--f-title);font-weight:700;font-size:17px;box-shadow:0 4px 14px rgba(232,70,111,.35),0 0 0 5px var(--card);z-index:2}
+.wheelbox .hub:disabled{opacity:.85}
+.dlv{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:-4px 0 12px}
+.dlv button{display:flex;align-items:center;justify-content:center;gap:4px;padding:10px 0;border-radius:14px;background:var(--fill);font-weight:700;font-size:14px;color:var(--ink2);white-space:nowrap}
+.dlv button span{font-size:16px}
+.dlv button[aria-pressed="true"].lv1{background:linear-gradient(135deg,#FFB3C7,#FF8FAB);color:#fff}
+.dlv button[aria-pressed="true"].lv2{background:linear-gradient(135deg,#B57BFF,#E8466F);color:#fff}
+.dlv button[aria-pressed="true"].lv3{background:linear-gradient(135deg,#FF5E62,#B3123E);color:#fff}
+.dlv button[aria-pressed="true"].lv4{background:linear-gradient(135deg,#C2185B,#2A0A1E);color:#fff}
+.dturn{display:flex;align-items:center;justify-content:space-between;margin:0 4px 12px;font-size:15px;color:var(--ink2)}
+.dturn b{color:var(--rose);font-weight:700}
+.dbox{border-radius:24px;padding:18px 16px 14px;color:#fff;box-shadow:var(--shadow)}
+.dbox.lv1{background:linear-gradient(160deg,#FF9DB5 0%,#FF7A9C 100%)}
+.dbox.lv2{background:linear-gradient(160deg,#9B5DE5 0%,#E8466F 100%)}
+.dbox.lv3{background:linear-gradient(160deg,#E8344E 0%,#7A0B2C 100%)}
+.dbox.lv4{background:linear-gradient(160deg,#A0124F 0%,#2A0A1E 100%)}
+.dice3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.die{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.28);border-radius:18px;padding:12px 6px;min-height:104px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center}
+.die .k{font-size:12px;opacity:.8;font-weight:600}
+.die .v{font-family:var(--f-title);font-size:17px;font-weight:700;line-height:1.3}
+.die.rolling{animation:dshake .18s infinite}
+@keyframes dshake{0%,100%{transform:rotate(0)}25%{transform:rotate(-6deg) translateY(-2px)}75%{transform:rotate(6deg) translateY(2px)}}
+.dsent{margin:16px 4px 16px;text-align:center;font-size:16px;font-weight:600;line-height:1.5}
+.dcard{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.28);border-radius:20px;min-height:170px;padding:18px;display:flex;flex-direction:column;justify-content:center;gap:12px;text-align:center;margin-bottom:16px}
+.dcard .tag{align-self:center;font-size:12px;font-weight:700;padding:3px 10px;border-radius:999px;background:rgba(255,255,255,.22)}
+.dcard .t{font-family:var(--f-title);font-size:20px;font-weight:700;line-height:1.45}
+.dcard.show{animation:dflip .45s ease}
+.dcard.rolling{animation:dshake .18s infinite}
+@keyframes dflip{from{transform:rotateY(90deg);opacity:.3}to{transform:none;opacity:1}}
+.dgo{background:#fff;color:var(--rose)}
+.dbox.lv3 .dgo{color:#B3123E}
+.dbox.lv4 .dgo{color:#A0124F}
+.dmine{margin-top:16px;padding:14px 14px 6px}
+.dmine summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-weight:700;font-size:15px;padding-bottom:8px}
+.dmine summary::-webkit-details-marker{display:none}
+.dmine summary small{font-weight:500;color:var(--muted);font-size:13px}
+.dmine .hint{font-size:12.5px;color:var(--muted);line-height:1.6;margin:0 0 10px}
+.dmine .row{display:flex;gap:8px;align-items:center;margin-bottom:10px}
+.dmine .row .input{background:var(--fill);flex:1;min-width:0}
+.dmine .seg{margin-bottom:10px}
+.dmine ul{list-style:none;margin:0;padding:0}
+.dmine li{display:flex;align-items:flex-start;gap:8px;padding:10px 2px;border-top:.5px solid var(--line);font-size:14.5px;line-height:1.5}
+.dmine li .k{flex:none;font-size:12px;font-weight:700;color:var(--rose);padding-top:2px}
+.dmine li .t{flex:1;min-width:0}
+.dmine li button{flex:none;color:var(--muted);font-size:18px;line-height:1;padding:0 4px}
+.dskip{display:block;margin:10px auto 0;color:rgba(255,255,255,.85);font-size:14px;font-weight:500}
+.duel2{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center}
+.duel2 .vs{font-weight:800;font-size:15px;opacity:.85}
+.die .n{font-family:var(--f-title);font-size:46px;font-weight:700;line-height:1}
+.die.win{background:rgba(255,255,255,.36);border-color:#fff;box-shadow:0 0 0 2px rgba(255,255,255,.5)}
+.dopt{display:block;width:100%;text-align:left;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.3);border-radius:16px;padding:12px 14px;color:#fff;font-size:15px;line-height:1.5;font-weight:600;margin-top:8px}
+.dopt:active{background:rgba(255,255,255,.3)}
+.dpts{display:flex;justify-content:center;align-items:center;gap:8px;margin-top:14px;font-size:14px;font-weight:600}
+.dpts b{font-family:var(--f-title);font-size:22px;min-width:36px;text-align:center;background:rgba(255,255,255,.2);border-radius:10px;padding:2px 8px}
+.dpts b.w{background:#fff;color:#B3123E}
+.dpts i{font-style:normal;opacity:.8}
+.pun{margin:14px 0 14px;background:rgba(0,0,0,.16);border-radius:18px;padding:14px}
+.pun .pl{text-align:center;font-size:14.5px;font-weight:600;margin-bottom:10px;line-height:1.5}
+.psec{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:12px}
+.psec button{padding:8px 0;border-radius:12px;background:rgba(255,255,255,.18);color:#fff;font-weight:700;font-size:14px}
+.psec button[aria-pressed="true"]{background:#fff;color:#B3123E}
+.pcount{font-family:var(--f-title);font-size:68px;font-weight:700;text-align:center;line-height:1.1;margin-bottom:4px}
+.dfail{background:rgba(255,255,255,.16);color:#fff;border:1px solid rgba(255,255,255,.55)}
+.pres{text-align:center;font-weight:700;font-size:16px;padding:4px 0;line-height:1.5}
+.prow{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.dcd{background:rgba(255,255,255,.16);color:#fff;border:1px solid rgba(255,255,255,.55);margin-bottom:10px;font-variant-numeric:tabular-nums}
+.dnote{margin:14px 8px 0;font-size:12.5px;color:var(--muted);text-align:center;line-height:1.6}
+.plock{padding:28px 16px 22px;text-align:center}
+.plock .ic{font-size:40px;line-height:1}
+.plock .tt{font-family:var(--f-title);font-size:20px;font-weight:700;margin-top:10px}
+.plock .ss{font-size:13px;color:var(--muted);margin:6px 0 20px;min-height:18px;line-height:1.5}
+.plock .ss.err{color:var(--rose);font-weight:600}
+.pdots{display:flex;justify-content:center;gap:18px;margin-bottom:24px}
+.pdots i{width:14px;height:14px;border-radius:50%;border:2px solid var(--rose);display:block;transition:background .12s}
+.pdots i.on{background:var(--rose)}
+.pdots.err{animation:dshake .18s 3}
+.ppad{display:grid;grid-template-columns:repeat(3,70px);gap:12px 24px;justify-content:center}
+.ppad button{height:70px;border-radius:50%;background:var(--fill);font-size:26px;font-weight:600;color:var(--ink)}
+.ppad button:active{opacity:.6}
+.ppad button.ghost{background:none;font-size:15px;color:var(--muted)}
+.pforgot{display:block;margin:18px auto 0;font-size:13px;color:var(--muted)}
+.dlock{display:flex;justify-content:flex-end;gap:8px;margin:-6px 0 10px}
+.wrow{display:flex;gap:10px;margin-bottom:18px}
+.wrow .btn{flex:1}
+.plan{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;border-top:.5px solid var(--line)}
+.plan:first-child{border-top:0}
+.plan .ic{font-size:22px;line-height:1.2;flex:none}
+.plan .tx{flex:1;min-width:0}
+.plan .t{font-weight:700;font-size:16px;overflow-wrap:anywhere}
+.plan .d{font-size:13px;color:var(--muted);overflow-wrap:anywhere}
+.plan.done .t{color:var(--muted);text-decoration:line-through}
+.dresult{text-align:center;padding:6px 0 4px}
+.dresult .ic{font-size:44px;line-height:1.2}
+.dresult .t{font-family:var(--f-title);font-weight:700;font-size:26px;margin:6px 0 4px}
+.dresult .d{color:var(--ink2);font-size:15px;margin-bottom:18px}
+
+/* ---------- places ---------- */
+.pstats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.pstats .card{padding:14px 16px}
+.pstats b{display:block;font-family:var(--f-num);font-style:italic;font-weight:600;font-size:36px;line-height:1;color:var(--rose)}
+.pstats span{font-size:13px;color:var(--muted)}
+.stamps{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.stamp{background:var(--card);border-radius:6px;padding:7px;box-shadow:var(--shadow);transform:rotate(var(--r,0deg));text-align:left;width:100%}
+.stamp .in{border:1.5px dashed rgba(232,70,111,.4);border-radius:3px;padding:14px 10px 10px;min-height:128px;display:flex;flex-direction:column;gap:3px;position:relative;overflow:hidden}
+.stamp .city{font-family:var(--f-title);font-size:24px;font-weight:700;color:var(--rose);line-height:1.15;overflow-wrap:anywhere;padding-right:30px}
+.stamp .pl{font-size:14px;font-weight:600;overflow-wrap:anywhere}
+.stamp .dt{font-size:12px;color:var(--muted);margin-top:auto;padding-top:6px}
+.stamp .mark{position:absolute;right:-14px;top:-14px;width:60px;height:60px;border:2px solid rgba(232,70,111,.28);border-radius:50%;display:grid;place-items:center;transform:rotate(-18deg)}
+.stamp .mark::after{content:"";width:42px;height:42px;border:1.5px solid rgba(232,70,111,.22);border-radius:50%}
+
+/* ---------- manual ---------- */
+.mwho{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.mwho button{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:16px;background:var(--fill);font-weight:700;font-size:15px;min-width:0}
+.mwho button span:last-child{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mwho .ava{width:32px;height:32px;border:0;box-shadow:none;font-size:13px;background-color:var(--rose-soft);flex:none}
+.mwho button[aria-pressed="true"]{background:var(--card);box-shadow:0 0 0 2px var(--rose)}
+.mlist{overflow:hidden}
+.mrow{display:block;width:100%;text-align:left;padding:14px 16px;border-top:.5px solid var(--line)}
+.mrow:first-child{border-top:0}
+.mrow .k{font-size:13px;color:var(--muted);font-weight:600;display:flex;justify-content:space-between;gap:8px}
+.mrow .v{font-size:16px;white-space:pre-wrap;overflow-wrap:anywhere;margin-top:2px}
+.mrow .v.dim{color:var(--muted);font-size:15px}
+
+/* ---------- sheet ---------- */
+.scrim{position:fixed;inset:0;background:rgba(20,5,12,.38);z-index:40;opacity:0;transition:opacity .25s}
+.scrim.show{opacity:1}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:41;max-height:calc(100% - var(--sat) - 24px);overflow:auto;background:var(--bg);border-radius:24px 24px 0 0;padding:8px max(18px,var(--sar)) calc(var(--sab) + 22px) max(18px,var(--sal));transform:translateY(100%);transition:transform .32s cubic-bezier(.2,.8,.2,1)}
+.sheet.show{transform:none}
+.sheet .grab{width:38px;height:5px;border-radius:3px;background:var(--line);margin:4px auto 10px}
+.sheet .in{max-width:560px;margin:0 auto}
+.sheet h2{font-family:var(--f-title);font-size:22px;margin:4px 0 16px;text-align:center}
+.group{background:var(--card);border-radius:16px;overflow:hidden;margin-bottom:16px}
+.group .gt{font-size:12px;color:var(--muted);margin:0 4px 6px;font-weight:600;letter-spacing:.04em}
+.field{display:flex;align-items:center;gap:12px;padding:12px 16px;border-top:.5px solid var(--line);min-height:50px}
+.field:first-child{border-top:0}
+.field>span{flex:none;color:var(--ink);font-size:16px}
+.field input[type=text],.field input[type=date]{flex:1;min-width:0;border:0;background:transparent;text-align:right;outline:none;font-size:16px;color:var(--ink2)}
+.field input[type=date]{-webkit-appearance:none;appearance:none;min-height:24px}
+.field input::-webkit-date-and-time-value{text-align:right}
+.field.btnrow{justify-content:space-between;width:100%;text-align:left}
+.field.btnrow .val{color:var(--muted);font-size:15px;display:flex;align-items:center;gap:8px}
+.field .ava{width:34px;height:34px;border:0;box-shadow:none;background-color:var(--rose-soft);font-size:14px}
+.toggle{position:relative;width:51px;height:31px;flex:none}
+.toggle input{opacity:0;position:absolute;inset:0;margin:0;cursor:pointer}
+.toggle i{position:absolute;inset:0;border-radius:16px;background:var(--fill);transition:background .2s;pointer-events:none}
+.toggle i::after{content:"";position:absolute;top:2px;left:2px;width:27px;height:27px;border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.2);transition:transform .2s}
+.toggle input:checked+i{background:var(--mint)}
+.toggle input:checked+i::after{transform:translateX(20px)}
+.moods{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+.moods button{background:var(--card);border-radius:16px;padding:10px 4px;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:12px;color:var(--ink2)}
+.moods button span{font-size:30px;line-height:1}
+.moods button[aria-pressed="true"]{box-shadow:0 0 0 2px var(--rose);color:var(--rose);font-weight:700}
+.input{width:100%;border:0;background:var(--card);border-radius:14px;padding:13px 16px;outline:none;font-size:16px}
+.codebox{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:17px;letter-spacing:.06em;text-align:center;padding:14px;background:var(--card);border-radius:14px;user-select:all;-webkit-user-select:all;overflow-wrap:anywhere}
+.hint{font-size:13px;color:var(--muted);margin:8px 4px 16px;line-height:1.55}
+.danger{color:#D6335E}
+.actions{display:flex;flex-direction:column;gap:10px}
+.who2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.who2 button{background:var(--card);border-radius:20px;padding:18px 10px;display:flex;flex-direction:column;align-items:center;gap:10px;font-weight:700;font-size:17px;box-shadow:var(--shadow)}
+.who2 .ava{width:64px;height:64px;font-size:26px;border:0;background-color:var(--rose-soft)}
+.who2 button[aria-pressed="true"]{box-shadow:0 0 0 2.5px var(--rose)}
+
+/* ---------- onboarding ---------- */
+.ob{min-height:100%;display:flex;flex-direction:column;padding:calc(var(--sat) + 24px) max(24px,var(--sar)) calc(var(--sab) + 28px) max(24px,var(--sal));max-width:480px;margin:0 auto;animation:pageIn .3s ease both}
+.ob .art{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:16px;padding:20px 0}
+.ob .logo{width:112px;height:112px;border-radius:26px;box-shadow:0 18px 40px -14px rgba(232,70,111,.6);overflow:hidden}
+.ob h1{font-family:var(--f-title);font-size:34px;margin:6px 0 0}
+.ob p.lead{color:var(--ink2);margin:0;font-size:16px;max-width:300px}
+.ob .feat{display:grid;gap:10px;margin:8px 0 0;text-align:left;width:100%;max-width:320px}
+.ob .feat div{display:flex;gap:12px;align-items:center;font-size:15px;color:var(--ink2)}
+.ob .feat .dic{width:36px;height:36px;border-radius:11px}
+.ob .feat .dic svg{width:19px;height:19px}
+.ob h2{font-family:var(--f-title);font-size:26px;margin:10px 0 6px}
+.ob .back{align-self:flex-start;color:var(--rose);font-size:16px;display:flex;align-items:center;gap:2px;padding:4px 0}
+.ob .back svg{width:20px;height:20px}
+
+.toast{position:fixed;left:50%;top:calc(var(--sat) + 12px);transform:translate(-50%,-20px);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:999px;font-size:14px;font-weight:600;opacity:0;transition:all .25s;pointer-events:none;z-index:60;white-space:nowrap;max-width:calc(100% - 32px);overflow:hidden;text-overflow:ellipsis}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.sync{display:flex;align-items:center;justify-content:center;gap:6px;font-size:12px;color:var(--muted);margin-top:22px}
+.sync i{width:7px;height:7px;border-radius:50%;background:var(--muted)}
+.sync.ok i{background:var(--mint)}
+.sync.off i{background:var(--gold)}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<nav class="tabbar" id="tabbar" hidden><div class="in" id="tabs"></div></nav>
+<div class="scrim" id="scrim" hidden></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" hidden><div class="grab"></div><div class="in" id="sheetIn"></div></div>
+<div class="toast" id="toast" role="status"></div>
+<input type="file" id="filePick" accept="image/*" hidden>
+
+<script>
+(function(){
+'use strict';
+/* =============== helpers =============== */
+const $ = s => document.querySelector(s);
+function h(tag, attrs, ...kids){
+  const e = document.createElement(tag);
+  if (attrs) for (const k in attrs){
+    const v = attrs[k];
+    if (v == null || v === false) continue;
+    if (k === 'class') e.className = v;
+    else if (k === 'text') e.textContent = v;
+    else if (k === 'html') e.innerHTML = v;
+    else if (k === 'style' && typeof v === 'object') Object.assign(e.style, v);
+    else if (k.startsWith('on')) e.addEventListener(k.slice(2), v);
+    else e.setAttribute(k, v === true ? '' : v);
+  }
+  kids.flat(9).forEach(c => { if (c != null && c !== false) e.append(c); });
+  return e;
+}
+const svg = (inner, extra) => '<svg viewBox="0 0 24 24" ' + (extra || 'fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"') + '>' + inner + '</svg>';
+const I = {
+  heartF: svg('<path d="M12 20.5s-7.6-4.7-9.7-9.4C.8 7.7 2.9 4 6.7 4c2.1 0 3.6 1.1 4.3 2.4.7-1.3 2.2-2.4 4.3-2.4 3.8 0 5.9 3.7 4.4 7.1-2.1 4.7-9.7 9.4-9.7 9.4z"/>', 'fill="currentColor"'),
+  heart: svg('<path d="M12 20.5s-7.6-4.7-9.7-9.4C.8 7.7 2.9 4 6.7 4c2.1 0 3.6 1.1 4.3 2.4.7-1.3 2.2-2.4 4.3-2.4 3.8 0 5.9 3.7 4.4 7.1-2.1 4.7-9.7 9.4-9.7 9.4z"/>'),
+  home: svg('<path d="M3.5 10.5 12 3.8l8.5 6.7V20a1 1 0 0 1-1 1h-4.8v-6.2H9.3V21H4.5a1 1 0 0 1-1-1z"/>'),
+  homeF: svg('<path d="M3.5 10.5 12 3.8l8.5 6.7V20a1 1 0 0 1-1 1h-4.8v-6.2H9.3V21H4.5a1 1 0 0 1-1-1z" fill="currentColor"/>'),
+  cal: svg('<rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/><path d="M12 17.6s-2.6-1.6-3.3-3.2c-.5-1.2.2-2.4 1.5-2.4.8 0 1.4.4 1.8 1 .4-.6 1-1 1.8-1 1.3 0 2 1.2 1.5 2.4-.7 1.6-3.3 3.2-3.3 3.2z" fill="currentColor" stroke="none"/>'),
+  calF: svg('<path d="M3.5 8a3 3 0 0 1 3-3h11a3 3 0 0 1 3 3v2h-17z" fill="currentColor"/><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M8 3v4M16 3v4"/><path d="M12 17.6s-2.6-1.6-3.3-3.2c-.5-1.2.2-2.4 1.5-2.4.8 0 1.4.4 1.8 1 .4-.6 1-1 1.8-1 1.3 0 2 1.2 1.5 2.4-.7 1.6-3.3 3.2-3.3 3.2z" fill="currentColor" stroke="none"/>'),
+  list: svg('<rect x="3.5" y="3.5" width="17" height="17" rx="4"/><path d="m7.5 9 1.6 1.6L12 7.8M7.5 15.2l1.6 1.6 2.9-2.8M14 9.4h3M14 15.6h3"/>'),
+  listF: svg('<rect x="3.5" y="3.5" width="17" height="17" rx="4" fill="currentColor"/><path d="m7.5 9 1.6 1.6L12 7.8M7.5 15.2l1.6 1.6 2.9-2.8M14 9.4h3M14 15.6h3" stroke="#fff"/>'),
+  chat: svg('<path d="M20.5 11.6c0 4.3-3.8 7.6-8.5 7.6-1.1 0-2.1-.2-3.1-.5L4 20l1.2-3.7c-1.1-1.3-1.7-2.9-1.7-4.7C3.5 7.3 7.3 4 12 4s8.5 3.3 8.5 7.6z"/><path d="M12 15s-2.4-1.5-3-2.9c-.5-1.1.2-2.2 1.4-2.2.7 0 1.3.4 1.6.9.3-.5.9-.9 1.6-.9 1.2 0 1.9 1.1 1.4 2.2-.6 1.4-3 2.9-3 2.9z" fill="currentColor" stroke="none"/>'),
+  chatF: svg('<path d="M20.5 11.6c0 4.3-3.8 7.6-8.5 7.6-1.1 0-2.1-.2-3.1-.5L4 20l1.2-3.7c-1.1-1.3-1.7-2.9-1.7-4.7C3.5 7.3 7.3 4 12 4s8.5 3.3 8.5 7.6z" fill="currentColor"/><path d="M12 15s-2.4-1.5-3-2.9c-.5-1.1.2-2.2 1.4-2.2.7 0 1.3.4 1.6.9.3-.5.9-.9 1.6-.9 1.2 0 1.9 1.1 1.4 2.2-.6 1.4-3 2.9-3 2.9z" fill="#fff" stroke="none"/>'),
+  gear: svg('<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>'),
+  plus: svg('<path d="M12 5v14M5 12h14"/>', 'fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"'),
+  check: svg('<path d="M5 12.5l4.5 4.5L19 7.5"/>', 'fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"'),
+  chev: svg('<path d="m9 6 6 6-6 6"/>'),
+  back: svg('<path d="m15 6-6 6 6 6"/>', 'fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"'),
+  camera: svg('<path d="M4 8.5A2.5 2.5 0 0 1 6.5 6h1.6l1.4-2h5l1.4 2h1.6A2.5 2.5 0 0 1 20 8.5v9a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 17.5z"/><circle cx="12" cy="12.8" r="3.6"/>'),
+  cake: svg('<path d="M4 20.5h16v-7a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2z"/><path d="M4 15.5c2 0 2-1.4 4-1.4s2 1.4 4 1.4 2-1.4 4-1.4 2 1.4 4 1.4"/><path d="M12 11.5V8.5"/><path d="M12 6c.8 0 1.3-.7 1.3-1.4S12 2.5 12 2.5s-1.3 1.4-1.3 2.1S11.2 6 12 6z" fill="currentColor"/>'),
+  star: svg('<path d="m12 3.2 2.7 5.5 6 .9-4.4 4.3 1 6-5.3-2.8-5.3 2.8 1-6L3.3 9.6l6-.9z"/>'),
+  flag: svg('<path d="M5 21V4M5 4.5h11.5l-2.2 4 2.2 4H5"/>'),
+  rings: svg('<circle cx="9" cy="13" r="5.5"/><circle cx="15" cy="13" r="5.5"/><path d="M8 5.5 9 3.5h2l1 2"/>'),
+  more: svg('<circle cx="5.5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="18.5" cy="12" r="1.6"/>', 'fill="currentColor"'),
+  share: svg('<path d="M12 3v12M8 7l4-4 4 4"/><path d="M6 11H5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-8a1 1 0 0 0-1-1h-1"/>'),
+  mail: svg('<rect x="3" y="5" width="18" height="14" rx="3"/><path d="m3.5 7 8.5 6 8.5-6"/>'),
+  mailF: svg('<rect x="3" y="5" width="18" height="14" rx="3" fill="currentColor"/><path d="m3.5 7 8.5 6 8.5-6" stroke="#fff"/>'),
+  spark: svg('<path d="M12 3.5c.6 3.8 2.7 5.9 6.5 6.5-3.8.6-5.9 2.7-6.5 6.5-.6-3.8-2.7-5.9-6.5-6.5 3.8-.6 5.9-2.7 6.5-6.5z"/><path d="M18.5 15.5c.3 1.6 1.1 2.4 2.5 2.7-1.4.3-2.2 1.1-2.5 2.6-.3-1.5-1.1-2.3-2.5-2.6 1.4-.3 2.2-1.1 2.5-2.7z"/>'),
+  sparkF: svg('<path d="M12 3.5c.6 3.8 2.7 5.9 6.5 6.5-3.8.6-5.9 2.7-6.5 6.5-.6-3.8-2.7-5.9-6.5-6.5 3.8-.6 5.9-2.7 6.5-6.5z" fill="currentColor"/><path d="M18.5 15.5c.3 1.6 1.1 2.4 2.5 2.7-1.4.3-2.2 1.1-2.5 2.6-.3-1.5-1.1-2.3-2.5-2.6 1.4-.3 2.2-1.1 2.5-2.7z" fill="currentColor"/>'),
+  book: svg('<path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 1 6.5 18H20v3H6.5A2.5 2.5 0 0 1 4 20.5z"/><path d="M12 13.2s-2.4-1.5-3-2.9c-.5-1.1.2-2.2 1.4-2.2.7 0 1.3.4 1.6.9.3-.5.9-.9 1.6-.9 1.2 0 1.9 1.1 1.4 2.2-.6 1.4-3 2.9-3 2.9z" fill="currentColor" stroke="none"/>'),
+  bookF: svg('<path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z" fill="currentColor"/><path d="M4 20.5A2.5 2.5 0 0 1 6.5 18H20v3H6.5A2.5 2.5 0 0 1 4 20.5z"/><path d="M12 13.2s-2.4-1.5-3-2.9c-.5-1.1.2-2.2 1.4-2.2.7 0 1.3.4 1.6.9.3-.5.9-.9 1.6-.9 1.2 0 1.9 1.1 1.4 2.2-.6 1.4-3 2.9-3 2.9z" fill="#fff" stroke="none"/>'),
+  ticket: svg('<path d="M3.5 8.5V6a1 1 0 0 1 1-1h15a1 1 0 0 1 1 1v2.5a2.5 2.5 0 0 0 0 5V16a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1v-2.5a2.5 2.5 0 0 0 0-5z"/><path d="M12 14.2s-2-1.2-2.5-2.4c-.4-.9.2-1.8 1.1-1.8.6 0 1.1.3 1.4.8.3-.5.8-.8 1.4-.8.9 0 1.5.9 1.1 1.8-.5 1.2-2.5 2.4-2.5 2.4z" fill="currentColor" stroke="none"/>'),
+  pin: svg('<path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.4"/>'),
+  link: svg('<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/>')
+};
+const icon = (k, cls) => h('span', {class: cls || null, html: I[k], style: {display:'contents'}});
+
+let toastT;
+function toast(msg){ const t = $('#toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 1900); }
+function lsGet(k, d){ try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch { return d; } }
+function lsSet(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
+function haptic(){ try { navigator.vibrate && navigator.vibrate(8); } catch {} }
+function uid(){ return Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
+function secret(){
+  const a = 'abcdefghjkmnpqrstuvwxyz23456789'; const b = new Uint8Array(24); crypto.getRandomValues(b);
+  return Array.from(b, x => a[x % a.length]).join('');
+}
+const fmtCode = c => (c || '').match(/.{1,4}/g)?.join('-') || '';
+const cleanCode = c => (c || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+
+/* =============== dates =============== */
+const DAY = 86400000;
+const parseD = s => { if (!s) return null; const [y, m, d] = s.split('-').map(Number); return (y && m && d) ? new Date(y, m - 1, d) : null; };
+const today = () => { const n = new Date(); return new Date(n.getFullYear(), n.getMonth(), n.getDate()); };
+const diff = (a, b) => Math.round((b - a) / DAY);
+const onYear = (y, m, d) => new Date(y, m, Math.min(d, new Date(y, m + 1, 0).getDate()));
+function nextYearly(dt){ const t = today(); let n = onYear(t.getFullYear(), dt.getMonth(), dt.getDate()); if (n < t) n = onYear(t.getFullYear() + 1, dt.getMonth(), dt.getDate()); return n; }
+const W = '日一二三四五六';
+const fmt = d => d.getFullYear() + '年' + (d.getMonth() + 1) + '月' + d.getDate() + '日';
+const fmtMD = d => (d.getMonth() + 1) + '月' + d.getDate() + '日';
+const fmtW = d => fmtMD(d) + ' 周' + W[d.getDay()];
+function ymd(start){ const t = today(); let y = t.getFullYear() - start.getFullYear(), m = t.getMonth() - start.getMonth(), d = t.getDate() - start.getDate();
+  if (d < 0){ m--; d += new Date(t.getFullYear(), t.getMonth(), 0).getDate(); } if (m < 0){ y--; m += 12; } return {y, m, d}; }
+function ago(ms){ const s = (Date.now() - ms) / 1000; if (s < 60) return '刚刚'; if (s < 3600) return Math.floor(s / 60) + '分钟前'; if (s < 86400) return Math.floor(s / 3600) + '小时前';
+  const d = new Date(ms); return s < 7 * 86400 ? Math.floor(s / 86400) + '天前' : fmtMD(d); }
+const MILESTONES = (() => { const a = []; for (let k = 100; k <= 20000; k += 100) a.push(k); a.push(52, 99, 520, 1314, 3344, 5200, 9999); return a.sort((x, y) => x - y); })();
+const nextMilestone = n => { const d = MILESTONES.find(x => x >= n); return d ? {day: d, left: d - n} : null; };
+
+/* =============== store: local cache + optional Supabase sync =============== */
+const CFG = window.APP_CONFIG || {};
+const REMOTE = !!(CFG.url && CFG.key);
+const Store = {
+  room: null, items: {}, since: null, queue: [], online: null, timer: null, listeners: [],
+  open(room){
+    this.room = room;
+    const c = lsGet('sd-cache-' + room, null) || {};
+    this.items = c.items || {}; this.since = c.since || null; this.queue = c.queue || [];
+  },
+  persist(){ lsSet('sd-cache-' + this.room, {items: this.items, since: this.since, queue: this.queue}); },
+  emit(){ this.listeners.forEach(f => f()); },
+  all(kind){ return Object.keys(this.items).filter(id => this.items[id].kind === kind).map(id => Object.assign({id}, this.items[id].data)); },
+  get(id){ const it = this.items[id]; return it ? it.data : null; },
+  put(id, kind, data){
+    this.items[id] = {kind, data};
+    if (REMOTE) this.queue.push({op: 'put', id, kind, data});
+    this.persist(); this.emit(); this.flush();
+  },
+  remove(id){
+    const kind = this.items[id] && this.items[id].kind;
+    delete this.items[id];
+    if (REMOTE) this.queue.push({op: 'put', id, kind: kind || 'x', data: {deleted: true}});
+    this.persist(); this.emit(); this.flush();
+  },
+  async rpc(fn, body){
+    const headers = {'apikey': CFG.key, 'Content-Type': 'application/json'};
+    if (!/^sb_/.test(CFG.key)) headers['Authorization'] = 'Bearer ' + CFG.key;
+    const r = await fetch(CFG.url.replace(/\/$/, '') + '/rest/v1/rpc/' + fn, {method: 'POST', headers, body: JSON.stringify(body)});
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    const t = await r.text(); return t ? JSON.parse(t) : null;
+  },
+  flushing: false,
+  async flush(){
+    if (!REMOTE || this.flushing || !this.queue.length) return;
+    this.flushing = true;
+    try {
+      while (this.queue.length){
+        const q = this.queue[0];
+        await this.rpc('room_put', {p_room: this.room, p_id: q.id, p_kind: q.kind, p_data: q.data});
+        this.queue.shift(); this.persist();
+      }
+      this.setOnline(true);
+    } catch (e) { this.setOnline(false); }
+    this.flushing = false;
+  },
+  async pull(){
+    if (!REMOTE) return true;
+    try {
+      await this.flush();
+      const since = this.since ? new Date(new Date(this.since).getTime() - 5000).toISOString() : null;
+      const rows = await this.rpc('room_items', {p_room: this.room, p_since: since}) || [];
+      let changed = false;
+      const pendingIds = new Set(this.queue.map(q => q.id));
+      rows.forEach(r => {
+        if (!this.since || r.updated_at > this.since) this.since = r.updated_at;
+        if (pendingIds.has(r.id)) return;
+        const cur = this.items[r.id];
+        if (r.data && r.data.deleted){ if (cur){ delete this.items[r.id]; changed = true; } return; }
+        if (!cur || JSON.stringify(cur.data) !== JSON.stringify(r.data)){ this.items[r.id] = {kind: r.kind, data: r.data}; changed = true; }
+      });
+      this.persist(); this.setOnline(true);
+      if (changed) this.emit();
+      return true;
+    } catch (e) { this.setOnline(false); return false; }
+  },
+  setOnline(v){ if (this.online !== v){ this.online = v; const s = document.getElementById('syncState'); if (s) renderSync(s); } },
+  start(){
+    if (!REMOTE) return;
+    this.pull();
+    clearInterval(this.timer);
+    this.timer = setInterval(() => { if (!document.hidden) this.pull(); }, 4000);
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) this.pull(); });
+    window.addEventListener('online', () => this.pull());
+  }
+};
+
+/* =============== app state =============== */
+const S = {
+  room: null, me: null, tab: 'home', todoFilter: 'open', noteColor: '1',
+};
+const info = () => Store.get('info') || {};
+const nameOf = k => { const i = info(); return (k === 'A' ? i.nameA : k === 'B' ? i.nameB : '') || 'TA'; };
+const other = k => k === 'A' ? 'B' : 'A';
+const photo = id => { const p = Store.get(id); return p && p.src || null; };
+
+function avatar(k, cls){
+  const src = photo('av' + k);
+  const a = h('div', {class: 'ava' + (cls ? ' ' + cls : '')});
+  if (src) a.style.backgroundImage = 'url("' + src + '")'; else a.textContent = nameOf(k).slice(0, 1);
+  return a;
+}
+
+/* =============== url / identity =============== */
+function readUrl(){
+  const p = new URLSearchParams(location.search);
+  const hp = new URLSearchParams(location.hash.slice(1));
+  return {room: cleanCode(p.get('r') || hp.get('r') || ''), me: (p.get('me') || hp.get('me') || '').toUpperCase()};
+}
+function writeUrl(){
+  // 让“添加到主屏幕”记住你们的空间和你是谁
+  try { const u = new URL(location.href); u.hash = ''; u.search = '?r=' + S.room + (S.me ? '&me=' + S.me : ''); history.replaceState(null, '', u.toString()); } catch {}
+}
+function inviteLink(){ const u = new URL(location.href); u.hash = ''; u.search = '?r=' + S.room; return u.toString(); }
+function enterRoom(room, me){
+  S.room = room; S.me = me; lsSet('sd-room', room); lsSet('sd-me', me);
+  Store.open(room); writeUrl(); Store.start(); go(S.tab || 'home');
+}
+
+/* =============== sheet =============== */
+function openSheet(title, body){
+  const sh = $('#sheet'), sc = $('#scrim'), inn = $('#sheetIn');
+  inn.textContent = '';
+  if (title) inn.append(h('h2', {text: title}));
+  inn.append(body);
+  sh.hidden = false; sc.hidden = false;
+  requestAnimationFrame(() => { sh.classList.add('show'); sc.classList.add('show'); });
+  sh.scrollTop = 0;
+}
+function closeSheet(){
+  const sh = $('#sheet'), sc = $('#scrim');
+  sh.classList.remove('show'); sc.classList.remove('show');
+  setTimeout(() => { sh.hidden = true; sc.hidden = true; }, 300);
+}
+$('#scrim').addEventListener('click', closeSheet);
+// 下拉关闭
+(() => { let y0 = null; const sh = $('#sheet');
+  sh.addEventListener('touchstart', e => { y0 = sh.scrollTop <= 0 ? e.touches[0].clientY : null; }, {passive: true});
+  sh.addEventListener('touchmove', e => { if (y0 == null) return; const dy = e.touches[0].clientY - y0; if (dy > 0) sh.style.transform = 'translateY(' + dy + 'px)'; }, {passive: true});
+  sh.addEventListener('touchend', e => { if (y0 == null) return; const dy = e.changedTouches[0].clientY - y0; sh.style.transform = ''; if (dy > 110) closeSheet(); y0 = null; });
+})();
+
+/* confirm inside a sheet (the page can't use system dialogs reliably) */
+function confirmSheet(title, okText, onOk){
+  openSheet(title, h('div', {class: 'actions'},
+    h('button', {class: 'btn block', style: {background: '#D6335E'}, text: okText, onclick: () => { onOk(); closeSheet(); }}),
+    h('button', {class: 'btn block ghost', text: '取消', onclick: closeSheet})));
+}
+
+/* =============== photos =============== */
+function pickImage(maxSide, quality){
+  return new Promise(resolve => {
+    const inp = $('#filePick'); inp.value = '';
+    inp.onchange = () => {
+      const f = inp.files && inp.files[0]; if (!f) return resolve(null);
+      const img = new Image(); const url = URL.createObjectURL(f);
+      img.onload = () => {
+        const s = Math.min(1, maxSide / Math.max(img.width, img.height));
+        const c = document.createElement('canvas'); c.width = Math.round(img.width * s); c.height = Math.round(img.height * s);
+        c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+        URL.revokeObjectURL(url); resolve(c.toDataURL('image/jpeg', quality));
+      };
+      img.onerror = () => { URL.revokeObjectURL(url); toast('这张图片打不开，换一张试试'); resolve(null); };
+      img.src = url;
+    };
+    inp.click();
+  });
+}
+async function setCover(){ const src = await pickImage(1280, .8); if (src){ Store.put('cover', 'photo', {src}); toast('合照换好啦'); } }
+async function setAvatar(k){ const src = await pickImage(320, .85); if (src){ Store.put('av' + k, 'photo', {src}); toast('头像换好啦'); } }
+
+/* =============== tabs =============== */
+const TABS = [['home', '首页', 'home', 'homeF'], ['letters', '信', 'mail', 'mailF'], ['dates', '纪念日', 'cal', 'calF'], ['together', '一起', 'spark', 'sparkF'], ['us', '我们', 'book', 'bookF']];
+// 小红点：上次看过之后的新动静
+const seenAt = k => lsGet('sd-seen-' + k + '-' + S.room, 0);
+const markSeen = k => lsSet('sd-seen-' + k + '-' + S.room, Date.now());
+function newLetters(){ const s = seenAt('letters'); return Store.all('letter').filter(l => (l.to === S.me && (l.at || 0) > s) || (l.from === S.me && ((l.openedAt || 0) > s || (l.hugAt || 0) > s))).length; }
+function newCoupons(){ const s = seenAt('coupons'); return Store.all('coupon').filter(c => (c.to === S.me && (c.at || 0) > s) || (c.from === S.me && (c.usedAt || 0) > s)).length; }
+function unreadNotes(){ const s = seenAt('notes'); return Store.all('note').filter(n => n.from && n.from !== S.me && (n.at || 0) > s).length; }
+function badgeFor(k){ return k === 'letters' ? newLetters() : k === 'together' ? newCoupons() + newScratch() + newDatePlans() : k === 'us' ? unreadNotes() : 0; }
+function renderTabs(){
+  const box = $('#tabs'); box.textContent = '';
+  TABS.forEach(([k, label, off, on]) => {
+    const b = h('button', {class: 'tab', 'aria-current': S.tab === k ? 'page' : null, onclick: () => { haptic(); go(k); }},
+      h('span', {class: 'off', html: I[off]}), h('span', {class: 'on', html: I[on]}), h('span', {text: label}));
+    const n = badgeFor(k); if (n) b.append(h('span', {class: 'badge', text: String(n)}));
+    box.append(b);
+  });
+}
+function go(tab, sub){
+  S.tab = tab; S.anim = true;
+  if (sub){ if (tab === 'together') S.togetherSeg = sub; if (tab === 'us') S.usSeg = sub; if (tab === 'letters') S.letterSeg = sub; }
+  render(); window.scrollTo(0, 0);
+}
+// 打开某个分区后，晚一点再清除小红点，让人先看到是哪条新的
+function seenLater(k){ clearTimeout(seenLater['t' + k]); seenLater['t' + k] = setTimeout(() => { markSeen(k); renderTabs(); }, 2500); }
+function pageHead(p, title, sub, opts, key){
+  p.append(h('div', {class: 'bigtitle'}, h('div', null, h('div', {class: 'sub', text: sub || ''}), h('h1', {text: title}))));
+  if (opts){
+    const row = h('div', {class: 'chips', role: 'group'});
+    opts.forEach(([k, label, dot]) => row.append(h('button', {'aria-pressed': String(S[key] === k), onclick: () => { S[key] = k; render(); }}, label, dot ? h('span', {class: 'dot'}) : null)));
+    p.append(row);
+  }
+}
+
+/* =============== render root =============== */
+function render(){
+  const root = $('#root');
+  if (!S.room){ $('#tabbar').hidden = true; return; }
+  const i = info();
+  if (!i.nameA){ $('#tabbar').hidden = true; root.textContent = ''; root.append(waitingPage()); return; }
+  if (S.me !== 'A' && S.me !== 'B'){ $('#tabbar').hidden = true; root.textContent = ''; root.append(pickWhoPage()); return; }
+  $('#tabbar').hidden = false;
+  renderTabs();
+  root.textContent = '';
+  if (S.diceOpen && !(S.tab === 'together' && S.togetherSeg === 'dice')) diceLock();  // 离开就锁上
+  const page = {home: homePage, letters: lettersPage, dates: datesPage, together: togetherPage, us: usPage}[S.tab] || homePage;
+  const el = page(); if (S.anim){ el.classList.add('enter'); S.anim = false; }
+  root.append(el);
+}
+// 正在打字时不刷新页面，等输入框失去焦点再刷新
+function typingInPage(){ const a = document.activeElement; return a && (a.tagName === 'INPUT' || a.tagName === 'TEXTAREA') && $('#root').contains(a); }
+Store.listeners.push(() => { if (typingInPage() || S.busy){ S.dirty = true; renderTabs(); } else render(); });
+$('#root').addEventListener('focusout', () => setTimeout(() => { if (S.dirty && !typingInPage()){ S.dirty = false; render(); } }, 0));
+
+function renderSync(el){
+  el.textContent = '';
+  if (!REMOTE){ el.className = 'sync off'; el.append(h('i'), h('span', {text: '只保存在这台手机上（同步还没开通）'})); return; }
+  el.className = 'sync ' + (Store.online === false ? 'off' : 'ok');
+  el.append(h('i'), h('span', {text: Store.online === false ? '暂时连不上网，内容会在联网后自动同步' : '两个人的内容已同步'}));
+}
+const syncLine = () => { const s = h('div', {id: 'syncState'}); renderSync(s); return s; };
+
+/* =============== home =============== */
+function greet(){ const hr = new Date().getHours(); return hr < 5 ? '夜深了' : hr < 11 ? '早上好' : hr < 14 ? '中午好' : hr < 18 ? '下午好' : '晚上好'; }
+function homePage(){
+  const i = info(); const start = parseD(i.start); const t = today();
+  const p = h('div', {class: 'page'});
+  p.append(h('div', {class: 'hello'},
+    h('div', null, h('div', {class: 't', text: greet() + '，' + nameOf(S.me)}), h('div', {class: 'n', text: fmtW(t)})),
+    h('button', {class: 'round', 'aria-label': '设置', html: I.gear, onclick: settingsSheet})));
+
+  // hero
+  const cover = photo('cover');
+  const hero = h('section', {class: 'hero' + (cover ? '' : ' short')});
+  if (cover) hero.append(h('img', {class: 'cover', src: cover, alt: '我们的合照'}));
+  else { hero.append(h('div', {class: 'blob', style: {width: '240px', height: '240px', right: '-70px', top: '-80px'}}), h('div', {class: 'blob', style: {width: '140px', height: '140px', left: '-40px', bottom: '60px', opacity: .6}})); }
+  if (cover) hero.append(h('div', {class: 'shade'}));
+  const pair = h('div', {class: 'pair'}, avatar('A'), avatar('B'), h('span', {class: 'heart', html: I.heartF}));
+  hero.append(h('div', {class: 'top'}, pair,
+    h('button', {class: 'photo-btn', onclick: setCover}, h('span', {html: I.camera, style: {display: 'contents'}}), h('span', {text: cover ? '换合照' : '放一张合照'}))));
+  const bottom = h('div', {class: 'bottom'});
+  if (start){
+    const n = diff(start, t) + 1;
+    if (n >= 1){
+      bottom.append(h('div', {class: 'lbl', text: '我们在一起'}));
+      bottom.append(h('div', {class: 'days tnum'}, String(n), h('small', {text: '天'})));
+      bottom.append(h('div', {class: 'since', text: '从 ' + fmt(start) + ' 开始'}));
+      const a = ymd(start); const parts = []; if (a.y) parts.push(a.y + '年'); if (a.m) parts.push(a.m + '个月'); parts.push(a.d + '天');
+      const pills = h('div', {class: 'pills'}, h('span', {class: 'pill', text: '已经 ' + parts.join(' ')}));
+      const ms = nextMilestone(n); if (ms) pills.append(h('span', {class: 'pill', text: ms.left === 0 ? '今天是第 ' + ms.day + ' 天' : '离第 ' + ms.day + ' 天还有 ' + ms.left + ' 天'}));
+      bottom.append(pills);
+    } else {
+      bottom.append(h('div', {class: 'lbl', text: '离在一起那天还有'}), h('div', {class: 'days tnum'}, String(1 - n), h('small', {text: '天'})));
+    }
+  }
+  hero.append(bottom);
+  p.append(h('div', {class: 'stack'}, hero));
+
+  const st = h('div', {class: 'stack', style: {marginTop: '14px'}});
+  // install hint
+  st.append(installCard());
+  st.append(letterHomeCard());
+  // next date
+  const nd = allDates().find(d => !d.past);
+  if (nd){
+    const frac = Math.max(0.04, 1 - Math.min(nd.left, 365) / 365);
+    const r = 27, c = 2 * Math.PI * r;
+    const ring = h('div', {class: 'ring', html: '<svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="' + r + '" fill="none" stroke="var(--rose-soft)" stroke-width="6"/><circle cx="32" cy="32" r="' + r + '" fill="none" stroke="var(--rose)" stroke-width="6" stroke-linecap="round" stroke-dasharray="' + (c * frac).toFixed(1) + ' ' + c.toFixed(1) + '"/></svg>'});
+    ring.append(h('div', {class: 'v tnum', text: nd.left === 0 ? '今' : String(nd.left)}));
+    st.append(h('button', {class: 'card next', style: {textAlign: 'left', width: '100%'}, onclick: () => go('dates')}, ring,
+      h('div', {class: 'txt'}, h('div', {class: 'k', text: nd.left === 0 ? '就是今天' : '下一个日子 · 还有 ' + nd.left + ' 天'}), h('div', {class: 't', text: nd.title}), h('div', {class: 'd', text: fmtW(nd.when)})),
+      h('span', {class: 'chev', html: I.chev, style: {display: 'contents'}})));
+  }
+  // moods
+  st.append(h('div', {class: 'label', text: '今天的心情'}));
+  st.append(h('div', {class: 'duo'}, moodCard(S.me), moodCard(other(S.me))));
+  // todo progress + latest note
+  const todos = Store.all('todo'); const done = todos.filter(x => x.done).length;
+  const myCoupons = Store.all('coupon').filter(c => c.to === S.me && !c.usedAt);
+  if (myCoupons.length) st.append(h('button', {class: 'card mini', onclick: () => go('together', 'coupons')},
+    h('div', {class: 'head'}, h('span', {text: '我的爱的小券'}), h('span', {text: myCoupons.length + ' 张可以用'})),
+    h('div', {style: {fontFamily: 'var(--f-title)', fontWeight: 700, fontSize: '17px', textAlign: 'left'}, text: myCoupons.slice(0, 3).map(c => c.title).join(' · ')})));
+  const sc = Store.get(todayCardId());
+  if (!sc || !sc.scratchedAt) st.append(h('button', {class: 'card mini', onclick: () => go('together', 'scratch')},
+    h('div', {class: 'head'}, h('span', {text: '今天的刮刮乐'}), h('span', {text: '还没刮'})),
+    h('div', {style: {fontFamily: 'var(--f-title)', fontWeight: 700, fontSize: '17px', textAlign: 'left'}, text: '刮一张，看看今天 ' + nameOf(other(S.me)) + ' 要请你什么'})));
+  const tc = h('button', {class: 'card mini', onclick: () => go('together', 'wish')},
+    h('div', {class: 'head'}, h('span', {text: '一起的心愿'}), h('span', {class: 'tnum', text: todos.length ? done + ' / ' + todos.length : '还没开始'})),
+    h('div', {class: 'bar'}, h('i', {style: {width: (todos.length ? Math.round(done / todos.length * 100) : 0) + '%'}})),
+    h('div', {style: {fontSize: '15px', fontWeight: 600, textAlign: 'left'}, text: (todos.filter(x => !x.done).sort((a, b) => (b.at || 0) - (a.at || 0))[0] || {}).text ? '下一件：' + todos.filter(x => !x.done).sort((a, b) => (b.at || 0) - (a.at || 0))[0].text : (todos.length ? '全部做完了，真棒' : '加上想一起做的第一件事')}));
+  st.append(tc);
+  const notes = Store.all('note').sort((a, b) => (b.at || 0) - (a.at || 0));
+  const ln = notes.find(n => n.from !== S.me) || notes[0];
+  st.append(h('button', {class: 'card mini', onclick: () => go('us', 'notes')},
+    h('div', {class: 'head'}, h('span', {text: ln ? nameOf(ln.from) + ' 的留言' : '留言'}), h('span', {text: ln ? ago(ln.at) : ''})),
+    ln ? h('div', {class: 'quote', style: {textAlign: 'left'}, text: ln.text}) : h('div', {style: {color: 'var(--muted)', textAlign: 'left'}, text: '给 ' + nameOf(other(S.me)) + ' 写第一句悄悄话吧'})));
+  st.append(syncLine());
+  p.append(st);
+  return p;
+}
+const UA = navigator.userAgent;
+const IS_ANDROID = /android/i.test(UA);
+const IS_IOS = !IS_ANDROID && (/iphone|ipad|ipod/i.test(UA) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1));
+const IN_APP = /MicroMessenger|\bQQ\/|Weibo|DingTalk|AlipayClient|Lark|Feishu/i.test(UA);
+const IS_STANDALONE = () => window.navigator.standalone || matchMedia('(display-mode: standalone)').matches;
+// 安卓 Chrome / Edge 等支持一键安装
+window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); S.bip = e; if (S.room) render(); });
+window.addEventListener('appinstalled', () => { S.bip = null; lsSet('sd-hide-install', true); toast('装好啦，去桌面找粉色爱心图标'); if (S.room) render(); });
+function installCard(){
+  if (IN_APP || IS_STANDALONE() || lsGet('sd-hide-install', false) || !(IS_IOS || IS_ANDROID)) return null;
+  const hide = () => { lsSet('sd-hide-install', true); c.remove(); };
+  let body;
+  if (IS_IOS) body = h('p', null, '用 Safari 打开，点底部的分享按钮 ', h('span', {class: 'share', html: I.share, style: {display: 'inline-block'}}), '，再选「添加到主屏幕」。');
+  else if (S.bip) body = h('div', null, h('p', {text: '点一下就能装到手机桌面，以后从桌面图标打开。'}),
+    h('button', {class: 'btn sm', style: {marginTop: '8px'}, text: '安装到桌面', onclick: async () => { try { S.bip.prompt(); const r = await S.bip.userChoice; if (r && r.outcome === 'accepted') hide(); } catch {} S.bip = null; }}));
+  else body = h('p', {text: '点浏览器的菜单（右上角 ⋮ 或底部 ≡），选「添加到桌面」或「添加到主屏幕」。手机自带浏览器找不到这一项的话，换 Chrome 或 Edge 打开。'});
+  const c = h('div', {class: 'card install'},
+    h('img', {class: 'ic', src: 'icons/icon-192.png', alt: ''}),
+    h('div', null, h('b', {text: '放到桌面，像 App 一样打开'}), body),
+    h('button', {class: 'x', 'aria-label': '不再提示', text: '×', onclick: hide}));
+  return c;
+}
+// 在微信、QQ 里打开时没法放到桌面，提示换到浏览器
+function inAppBanner(){
+  if (!IN_APP) return;
+  const b = h('div', {class: 'inapp'},
+    h('b', {text: '请换到浏览器里打开'}),
+    h('span', {text: IS_IOS ? '点右上角 ··· ，选「在 Safari 中打开」，才能放到桌面、长期保存。' : '点右上角 ··· ，选「在浏览器打开」，才能放到桌面、长期保存。'}));
+  document.body.insertBefore(b, document.body.firstChild);
+}
+
+/* moods */
+const MOODS = [['😊', '开心'], ['🥰', '想你'], ['😌', '平静'], ['😴', '好累'], ['🥺', '委屈'], ['😤', '生气'], ['🤒', '不舒服'], ['🤩', '超兴奋']];
+function moodCard(k){
+  const m = Store.get('mood' + k);
+  const fresh = m && m.at && new Date(m.at).toDateString() === new Date().toDateString();
+  const mine = k === S.me;
+  const b = h(mine ? 'button' : 'div', {class: 'card mood' + (mine ? ' mine' : ''), onclick: mine ? () => moodSheet(fresh ? m : null) : null},
+    h('div', {class: 'row'}, avatar(k), h('span', {class: 'who', text: nameOf(k) + (mine ? '（我）' : '')})),
+    h('div', {class: 'face', text: fresh ? m.face : (mine ? '＋' : '…')}),
+    h('div', {class: 'say' + (fresh ? '' : ' dim'), text: fresh ? (m.label + (m.text ? '，' + m.text : '')) : (mine ? '说说今天怎么样' : '今天还没说')}));
+  return b;
+}
+function moodSheet(cur){
+  let pick = cur ? cur.face : null;
+  const grid = h('div', {class: 'moods'});
+  const draw = () => { grid.textContent = ''; MOODS.forEach(([f, l]) => grid.append(h('button', {'aria-pressed': String(pick === f), onclick: () => { pick = f; haptic(); draw(); }}, h('span', {text: f}), l))); };
+  draw();
+  const txt = h('input', {class: 'input', id: 'moodTxt', type: 'text', maxlength: '40', placeholder: '想说一句吗？比如：今天加班，想你'});
+  if (cur && cur.text) txt.value = cur.text;
+  openSheet('今天心情怎么样', h('div', null, grid, txt, h('div', {style: {height: '14px'}}),
+    h('button', {class: 'btn block', text: '告诉 ' + nameOf(other(S.me)), onclick: () => {
+      if (!pick){ toast('先选一个心情'); return; }
+      Store.put('mood' + S.me, 'mood', {face: pick, label: (MOODS.find(m => m[0] === pick) || [])[1], text: txt.value.trim(), at: Date.now()});
+      closeSheet(); toast('心情更新啦');
+    }})));
+}
+
+/* =============== dates =============== */
+function allDates(){
+  const i = info(); const t = today(); const out = [];
+  const start = parseD(i.start);
+  if (start){
+    const nx = nextYearly(start); const y = nx.getFullYear() - start.getFullYear();
+    if (y >= 1) out.push({title: '在一起 ' + y + ' 周年', when: nx, left: diff(t, nx), ic: 'rings', tone: 'rose', sub: fmt(nx)});
+    const ms = nextMilestone(diff(start, t) + 1);
+    if (ms){ const w = new Date(t.getFullYear(), t.getMonth(), t.getDate() + ms.left); out.push({title: '在一起第 ' + ms.day + ' 天', when: w, left: ms.left, ic: 'star', tone: 'gold', sub: fmt(w)}); }
+  }
+  [['A', i.birthA], ['B', i.birthB]].forEach(([k, b]) => { const d = parseD(b); if (!d) return; const nx = nextYearly(d);
+    out.push({title: nameOf(k) + ' 的生日', when: nx, left: diff(t, nx), ic: 'cake', tone: 'mint', sub: fmtMD(d) + ' · ' + (nx.getFullYear() - d.getFullYear()) + ' 岁'}); });
+  Store.all('date').forEach(d => { const dt = parseD(d.date); if (!dt) return;
+    if (d.repeat){ const nx = nextYearly(dt); const y = nx.getFullYear() - dt.getFullYear(); out.push({id: d.id, title: d.title, when: nx, left: diff(t, nx), ic: 'flag', tone: 'rose', sub: fmtMD(dt) + (y > 0 ? ' · 第 ' + y + ' 年' : '') + ' · 每年'}); }
+    else { const l = diff(t, dt); out.push({id: d.id, title: d.title, when: dt, left: l, ic: 'flag', tone: 'rose', sub: fmt(dt), past: l < 0}); } });
+  return out.sort((a, b) => (a.past - b.past) || (a.past ? b.left - a.left : a.left - b.left));
+}
+function datesPage(){
+  const p = h('div', {class: 'page'});
+  p.append(h('div', {class: 'bigtitle'}, h('div', null, h('div', {class: 'sub', text: '按还剩几天排'}), h('h1', {text: '纪念日'})),
+    h('button', {class: 'round rose', 'aria-label': '添加日子', html: I.plus, onclick: () => dateSheet()})));
+  const list = allDates();
+  const box = h('div', {class: 'dlist'});
+  if (!list.length) box.append(h('div', {class: 'card empty'}, h('span', {html: I.cal, style: {display: 'contents'}}), h('div', {text: '还没有日子，点右上角的 + 记下第一次约会吧'})));
+  list.forEach((d, idx) => {
+    const n = h('div', {class: 'n'});
+    if (d.left === 0) n.append(h('span', {class: 'today', text: '就是今天'}));
+    else if (d.past) n.append(h('b', {class: 'tnum', text: String(-d.left)}), h('small', {text: '天前'}));
+    else n.append(h('b', {class: 'tnum', text: String(d.left)}), h('small', {text: '天后'}));
+    const row = h(d.id ? 'button' : 'div', {class: 'card ditem' + (idx === 0 && !d.past ? ' first' : '') + (d.past ? ' past' : ''), style: {width: '100%', textAlign: 'left'}, onclick: d.id ? () => dateSheet(d.id) : null},
+      h('div', {class: 'dic ' + d.tone, html: I[d.ic]}), h('div', {class: 'txt'}, h('div', {class: 't', text: d.title}), h('div', {class: 's', text: d.sub})), n);
+    box.append(row);
+  });
+  p.append(box);
+  p.append(h('p', {class: 'hint', style: {textAlign: 'center', marginTop: '18px'}, text: '周年、生日和整百天会自动算好；生日在设置里填'}));
+  return p;
+}
+function dateSheet(id){
+  const cur = id ? Store.get(id) : null;
+  const title = h('input', {type: 'text', id: 'dT', maxlength: '24', placeholder: '比如：第一次旅行'});
+  const date = h('input', {type: 'date', id: 'dD'});
+  const rep = h('input', {type: 'checkbox', id: 'dR'});
+  if (cur){ title.value = cur.title; date.value = cur.date; rep.checked = !!cur.repeat; } else rep.checked = true;
+  const body = h('div', null,
+    h('div', {class: 'group'},
+      h('label', {class: 'field'}, h('span', {text: '名字'}), title),
+      h('label', {class: 'field'}, h('span', {text: '日期'}), date),
+      h('label', {class: 'field'}, h('span', {text: '每年都提醒'}), h('div', {style: {flex: 1}}), h('span', {class: 'toggle'}, rep, h('i')))),
+    h('div', {class: 'actions'},
+      h('button', {class: 'btn block', text: cur ? '保存' : '记下来', onclick: () => {
+        if (!title.value.trim() || !date.value){ toast('名字和日期都要填哦'); return; }
+        Store.put(id || 'd_' + uid(), 'date', {title: title.value.trim(), date: date.value, repeat: rep.checked, by: S.me, at: cur ? cur.at : Date.now()});
+        closeSheet(); toast(cur ? '改好了' : '记下了');
+      }}),
+      cur ? h('button', {class: 'btn block ghost danger', text: '删除这个日子', onclick: () => confirmSheet('删除「' + cur.title + '」？', '删除', () => { Store.remove(id); toast('删掉了'); })}) : null));
+  openSheet(cur ? '修改日子' : '记一个日子', body);
+}
+
+/* =============== todos =============== */
+const SUGG = ['一起看一次日出', '去海边走走', '拍一组合照', '一起做顿饭', '看一场演唱会', '养一盆植物', '一起去旅行', '去游乐园'];
+function addTodo(text){ text = (text || '').trim(); if (!text) return; Store.put('t_' + uid(), 'todo', {text, done: false, by: S.me, at: Date.now()}); haptic(); }
+function todoView(p){
+  const all = Store.all('todo'); const done = all.filter(x => x.done), open = all.filter(x => !x.done);
+  const inp = h('input', {type: 'text', id: 'todoIn', maxlength: '60', placeholder: '想和 ' + nameOf(other(S.me)) + ' 一起…', enterkeyhint: 'done'});
+  const add = () => { if (!inp.value.trim()) return; addTodo(inp.value); inp.value = ''; const el = document.getElementById('todoIn'); el && el.focus(); };
+  inp.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.isComposing){ e.preventDefault(); add(); } });
+  p.append(h('div', {class: 'card adder'}, inp, h('button', {class: 'round rose', style: {width: '34px', height: '34px', boxShadow: 'none'}, 'aria-label': '加上', html: I.plus, onclick: add})));
+  p.append(h('div', {class: 'seg', role: 'group'},
+    h('button', {'aria-pressed': String(S.todoFilter === 'open'), text: '还没做 ' + open.length, onclick: () => { S.todoFilter = 'open'; render(); }}),
+    h('button', {'aria-pressed': String(S.todoFilter === 'done'), text: '做完了 ' + done.length, onclick: () => { S.todoFilter = 'done'; render(); }})));
+  const list = S.todoFilter === 'done' ? done.sort((a, b) => (b.doneAt || 0) - (a.doneAt || 0)) : open.sort((a, b) => (b.at || 0) - (a.at || 0));
+  if (!list.length){
+    const e = h('div', {class: 'card empty'});
+    if (S.todoFilter === 'done') e.append(h('span', {html: I.heart, style: {display: 'contents'}}), h('div', {text: '还没有做完的事，一起加油'}));
+    else { e.append(h('div', {text: '清单是空的。点一个加上，或者自己写：'})); const s = h('div', {class: 'sugg'}); SUGG.forEach(x => s.append(h('button', {text: '+ ' + x, onclick: () => addTodo(x)}))); e.append(s); }
+    p.append(e); return p;
+  }
+  const ul = h('ul', {class: 'card tlist'});
+  list.forEach(t => {
+    const li = h('li', {class: 'titem' + (t.done ? ' done' : '')});
+    li.append(h('button', {class: 'check', 'aria-label': t.done ? '改成没做' : '标记为做完', html: I.check, onclick: () => {
+      haptic();
+      const nd = Object.assign({}, t); delete nd.id;
+      if (t.done){ nd.done = false; nd.doneAt = null; nd.doneBy = null; }
+      else { nd.done = true; nd.doneAt = Date.now(); nd.doneBy = S.me; toast('又一起完成一件'); }
+      li.classList.toggle('done'); setTimeout(() => Store.put(t.id, 'todo', nd), 220);
+    }}));
+    li.append(h('div', {class: 'txt'}, h('span', {text: t.text}), h('span', {class: 's', text: t.done ? nameOf(t.doneBy) + ' 打的勾 · ' + ago(t.doneAt || t.at) : nameOf(t.by) + ' 加的 · ' + ago(t.at)})));
+    li.append(h('button', {class: 'more', 'aria-label': '更多', html: I.more, onclick: () => confirmSheet('删除「' + t.text + '」？', '删除', () => { Store.remove(t.id); toast('删掉了'); })}));
+    ul.append(li);
+  });
+  p.append(ul);
+  return p;
+}
+
+/* =============== notes =============== */
+function notesView(p){
+  const notes = Store.all('note').sort((a, b) => (b.at || 0) - (a.at || 0));
+  const ta = h('textarea', {id: 'noteIn', maxlength: '300', placeholder: '写给 ' + nameOf(other(S.me)) + ' 的话…'});
+  const draft = lsGet('sd-draft', ''); if (draft) ta.value = draft;
+  ta.addEventListener('input', () => lsSet('sd-draft', ta.value));
+  const sw = h('div', {class: 'sw', role: 'group', 'aria-label': '便签颜色'});
+  const drawSw = () => { sw.textContent = ''; ['1', '2', '3', '4'].forEach(c => sw.append(h('button', {class: 'c' + c, 'aria-pressed': String(S.noteColor === c), 'aria-label': '颜色' + c, onclick: () => { S.noteColor = c; drawSw(); }}))); };
+  drawSw();
+  p.append(h('div', {class: 'card composer'}, ta, h('div', {class: 'row'}, sw, h('button', {class: 'btn', text: '贴上去', onclick: () => {
+    const text = ta.value.trim(); if (!text){ toast('先写点什么吧'); return; }
+    Store.put('n_' + uid(), 'note', {text, from: S.me, color: S.noteColor, at: Date.now(), likes: {}});
+    lsSet('sd-draft', ''); toast('贴好了'); haptic();
+  }}))));
+  if (!notes.length){ p.append(h('div', {class: 'card empty'}, h('span', {html: I.chat, style: {display: 'contents'}}), h('div', {text: '还没有留言，写下第一句悄悄话吧'}))); return p; }
+  const wall = h('div', {class: 'wall'});
+  notes.forEach((n, i) => {
+    const liked = !!(n.likes && n.likes[S.me]);
+    const cnt = n.likes ? Object.keys(n.likes).filter(k => n.likes[k]).length : 0;
+    const r = (((n.at || i) % 7) - 3) * .5;
+    wall.append(h('article', {class: 'note c' + (n.color || '1'), style: {'--r': r + 'deg'}},
+      h('div', {class: 'meta'}, h('span', {text: nameOf(n.from) + ' → ' + nameOf(other(n.from))}), h('span', {text: ago(n.at)})),
+      h('p', {text: n.text}),
+      h('div', {class: 'acts'},
+        h('button', {class: 'like' + (liked ? ' on' : ''), 'aria-pressed': String(liked), onclick: () => {
+          const nd = Object.assign({}, n); delete nd.id; nd.likes = Object.assign({}, n.likes || {}); nd.likes[S.me] = !liked; haptic(); Store.put(n.id, 'note', nd);
+        }}, h('span', {html: liked ? I.heartF : I.heart, style: {display: 'contents'}}), h('span', {text: cnt ? String(cnt) : ''})),
+        h('button', {class: 'more', 'aria-label': '删除', html: I.more, onclick: () => confirmSheet('删除这张便签？', '删除', () => { Store.remove(n.id); toast('删掉了'); })}))));
+  });
+  p.append(wall);
+  return p;
+}
+
+/* =============== letters: 需要时打开的信 =============== */
+const LETTER_TYPES = [
+  ['加班累了打开', '先心疼 TA 的辛苦，别急着讲道理；说说你看见的 TA 有多努力；提一个周末一起放松的小计划。'],
+  ['被老板骂了打开', '先站在 TA 这边，不用分析谁对谁错；说说你眼里 TA 的好；告诉 TA 今晚想陪 TA 做点什么。'],
+  ['委屈的时候打开', '告诉 TA 委屈不用憋着，可以哭可以抱怨；说你永远站在 TA 这边；写一件让 TA 安心的小事。'],
+  ['想我的时候打开', '写一个你们在一起的小画面；告诉 TA 你也在想 TA；约好下次见面要一起做的事。'],
+  ['睡不着的时候打开', '语气放轻、放慢；写一段你们一起的安静回忆；让 TA 把烦心事先交给明天。'],
+  ['生病了打开', '提醒 TA 多喝水、好好休息；说你多想在 TA 身边照顾；写一个病好以后的小奖励。'],
+  ['想放弃的时候打开', '肯定 TA 一路走来的坚持；告诉 TA 不管结果怎样你都在；停下来歇一歇也没关系。'],
+  ['吵架以后打开', '先说你在乎的是 TA，不是输赢；为自己做得不好的地方道个歉；写一个和好的小约定。'],
+  ['开心的时候打开', '和 TA 一起开心；告诉 TA 你为 TA 骄傲；约一顿庆祝的饭。'],
+  ['想家的时候打开', '理解 TA 的想念；说说你会陪 TA 一起回家看看；告诉 TA 有你的地方也是家。']
+];
+const letterTip = label => (LETTER_TYPES.find(t => t[0] === label) || [])[1] || '写下 TA 遇到这种时候，你最想对 TA 说的话。真诚最重要，不用写得很长。';
+function lettersPage(){
+  const p = h('div', {class: 'page'});
+  const all = Store.all('letter');
+  const forMe = all.filter(l => l.to === S.me).sort((a, b) => (!!a.openedAt - !!b.openedAt) || (b.at || 0) - (a.at || 0));
+  const mine = all.filter(l => l.from === S.me).sort((a, b) => (b.openedAt || 0) - (a.openedAt || 0) || (b.at || 0) - (a.at || 0));
+  if (!S.letterSeg) S.letterSeg = forMe.length ? 'forMe' : 'mine';
+  const s = seenAt('letters');
+  const sealed = forMe.filter(l => !l.openedAt).length;
+  pageHead(p, '信', S.letterSeg === 'forMe' ? (sealed ? '还有 ' + sealed + ' 封没打开，需要的时候再拆' : '需要的时候，这里有人在') : '提前写好，等 TA 需要的时候读',
+    [['forMe', nameOf(other(S.me)) + ' 写给我的', forMe.some(l => (l.at || 0) > s)], ['mine', '我写给 ' + nameOf(other(S.me)), mine.some(l => (l.openedAt || 0) > s || (l.hugAt || 0) > s)]], 'letterSeg');
+  seenLater('letters');
+  if (S.letterSeg === 'forMe'){
+    if (!forMe.length){
+      p.append(h('div', {class: 'card empty'}, h('span', {html: I.mail, style: {display: 'contents'}}),
+        h('div', {text: nameOf(other(S.me)) + ' 还没给你写信。可以去「我写给 ' + nameOf(other(S.me)) + '」先给 TA 写一封，再提醒 TA 也给你写。'})));
+      return p;
+    }
+    const grid = h('div', {class: 'envs'});
+    forMe.forEach(l => {
+      const opened = !!l.openedAt;
+      grid.append(h('button', {class: 'env e' + (l.color || '2') + (opened ? ' opened' : ''), 'aria-label': (opened ? '已读的信：' : '没拆的信：') + l.label, onclick: () => opened ? readLetter(l) : openLetterAsk(l)},
+        h('div', {class: 'flap'}), h('div', {class: 'seal', html: opened ? '' : I.heartF}, opened ? '已读' : null), h('div', {class: 'lab', text: l.label})));
+    });
+    p.append(grid);
+    p.append(h('p', {class: 'hint', style: {textAlign: 'center', marginTop: '18px'}, text: '拆开以后，' + nameOf(other(S.me)) + ' 会知道你读了它'}));
+    return p;
+  }
+  // 我写的
+  p.append(h('button', {class: 'btn block', style: {marginBottom: '16px'}, onclick: () => writeLetter()}, '写一封新的信'));
+  if (!mine.length){
+    const e = h('div', {class: 'card empty'}, h('div', {text: '还没写过。挑一个 TA 最可能用到的场景，先写第一封：'}));
+    const g = h('div', {class: 'sugg'});
+    LETTER_TYPES.slice(0, 5).forEach(t => g.append(h('button', {text: t[0], onclick: () => writeLetter(null, t[0])})));
+    e.append(g); p.append(e); return p;
+  }
+  const ul = h('ul', {class: 'card tlist'});
+  mine.forEach(l => {
+    const st = l.openedAt ? h('span', {class: 'status open', text: ago(l.openedAt) + '读了'}) : h('span', {class: 'status wait', text: '还没拆'});
+    const sub = l.hugAt ? nameOf(l.to) + ' 回了你一个抱抱 · ' + ago(l.hugAt) : l.openedAt ? nameOf(l.to) + ' 在 ' + fmtW(new Date(l.openedAt)) + ' 打开了' : '写于 ' + fmtMD(new Date(l.at));
+    ul.append(h('li', {class: 'titem', style: {cursor: 'pointer'}, onclick: () => l.openedAt ? readLetter(l, true) : writeLetter(l)},
+      h('div', {class: 'txt'}, h('span', {style: {fontWeight: 700}, text: l.label}), h('span', {class: 's', text: sub})), st));
+  });
+  p.append(ul);
+  p.append(h('p', {class: 'hint', style: {textAlign: 'center', marginTop: '18px'}, text: '还没被拆开的信，点进去可以修改'}));
+  return p;
+}
+function letterHomeCard(){
+  const all = Store.all('letter');
+  const ack = lsGet('sd-ack-' + S.room, 0);
+  const recent = all.filter(l => l.from === S.me && l.openedAt && l.openedAt > ack && Date.now() - l.openedAt < 7 * DAY).sort((a, b) => b.openedAt - a.openedAt)[0];
+  const o = nameOf(other(S.me));
+  if (recent){
+    const c = h('div', {class: 'card lcard hot', role: 'button', tabindex: '0', onclick: () => go('letters', 'mine')},
+      h('div', {class: 'mini-env'}),
+      h('div', {class: 'txt'}, h('div', {class: 't', text: o + ' 打开了「' + recent.label + '」'}), h('div', {class: 's', text: ago(recent.openedAt) + ' · TA 可能正需要你，有空记得问问 TA'})),
+      h('button', {class: 'ok', text: '知道了', onclick: e => { e.stopPropagation(); lsSet('sd-ack-' + S.room, Date.now()); render(); }}));
+    return c;
+  }
+  const sealed = all.filter(l => l.to === S.me && !l.openedAt).length;
+  if (sealed) return h('button', {class: 'card lcard', onclick: () => go('letters', 'forMe')}, h('div', {class: 'mini-env'}),
+    h('div', {class: 'txt'}, h('div', {class: 't', text: o + ' 给你留了 ' + sealed + ' 封信'}), h('div', {class: 's', text: '累了、委屈了、想 TA 了，就去拆对应的那封'})), h('span', {class: 'chev', html: I.chev, style: {display: 'contents'}}));
+  const mine = all.filter(l => l.from === S.me);
+  if (!mine.length) return h('button', {class: 'card lcard', onclick: () => { go('letters', 'mine'); writeLetter(); }}, h('div', {class: 'mini-env'}),
+    h('div', {class: 'txt'}, h('div', {class: 't', text: '提前给 ' + o + ' 写几封信'}), h('div', {class: 's', text: '你忙的时候，TA 加班累了、被骂了、想你了，也能读到你的话'})), h('span', {class: 'chev', html: I.chev, style: {display: 'contents'}}));
+  const wait = mine.filter(l => !l.openedAt).length;
+  return h('button', {class: 'card lcard', onclick: () => go('letters', 'mine')}, h('div', {class: 'mini-env'}),
+    h('div', {class: 'txt'}, h('div', {class: 't', text: '你给 ' + o + ' 写了 ' + mine.length + ' 封信'}), h('div', {class: 's', text: wait ? '还有 ' + wait + ' 封在等 TA 需要的时候打开' : '都被拆开了，再写几封吧'})), h('span', {class: 'chev', html: I.chev, style: {display: 'contents'}}));
+}
+function writeLetter(cur, presetLabel){
+  let label = cur ? cur.label : (presetLabel || LETTER_TYPES[0][0]);
+  let color = cur ? (cur.color || '2') : String(1 + Math.floor(Math.random() * 4));
+  const types = h('div', {class: 'typegrid'});
+  const custom = h('input', {class: 'input', id: 'lCustom', type: 'text', maxlength: '14', placeholder: '或者自己写一个：比如「考试前打开」', style: {marginBottom: '12px'}});
+  const tip = h('div', {class: 'tip'});
+  const drawTip = () => { tip.textContent = ''; tip.append(h('b', {text: '可以这样写：'}), letterTip(label)); };
+  const drawTypes = () => { types.textContent = ''; LETTER_TYPES.forEach(([t]) => types.append(h('button', {'aria-pressed': String(label === t && !custom.value.trim()), text: t, onclick: () => { label = t; custom.value = ''; drawTypes(); drawTip(); }}))); };
+  if (cur && !LETTER_TYPES.some(t => t[0] === cur.label)) custom.value = cur.label;
+  custom.addEventListener('input', () => { if (custom.value.trim()) label = custom.value.trim(); drawTypes(); drawTip(); });
+  drawTypes(); drawTip();
+  const ta = h('textarea', {class: 'bigta', id: 'lText', maxlength: '1500', placeholder: '亲爱的' + nameOf(other(S.me)) + '：'});
+  ta.value = cur ? cur.text : lsGet('sd-ldraft', '');
+  if (!cur) ta.addEventListener('input', () => lsSet('sd-ldraft', ta.value));
+  const sw = h('div', {class: 'sw'});
+  const drawSw = () => { sw.textContent = ''; ['1', '2', '3', '4'].forEach(c => sw.append(h('button', {class: 'c' + c, 'aria-pressed': String(color === c), 'aria-label': '信封颜色' + c, onclick: () => { color = c; drawSw(); }}))); };
+  drawSw();
+  openSheet(cur ? '修改这封信' : '写一封「需要时打开」的信', h('div', null,
+    h('div', {class: 'label', style: {margin: '0 4px 8px'}, text: '什么时候打开'}), types, custom, tip, ta,
+    h('div', {style: {display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px'}}, h('span', {class: 'hint', style: {margin: 0}, text: '信封颜色'}), sw),
+    h('div', {class: 'actions'},
+      h('button', {class: 'btn block', text: cur ? '保存' : '封好，交给 ' + nameOf(other(S.me)), onclick: () => {
+        const text = ta.value.trim(); const lab = (custom.value.trim() || label).slice(0, 14);
+        if (!text){ toast('信还是空的哦'); return; }
+        const data = cur ? Object.assign({}, cur, {label: lab, text, color}) : {from: S.me, to: other(S.me), label: lab, text, color, at: Date.now()};
+        delete data.id;
+        Store.put(cur ? cur.id : 'l_' + uid(), 'letter', data);
+        if (!cur) lsSet('sd-ldraft', '');
+        closeSheet(); toast(cur ? '改好了' : '信封好了，' + nameOf(other(S.me)) + ' 会在需要时打开'); haptic();
+      }}),
+      cur ? h('button', {class: 'btn block ghost danger', text: '删除这封信', onclick: () => confirmSheet('删除「' + cur.label + '」这封信？', '删除', () => { Store.remove(cur.id); toast('删掉了'); })}) : null)));
+}
+function openLetterAsk(l){
+  openSheet(null, h('div', {style: {textAlign: 'center'}},
+    h('div', {class: 'env e' + (l.color || '2'), style: {maxWidth: '240px', margin: '8px auto 18px'}}, h('div', {class: 'flap'}), h('div', {class: 'seal', html: I.heartF}), h('div', {class: 'lab', text: l.label})),
+    h('h2', {style: {margin: '0 0 6px'}, text: '现在要打开它吗？'}),
+    h('p', {class: 'hint', style: {margin: '0 0 18px'}, text: '这是 ' + nameOf(l.from) + ' 写给你、留到「' + l.label.replace(/打开$/, '') + '」的信。打开以后 TA 会知道。'}),
+    h('div', {class: 'actions'},
+      h('button', {class: 'btn block', text: '打开', onclick: () => {
+        const d = Object.assign({}, l); delete d.id; d.openedAt = Date.now(); Store.put(l.id, 'letter', d); haptic();
+        readLetter(Object.assign({}, l, {openedAt: d.openedAt}));
+      }}),
+      h('button', {class: 'btn block ghost', text: '再留一留', onclick: closeSheet}))));
+}
+function readLetter(l, asWriter){
+  const paper = h('div', {class: 'paper'},
+    h('div', {class: 'lab', text: l.label}),
+    h('div', {class: 'to', text: '给 ' + nameOf(l.to) + '：'}),
+    h('p', {text: l.text}),
+    h('div', {class: 'sign', text: '—— ' + nameOf(l.from)}),
+    h('div', {class: 'when', text: '写于 ' + fmt(new Date(l.at)) + (l.openedAt ? ' · 拆于 ' + fmtMD(new Date(l.openedAt)) : '')}));
+  const acts = h('div', {class: 'actions'});
+  if (!asWriter){
+    if (l.hugAt) acts.append(h('div', {class: 'hint', style: {textAlign: 'center'}, text: '你已经回了 ' + nameOf(l.from) + ' 一个抱抱'}));
+    else acts.append(h('button', {class: 'btn block', onclick: () => {
+      const d = Object.assign({}, l); delete d.id; d.hugAt = Date.now(); Store.put(l.id, 'letter', d); closeSheet(); toast('抱抱送到了'); haptic();
+    }}, '回 ' + nameOf(l.from) + ' 一个抱抱'));
+  } else {
+    acts.append(h('div', {class: 'hint', style: {textAlign: 'center'}, text: l.hugAt ? nameOf(l.to) + ' 读完回了你一个抱抱' : nameOf(l.to) + ' 读过了。TA 那会儿可能不太好，记得问问 TA'}));
+    acts.append(h('button', {class: 'btn block ghost danger', text: '删除这封信', onclick: () => confirmSheet('删除「' + l.label + '」这封信？', '删除', () => { Store.remove(l.id); toast('删掉了'); })}));
+  }
+  acts.append(h('button', {class: 'btn block ghost', text: '收好', onclick: closeSheet}));
+  openSheet(null, h('div', null, paper, acts));
+}
+
+/* =============== 心动骰子（只在本机玩，不上传） =============== */
+// 每一项: [内容, 档位]  档位 1 甜蜜 / 2 暧昧（只有亲亲抱抱，不露骨）
+const DICE_LEVELS = [['1', '甜蜜', '💗'], ['2', '暧昧', '🌙']];
+// 摇骰子：一句话 = 谁：怎样，在对方的「哪里」上「怎么做」
+const DICE_ACT = [
+  ['轻轻摸一摸', 1], ['捏一捏', 1], ['蹭一蹭', 1], ['画一个爱心', 1], ['吹一口气', 1], ['写一个字', 1],
+  ['亲一下', 2], ['啵一口', 2], ['轻轻亲', 2], ['慢慢亲三下', 2], ['亲完再抱住', 2], ['贴着脸蹭一蹭', 2]];
+const DICE_PART = [
+  ['额头', 1], ['脸颊', 1], ['鼻尖', 1], ['手心', 1], ['手背', 1], ['头发', 1], ['肩膀', 1], ['下巴', 1],
+  ['嘴唇', 2], ['耳朵', 2], ['眼睛', 2], ['额头', 2], ['脸颊', 2], ['手背', 2], ['鼻尖', 2]];
+const DICE_WAY = [
+  ['闭上眼睛', 1], ['看着对方的眼睛', 1], ['偷偷地', 1], ['笑着', 1], ['先说一句「喜欢你」', 1], ['慢慢地', 1],
+  ['抱着对方', 2], ['把对方搂进怀里', 2], ['闭上眼睛', 2], ['先看着对方的眼睛 5 秒', 2], ['坐在对方腿上', 2], ['先在对方耳边说「我想你」', 2]];
+// 摇出来不合理的搭配，重新摇：[怎么做, 哪里, 怎样]
+const DICE_BAD = [
+  [/画一个爱心|写一个字/, /嘴唇|耳朵|鼻尖|头发|眼睛/],
+  [/吹一口气/, /手心|手背|嘴唇|头发/],
+  [/蹭一蹭/, /手心|手背/],
+  [/捏一捏/, /嘴唇|眼睛|耳朵|头发/],
+  [/摸一摸/, /嘴唇|眼睛/],
+  [/亲一下|啵一口|轻轻亲/, /头发/],
+  [/贴着脸蹭/, /嘴唇|眼睛|耳朵|手背|鼻尖/]];
+function diceBad(v){ return DICE_BAD.some(r => r.every((re, i) => !re || re.test(v[i]))); }
+// 挑战卡：轮到谁，谁受着，另一个人来做。「你」= 抽到的人，TA = 另一个人
+const DICE_DARE = [
+  ['TA 摸摸你的头，说一句「乖」，你要笑着回答「嗯」', 1], ['TA 从背后抱住你 30 秒，你不许动', 1], ['你和 TA 十指相扣，对视 20 秒，谁先笑谁输', 1], ['TA 捏捏你的脸，说三个你可爱的地方', 1], ['你给 TA 一个大大的熊抱，抱满 30 秒', 1], ['TA 在你手心写一个字，你要猜出来，猜错再写一次', 1], ['你靠在 TA 肩膀上，听 TA 讲一件今天开心的事', 1], ['TA 给你喂一口吃的，你要说「好甜」', 1], ['你用撒娇的语气叫 TA 三声「宝贝」', 1], ['TA 帮你整理头发，你要一直看着 TA', 1], ['你和 TA 额头碰额头，安静待 10 秒', 1], ['TA 牵着你的手转一圈，像跳舞一样', 1], ['你学一个小动物逗 TA 笑，TA 不笑就再学一个', 1], ['TA 给你比一个爱心，你要比一个更大的回去', 1], ['你夸 TA 一句，要具体，不许说「你很好」', 1],
+  ['TA 亲一下你的额头，你要闭着眼睛等', 2], ['TA 把你搂进怀里，贴着你耳朵说一句悄悄话', 2], ['你坐在 TA 腿上，抱着 TA 的脖子 1 分钟', 2], ['TA 亲你的脸颊三下，左边一下、右边一下、再随便一下', 2], ['你主动亲 TA 一下，亲在哪里你自己选', 2], ['TA 公主抱你走三步，你要搂紧 TA', 2], ['TA 把你轻轻抵在墙边，看着你的眼睛 10 秒，不许笑', 2], ['你和 TA 鼻尖碰鼻尖，慢慢说「我喜欢你」', 2], ['TA 从背后抱着你，下巴搁在你肩膀上，一起晃 30 秒', 2], ['你亲一下 TA 的手背，像骑士那样', 2], ['TA 搂着你的腰，你们慢慢跳一小段舞', 2], ['你给 TA 一个 5 秒的亲亲，不许中途笑场', 2], ['TA 枕在你腿上，你摸着 TA 的头发说三句喜欢 TA 的话', 2], ['你闭上眼睛，TA 亲你一下，你要猜亲在哪里', 2], ['TA 抱着你，你们一起数 30 下心跳', 2]];
+// 真心话：「你」= 回答的人
+const DICE_TRUTH = [
+  ['你第一次见我是什么感觉？', 1], ['我做过最让你心动的一件小事是什么？', 1], ['你最喜欢我身上哪个地方？', 1], ['你偷偷看过我睡觉的样子吗？', 1], ['你最想和我一起去哪里？', 1], ['我哪个小习惯你觉得特别可爱？', 1], ['你有没有偷偷吃过我的醋？', 1], ['你什么时候最想我？', 1], ['用三个词形容我', 1], ['你手机里我的照片，最喜欢哪一张？', 1], ['如果今天可以许一个关于我的愿望，你许什么？', 1], ['我哪句话让你记到现在？', 1],
+  ['你第一次想亲我是什么时候？', 2], ['你最喜欢我们哪一次抱抱？', 2], ['你觉得我们的初吻甜不甜？', 2], ['你最喜欢我怎么叫你？', 2], ['你会在什么时候突然很想抱我？', 2], ['你偷偷想过我们以后的样子吗？说一个画面', 2], ['你最喜欢我哪种眼神？', 2], ['如果现在可以让我做一件事，你会让我做什么？', 2], ['你觉得我什么时候最好看？', 2], ['你最想让我多做哪一件小事？', 2], ['我们哪一次约会你最难忘？', 2], ['你会用哪首歌形容我们？', 2]];
+// 「比大小」：两个人各摇一个，点数大的从三张里挑一张来罚输的。「你」= 输的人，{w} = 赢的人
+const DICE_CMD = [
+  ['给{w}捶背 1 分钟，还要问「力度可以吗」', 1], ['用最肉麻的语气夸{w} 30 秒', 1], ['给{w}唱两句歌，跑调也要唱完', 1], ['学一个{w}指定的小动物叫三声', 1], ['给{w}倒一杯水，双手递过去', 1], ['让{w}捏你的脸 10 下，你要一直笑', 1], ['对着{w}比十个不一样的爱心', 1], ['给{w}讲一个冷笑话，{w}不笑就再讲一个', 1],
+  ['主动抱住{w} 1 分钟，不许先松手', 2], ['亲一下{w}的额头，再说「晚安」', 2], ['让{w}亲你的脸颊一下，你不许躲', 2], ['坐在{w}腿上撒娇 30 秒', 2], ['在{w}耳边说三句悄悄话', 2], ['公主抱{w}，或者让{w}公主抱你（{w}选）', 2], ['牵着{w}的手，深情地说一段告白', 2], ['给{w}一个 5 秒的亲亲', 2]];
+function diceCmds(lv, n, loser){
+  let all = DICE_CMD.filter(x => x[1] === lv).map(x => x[0]);
+  const keep = all.filter(t => !diceHide().has(hkey(t, loser)));
+  if (keep.length >= n) all = keep;
+  for (let i = all.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [all[i], all[j]] = [all[j], all[i]]; }
+  return all.slice(0, n);
+}
+function duelView(lv){
+  const d = S.duel && S.duel.lv === lv ? S.duel : null;
+  const sc = S.duelScore || (S.duelScore = {A: 0, B: 0});
+  const box = h('div', {class: 'dbox lv' + lv});
+  const side = who => h('div', {class: 'die' + (d && d.win === who ? ' win' : '')},
+    h('div', {class: 'k', text: nameOf(who) + ' · 赢 ' + sc[who] + ' 局'}), h('div', {class: 'n', text: d ? String(d[who]) : '？'}));
+  const sA = side('A'), sB = side('B');
+  box.append(h('div', {class: 'duel2'}, sA, h('div', {class: 'vs', text: 'VS'}), sB));
+  const roll = () => {
+    if (S.busy) return; S.busy = true; haptic();
+    const a = 1 + Math.floor(Math.random() * 6), b = 1 + Math.floor(Math.random() * 6);
+    const win = a > b ? 'A' : b > a ? 'B' : null;
+    const t0 = Date.now(); [sA, sB].forEach(x => x.classList.add('rolling'));
+    const tick = setInterval(() => {
+      [sA, sB].forEach(x => { x.querySelector('.n').textContent = String(1 + Math.floor(Math.random() * 6)); });
+      if (Date.now() - t0 > 900){
+        clearInterval(tick); S.busy = false;
+        if (win) sc[win]++;
+        S.duel = {lv, A: a, B: b, win, opts: win ? diceCmds(lv, 3, other(win)) : [], pick: null, key: 'duel' + Date.now()};
+        if (navigator.vibrate) try { navigator.vibrate([10, 40, 18]); } catch {}
+        render();
+      }
+    }, 70);
+  };
+  if (!d){
+    box.append(h('div', {class: 'dsent', text: '两个人各摇一个，点数大的罚点数小的'}));
+    box.append(h('button', {class: 'btn block dgo', text: '一起摇', onclick: roll}));
+  } else if (!d.win){
+    box.append(h('div', {class: 'dsent', text: '平了！再摇一次'}));
+    box.append(h('button', {class: 'btn block dgo', text: '再摇一次', onclick: roll}));
+  } else {
+    const W = nameOf(d.win), L = nameOf(other(d.win)), fill = t => gtext(t, other(d.win)).replace(/\{w\}/g, W);
+    if (d.pick == null){
+      box.append(h('div', {class: 'dsent', text: W + ' 赢了！挑一张，用来罚 ' + L}));
+      d.opts.forEach((t, i) => box.append(h('button', {class: 'dopt', text: fill(t), onclick: () => { d.pick = i; haptic(); render(); }})));
+      box.append(h('button', {class: 'dskip', text: '三张都不想要，换三张', onclick: () => { d.opts = diceCmds(lv, 3, other(d.win)); haptic(); render(); }}));
+    } else {
+      box.append(h('div', {class: 'dcard show', style: {marginTop: '14px'}}, h('div', {class: 'tag', text: W + ' 罚 ' + L}), h('div', {class: 't', text: fill(d.opts[d.pick])})));
+      if (d.fail){
+        if (!punView(box, {key: d.key, loser: other(d.win), win: d.win}, lv, d.why || ' 没撑住')) box.append(h('button', {class: 'btn block dgo', text: '下一局', onclick: roll}));
+      } else {
+        const cdb = cdBtn(fill(d.opts[d.pick])); if (cdb) box.append(cdb);
+        box.append(hideBtn(() => { diceHideAdd(hkey(d.opts[d.pick], other(d.win)));
+          const nw = diceCmds(lv, 12, other(d.win)).find(x => !d.opts.includes(x));
+          if (nw) d.opts[d.pick] = nw; else d.opts.splice(d.pick, 1);
+          if (!d.opts.length) d.opts = diceCmds(lv, 3, other(d.win));
+          d.pick = null; render(); }));
+        box.append(h('div', {class: 'prow'},
+          h('button', {class: 'btn dgo', text: '✅ ' + L + ' 撑住了，下一局', onclick: roll}),
+          /不许笑/.test(fill(d.opts[d.pick])) && lv >= 4 && other(d.win) === diceMale()
+            ? h('button', {class: 'btn dfail', text: '❌ ' + L + ' 没撑住', onclick: () => { d.fail = true; d.why = ' 没撑住'; haptic(); render(); }})
+            : h('button', {class: 'btn dfail', text: '❌ ' + L + ' 没撑住', onclick: () => { d.fail = true; haptic(); render(); }})));
+      }
+    }
+  }
+  if (sc.A || sc.B) box.append(h('button', {class: 'dskip', text: '比分清零', onclick: () => { S.duelScore = {A: 0, B: 0}; S.duel = null; render(); }}));
+  return box;
+}
+
+
+// 我们自己写的内容：只存在这台手机上
+function diceMine(){ if (!S.diceMine){ try { S.diceMine = JSON.parse(localStorage.getItem('sd_dice_mine') || '[]'); } catch { S.diceMine = []; } } return S.diceMine; }
+function diceMineSave(){ try { localStorage.setItem('sd_dice_mine', JSON.stringify(S.diceMine)); } catch {} }
+// 「这张不要了」：藏起来的卡只存这台手机，以后不再抽到
+function diceHide(){ if (!S.diceHide){ try { S.diceHide = new Set(JSON.parse(localStorage.getItem('sd_dice_hide') || '[]')); } catch { S.diceHide = new Set(); } } return S.diceHide; }
+function diceHideAdd(t){ if (!t) return; diceHide().add(t); try { localStorage.setItem('sd_dice_hide', JSON.stringify([...S.diceHide])); } catch {} toast('藏起来了，以后不会再抽到'); }
+function diceHideClear(){ S.diceHide = new Set(); try { localStorage.removeItem('sd_dice_hide'); } catch {} }
+function hkey(t, actor){ return t && typeof t === 'object' ? t[actor === diceMale() ? 'm' : 'f'] : t; }
+function hideBtn(fn){ return h('button', {class: 'dskip', text: '🙈 这张不要了，以后别再抽到', onclick: () => { haptic(); fn(); }}); }
+function diceList(mode){
+  const base = mode === 'dare' ? DICE_DARE : DICE_TRUTH;
+  return base.concat(diceMine().filter(x => x.m === mode).map(x => [x.t, x.l, true]));
+}
+
+function diceLevel(){ if (!S.diceLv){ try { S.diceLv = localStorage.getItem('sd_dice_lv') || '2'; } catch { S.diceLv = '2'; } } return +S.diceLv; }
+function dicePick(list, actor){
+  const lv = diceLevel();
+  const pool = [];
+  list.forEach(([t, l, mine]) => { if (l === lv && !(actor && diceHide().has(hkey(t, actor)))) for (let i = 0; i < (mine ? 3 : 1); i++) pool.push(t); });
+  if (!pool.length) list.forEach(([t, l]) => { if (l === lv) pool.push(t); });
+  if (!S.diceLast) S.diceLast = new Map();
+  const key = list.mode || list;
+  let t;
+  for (let i = 0; i < 6; i++){ t = pool[Math.floor(Math.random() * pool.length)]; if (t !== S.diceLast.get(key)) break; }
+  return t;
+}
+function diceTurn(){ if (!S.diceTurn) S.diceTurn = S.me; return S.diceTurn; }
+// 谁是男生：只存这台手机；名字里有「大宝宝 / 小宝宝」就自动认出来
+function diceMale(){
+  if (S.diceMaleId === undefined){
+    let v = ''; try { v = localStorage.getItem('sd_dice_male') || ''; } catch {}
+    if (!v){ const i = info(); if (/大宝宝/.test(i.nameA || '') || /小宝宝/.test(i.nameB || '')) v = 'A'; else if (/大宝宝/.test(i.nameB || '') || /小宝宝/.test(i.nameA || '')) v = 'B'; }
+    S.diceMaleId = v;
+  }
+  return S.diceMaleId;
+}
+function setDiceMale(id){ S.diceMaleId = id; try { localStorage.setItem('sd_dice_male', id); } catch {} }
+const pron = id => id === diceMale() ? '他' : '她';
+// 把内容换成「做的人」视角：男女不同的取对应版本，「对方 / TA」换成 他 / 她
+function gtext(t, actor){
+  if (t && typeof t === 'object') t = t[actor === diceMale() ? 'm' : 'f'];
+  return String(t).replace(/对方| ?TA ?/g, pron(other(actor)));
+}
+
+/* ---------- 小锁：心动骰子要输密码，只存这台手机 ---------- */
+const PIN_KEY = 'sd_dice_pin';
+async function pinHash(pin){
+  const txt = 'our-days-dice:' + pin;
+  try { const b = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(txt)); return [...new Uint8Array(b)].map(x => x.toString(16).padStart(2, '0')).join(''); }
+  catch { let x = 5381; for (const c of txt) x = (x * 33 + c.charCodeAt(0)) >>> 0; return 'h' + x.toString(16); }
+}
+function pinSaved(){ try { return localStorage.getItem(PIN_KEY) || ''; } catch { return ''; } }
+function diceLock(){ S.diceOpen = false; S.pinIn = ''; S.pinFirst = null; S.pinChange = false; S.pinErr = false; }
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden && S.diceOpen){ diceLock(); if (S.tab === 'together' && S.togetherSeg === 'dice') render(); }
+});
+function lockView(p){
+  const saved = pinSaved();
+  const step = saved && !S.pinChange ? 'enter' : (S.pinFirst ? 'set2' : 'set1');
+  if (!S.pinIn) S.pinIn = '';
+  const title = step === 'enter' ? '输入密码' : step === 'set1' ? (S.pinChange ? '输入新密码' : '先设一个 4 位密码') : '再输一次，确认一下';
+  const sub = S.pinErr ? (step === 'enter' ? '密码不对，再试一次' : '两次不一样，重新设一次')
+    : step === 'enter' ? '离开这一页或者切到后台，会自动锁上' : '密码只存在这台手机上，每台手机各设各的';
+  const press = async k => {
+    if (S.pinBusy) return;
+    if (k === 'del'){ S.pinIn = S.pinIn.slice(0, -1); render(); return; }
+    if (S.pinIn.length >= 4) return;
+    S.pinIn += k; S.pinErr = false; haptic();
+    if (S.pinIn.length < 4){ render(); return; }
+    S.pinBusy = true; render();
+    const hs = await pinHash(S.pinIn);
+    await new Promise(r => setTimeout(r, 150));
+    S.pinBusy = false; S.pinIn = '';
+    if (step === 'set1') S.pinFirst = hs;
+    else if (step === 'set2'){
+      if (hs === S.pinFirst){ try { localStorage.setItem(PIN_KEY, hs); } catch {} S.pinFirst = null; S.pinChange = false; S.diceOpen = true; toast('密码设好了'); }
+      else { S.pinFirst = null; S.pinErr = true; }
+    } else if (hs === saved) S.diceOpen = true;
+    else { S.pinErr = true; if (navigator.vibrate) try { navigator.vibrate(150); } catch {} }
+    render();
+  };
+  const pad = h('div', {class: 'ppad'});
+  ['1', '2', '3', '4', '5', '6', '7', '8', '9', S.pinChange ? 'cancel' : '', '0', 'del'].forEach(k => {
+    if (!k) pad.append(h('span'));
+    else if (k === 'del') pad.append(h('button', {class: 'ghost', text: '删除', 'aria-label': '删除一位', onclick: () => press('del')}));
+    else if (k === 'cancel') pad.append(h('button', {class: 'ghost', text: '取消', onclick: () => { diceLock(); S.diceOpen = true; render(); }}));
+    else pad.append(h('button', {text: k, onclick: () => press(k)}));
+  });
+  const box = h('div', {class: 'card plock'},
+    h('div', {class: 'ic', text: '🔒'}),
+    h('div', {class: 'tt', text: title}),
+    h('div', {class: 'ss' + (S.pinErr ? ' err' : ''), text: sub}),
+    h('div', {class: 'pdots' + (S.pinErr ? ' err' : '')}, [0, 1, 2, 3].map(i => h('i', {class: i < S.pinIn.length ? 'on' : ''}))),
+    pad);
+  if (step === 'enter') box.append(h('button', {class: 'pforgot', text: '忘记密码？', onclick: () => confirmSheet('重设密码会同时清空这台手机上「我们自己写」的内容，确定吗？', '清空并重设', () => {
+    try { localStorage.removeItem(PIN_KEY); localStorage.removeItem('sd_dice_mine'); } catch {}
+    S.diceMine = null; diceLock(); render(); toast('已清空，重新设一个密码吧');
+  })}));
+  p.append(box);
+}
+
+/* ---------- 卡片里的倒计时：内容里写了几秒 / 几分钟，就给一个计时按钮 ---------- */
+function cdSecs(t){
+  const m = String(t).replace(/每 ?\d+\s*(秒|分钟)/g, '').match(/(\d+)\s*(秒|分钟)|([一两三四五])分钟|数到 ?(\d+)/);
+  if (!m) return 0;
+  if (m[1]) return +m[1] * (m[2] === '分钟' ? 60 : 1);
+  if (m[3]) return ('一两三四五'.indexOf(m[3]) + 1) * 60;
+  return +m[4];
+}
+function cdBtn(t){
+  const sec = cdSecs(t); if (!sec) return null;
+  const fmt = n => n >= 60 ? Math.floor(n / 60) + ':' + String(n % 60).padStart(2, '0') : n + ' 秒';
+  const label = () => {
+    const c = S.cd && S.cd.key === t ? S.cd : null;
+    if (!c) return '⏱ 开始计时 ' + fmt(sec);
+    const left = Math.max(0, Math.ceil((c.end - Date.now()) / 1000));
+    return left > 0 ? '⏱ 还剩 ' + fmt(left) + '（点一下停）' : '⏰ 时间到！点一下再来';
+  };
+  const b = h('button', {class: 'btn block dcd', 'data-cd': '1', onclick: () => {
+    const c = S.cd && S.cd.key === t ? S.cd : null;
+    if (c && c.end > Date.now()) S.cd = null; else { S.cd = {key: t, end: Date.now() + sec * 1000, done: false}; cdTick(); }
+    haptic(); b.textContent = label();
+  }});
+  b._label = label; b.textContent = label();
+  return b;
+}
+function cdTick(){
+  clearInterval(S.cdTimer);
+  S.cdTimer = setInterval(() => {
+    const c = S.cd;
+    document.querySelectorAll('[data-cd]').forEach(b => { if (b._label) b.textContent = b._label(); });
+    if (!c){ clearInterval(S.cdTimer); return; }
+    if (!c.done && Date.now() >= c.end){ c.done = true; clearInterval(S.cdTimer); if (navigator.vibrate) try { navigator.vibrate([200, 100, 200]); } catch {} }
+  }, 250);
+}
+
+// 惩罚卡：赢的人来做，输的人受着。「你」= 输的人，{w} = 赢的人
+const PUN_DARE = [
+  ['让{w}捏你的脸 30 秒，你不许躲', 1], ['让{w}挠你痒痒 20 秒，你不许笑出声', 1], ['给{w}做 1 分钟肩膀按摩', 1], ['让{w}在你脸上画一个小爱心（用手指）', 1], ['学{w}说话的样子，学到{w}满意', 1], ['让{w}弹你的额头一下（轻轻的）', 1],
+  ['让{w}抱着你，你要说 5 个喜欢{w}的理由', 2], ['让{w}亲你一下，亲在哪里{w}决定', 2], ['主动亲{w}三下，脸颊、额头、手背各一下', 2], ['让{w}从背后抱你 1 分钟，你要一直说「我错了」', 2], ['让{w}公主抱你，你要喊「我是你的小宝贝」', 2], ['坐在{w}腿上 1 分钟，乖乖不许动', 2]];
+const PUN_SEC = [30, 60, 90, 120];
+const CLIMAX = {m: [], f: []};
+function punTick(){
+  clearInterval(S.punTimer);
+  S.punTimer = setInterval(() => {
+    const P = S.pun;
+    if (!P || P.stage !== 'run'){ clearInterval(S.punTimer); return; }
+    const left = Math.max(0, Math.ceil((P.end - Date.now()) / 1000));
+    const el = document.getElementById('punLeft'); if (el) el.textContent = String(left);
+    if (left <= 0){
+      clearInterval(S.punTimer); P.stage = 'ok';
+      if (navigator.vibrate) try { navigator.vibrate([60, 60, 60]); } catch {}
+      if (S.tab === 'together' && S.togetherSeg === 'dice' && !S.busy) render();
+    }
+  }, 250);
+}
+// 返回 true 表示惩罚还没结束（先别让再摇）
+const PUP_NIP = [], GIRL_NIP = [], AFTERCARE = {m: [''], f: ['']};
+function punView(box, res, lv, why){
+  const loser = res.loser, L = nameOf(loser), Wn = nameOf(res.win);
+  const pup = lv >= 4 && loser === diceMale();
+  let P = S.pun && S.pun.key === res.key ? S.pun : null;
+  if (!P) P = S.pun = {key: res.key, stage: why ? 'dare' : 'ready'};
+  if (!S.punSec) S.punSec = [30, 60, 60, 90][lv - 1];
+  const wrap = h('div', {class: 'pun'});
+  const card = (tag, t) => h('div', {class: 'dcard show', style: {margin: '0 0 10px', minHeight: '120px'}}, h('div', {class: 'tag', text: tag}), h('div', {class: 't', text: t}));
+  const pick3 = list => { let c = list.filter(t => !diceHide().has(t)); if (c.length < 3) c = list.slice();
+    for (let i = c.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [c[i], c[j]] = [c[j], c[i]]; } return c.slice(0, 3); };
+  const listOf = () => P.kind === 'nip' ? (pup ? PUP_NIP : GIRL_NIP) : CLIMAX[pup ? 'm' : 'f'];
+  const nipName = pup ? '' : '惩罚';
+  const next = () => { P.stage = 'final'; if (lv >= 4){ P.kind = 'climax'; P.opts = pick3(listOf()); P.card = null; } else P.card = punCard(Math.min(lv + 1, 2)); haptic(); render(); };
+  const punCard = l => { const r = dicePick(Object.assign(PUN_DARE.filter(x => x[1] === l).map(x => [x[0], lv]), {mode: 'pun' + l}), loser); P.raw = r; return gtext(r, loser).replace(/\{w\}/g, Wn); };
+  if (P.stage === 'dare' && !P.card) P.card = punCard(lv);
+  if (P.stage === 'ready'){
+    wrap.append(h('div', {class: 'pl', text: L + ' 要撑住：不许躲、不许推开' + (pup ? '' : '') + '、不许笑场'}));
+    const chips = h('div', {class: 'psec'});
+    PUN_SEC.forEach(n => chips.append(h('button', {'aria-pressed': String(S.punSec === n), text: n + ' 秒', onclick: () => { S.punSec = n; render(); }})));
+    wrap.append(chips, h('button', {class: 'btn block dgo', text: '⏱ 开始惩罚', onclick: () => { P.stage = 'run'; P.sec = S.punSec; P.end = Date.now() + S.punSec * 1000; punTick(); haptic(); render(); }}));
+  } else if (P.stage === 'run'){
+    wrap.append(h('div', {class: 'pcount', id: 'punLeft', text: String(Math.max(0, Math.ceil((P.end - Date.now()) / 1000)))}),
+      h('div', {class: 'pl', text: Wn + ' 动手，' + L + ' 撑住'}),
+      h('button', {class: 'btn block dfail', text: pup ? '❌ ' + L + ' 没撑住' : L + ' 没撑住', onclick: () => {
+        clearInterval(S.punTimer); P.stage = 'dare'; P.why = pup ? ' 没撑住' : ' 没撑住';
+        P.card = punCard(lv); haptic(); render(); }}));
+  } else if (P.stage === 'ok'){
+    wrap.append(h('div', {class: 'pres', text: '🎉 ' + L + ' 撑住了 ' + P.sec + ' 秒，这一局过关'}));
+  } else if (P.stage === 'dare'){
+    wrap.append(h('div', {class: 'pl', text: L + (P.why || why || ' 没撑住') + '，罚一张：' + Wn + ' 来做，' + L + ' 受着'}), card(Wn + ' 罚 ' + L, P.card), cdBtn(P.card) || '',
+      lv >= 4 ? h('div', {class: 'pl', style: {fontSize: '13px', opacity: '.8'}, text: ''}) : '',
+      lv >= 4 ? h('button', {class: 'btn block dgo', text: '✅ 罚完了，' + Wn + ' 来打分', onclick: () => { P.stage = 'judge'; haptic(); render(); }})
+        : h('div', {class: 'prow'},
+          h('button', {class: 'btn dgo', text: '✅ ' + L + ' 撑住了', onclick: () => { P.stage = 'passed'; haptic(); render(); }}),
+          h('button', {class: 'btn dfail', text: '❌ 又没撑住', onclick: next})),
+      hideBtn(() => { diceHideAdd(hkey(P.raw, loser)); P.card = punCard(lv); render(); }));
+  } else if (P.stage === 'judge'){
+    wrap.append(h('div', {class: 'pl', text: pup ? '' : '🌸 ' + L + ' 刚才乖不乖？' + Wn + ' 满意吗？'}),
+      h('div', {class: 'prow'},
+        h('button', {class: 'btn dgo', text: pup ? '' : '😊 满意，放过' + pron(loser), onclick: () => { P.stage = 'good'; haptic(); render(); }}),
+        h('button', {class: 'btn dfail', text: '😤 不满意', onclick: () => { P.stage = 'choose'; haptic(); render(); }})));
+  } else if (P.stage === 'good'){
+    wrap.append(h('div', {class: 'pres', text: pup ? '' : '😊 ' + Wn + ' 满意，' + L + ' 很乖，这一局放过' + pron(loser)}));
+  } else if (P.stage === 'choose'){
+    wrap.append(h('div', {class: 'pl', text: (Wn + ' ') + '不满意！' + Wn + ' 选一个罚法：'}),
+      h('button', {class: 'btn block dfail', text: pup ? '' : '再罚一张', onclick: () => { P.kind = 'climax'; P.opts = pick3(listOf()); P.card = null; P.stage = 'final'; haptic(); render(); }}),
+      h('button', {class: 'btn block dfail', style: {marginTop: '8px'}, text: pup ? '' : '再罚一张', onclick: () => { P.kind = 'nip'; P.opts = pick3(listOf()); P.card = null; P.stage = 'final'; haptic(); render(); }}));
+  } else if (P.stage === 'passed'){
+    wrap.append(h('div', {class: 'pres', text: L + ' 撑过了，这一局放过' + pron(loser)}));
+  } else if (P.stage === 'final' && !P.card){
+    const what = P.kind === 'nip' ? nipName : (pup ? '' : '惩罚');
+    wrap.append(h('div', {class: 'pl', text: L + ' 接受' + what + '！' + Wn + ' 从三个里挑一个：'}));
+    P.opts.forEach(t => wrap.append(h('button', {class: 'dopt', text: t, onclick: () => { P.card = t; haptic(); render(); }})));
+    wrap.append(h('button', {class: 'dskip', text: '三个都不想要，换三个', onclick: () => { P.opts = pick3(listOf()); haptic(); render(); }}));
+  } else if (P.stage === 'final'){
+    const what = P.kind === 'nip' ? nipName : (pup ? '' : '惩罚');
+    wrap.append(h('div', {class: 'pl', text: lv >= 4 ? L + ' 接受' + what + '：' : L + ' 又没撑住，再罚一张：'}),
+      lv >= 4 ? h('div', {class: 'pl', style: {fontSize: '13px', opacity: '.8'}, text: ''}) : '',
+      card(lv >= 4 ? what : Wn + ' 罚 ' + L, P.card), lv >= 4 && P.kind !== 'nip' ? '' : (cdBtn(P.card) || ''),
+      h('button', {class: 'btn block dgo', text: lv >= 4 ? '罚完了，' + Wn + ' 来照顾 ' + L : '结束这一局', onclick: () => {
+        if (lv >= 4){ const cl = AFTERCARE[pup ? 'm' : 'f']; P.care = cl[Math.floor(Math.random() * cl.length)].replace(/\{w\}/g, Wn).replace(/\{l\}/g, L); P.stage = 'care'; }
+        else P.stage = 'over'; haptic(); render(); }}),
+      hideBtn(() => { if (lv >= 4){ diceHideAdd(P.card); P.card = null; P.opts = pick3(listOf()); } else { diceHideAdd(hkey(P.raw, loser)); P.card = punCard(Math.min(lv + 1, 2)); } render(); }));
+  } else if (P.stage === 'care'){
+    wrap.append(h('div', {class: 'pl', text: '💗 刚才辛苦了，换 ' + Wn + ' 好好照顾 ' + L + '：'}), card('💗 事后照顾', P.care),
+      h('button', {class: 'btn block dgo', text: '💗 照顾好了，这一局结束', onclick: () => { P.stage = 'over'; haptic(); render(); }}));
+  } else if (P.stage === 'over'){
+    wrap.append(h('div', {class: 'pres', text: '这一局结束，再来一局？'}));
+  }
+  box.append(wrap);
+  return ['run', 'dare', 'judge', 'choose', 'final', 'care'].includes(P.stage);
+}
+
+function diceView(p){
+  const lv = diceLevel();
+  if (!S.diceMode) S.diceMode = 'dice';
+  const male = diceMale();
+  p.append(h('div', {class: 'dlock'},
+    male ? h('button', {class: 'btn sm ghost', style: {marginRight: 'auto'}, text: '♂ 男生：' + nameOf(male), onclick: () => { setDiceMale(other(male)); S.diceRes = null; S.duel = null; toast('改成 ' + nameOf(other(male)) + ' 是男生'); render(); }}) : null,
+    diceHide().size ? h('button', {class: 'btn sm ghost', text: '恢复藏起的 ' + diceHide().size + ' 张', onclick: () => {
+      if (!confirm('把藏起来的 ' + diceHide().size + ' 张卡都放回去吗？')) return; diceHideClear(); toast('都放回去了'); render(); }}) : null,
+    h('button', {class: 'btn sm ghost', text: '改密码', onclick: () => { diceLock(); S.pinChange = true; render(); }}),
+    h('button', {class: 'btn sm ghost', text: '🔒 锁上', onclick: () => { diceLock(); haptic(); render(); }})));
+  // 档位
+  const lvRow = h('div', {class: 'dlv'});
+  DICE_LEVELS.forEach(([k, label, ic]) => lvRow.append(h('button', {'aria-pressed': String(S.diceLv === k), class: 'lv' + k, onclick: () => {
+    if (k === '4' && S.diceLv !== '4' && !S.diceLv4ok){
+      if (!confirm('确定切换吗？')) return;
+      S.diceLv4ok = true;
+    }
+    S.diceLv = k; S.diceRes = null; try { localStorage.setItem('sd_dice_lv', k); } catch {} haptic(); render(); }}, h('span', {text: ic}), label)));
+  p.append(lvRow);
+  // 玩法
+  const mode = h('div', {class: 'seg', style: {gridTemplateColumns: '1fr 1fr 1fr'}});
+  const modes = [['dice', '摇骰子'], ['duel', '比大小'], ['dare', '挑战卡'], ['truth', '真心话']];
+  mode.style.gridTemplateColumns = 'repeat(' + modes.length + ',1fr)';
+  modes.forEach(([k, label]) => mode.append(h('button', {'aria-pressed': String(S.diceMode === k), onclick: () => { S.diceMode = k; S.diceRes = null; render(); }}, label)));
+  p.append(mode);
+  const note = h('p', {class: 'dnote', text: (lv >= 3 ? '' : '') + (lv >= 3 ? '' : '') + '只在这台手机上玩，内容不会上传。两个人都开心才好玩，谁不想做都可以直接换一个 💗'});
+  if (!male){
+    p.append(h('div', {class: 'card plock'}, h('div', {class: 'tt', text: '先告诉我，谁是男生？'}),
+      h('div', {class: 'ss', text: '有些玩法男生女生不一样，选一次就记住了'}),
+      h('div', {class: 'wrow', style: {marginBottom: 0}}, ['A', 'B'].map(k => h('button', {class: 'btn', text: nameOf(k), onclick: () => { setDiceMale(k); render(); }})))));
+    return;
+  }
+  if (S.diceMode === 'duel'){ p.append(duelView(lv), note); return; }
+
+  const rollMode = S.diceMode === 'dice';
+  const who = diceTurn();
+  p.append(rollMode
+    ? h('div', {class: 'dturn'}, h('span', null, '两个人一起摇，', h('b', {text: '点数大的惩罚点数小的'})))
+    : h('div', {class: 'dturn'},
+      h('span', null, '这一轮：', h('b', {text: nameOf(who)}), S.diceMode === 'truth' ? ' 来回答，' + nameOf(other(who)) + ' 来问' : ' 受着，' + nameOf(other(who)) + ' 来做'),
+      h('button', {class: 'btn sm ghost', text: '换人', onclick: () => { S.diceTurn = other(who); render(); }})));
+
+  const box = h('div', {class: 'dbox lv' + lv});
+  const res = S.diceRes && S.diceRes.mode === S.diceMode ? S.diceRes : null;
+  let dice = [];
+  if (rollMode){
+    const names = ['怎么做', '哪里', '怎样'];
+    const vals = res ? res.v : ['？', '？', '？'];
+    dice = vals.map((v, i) => h('div', {class: 'die'}, h('div', {class: 'k', text: names[i]}), h('div', {class: 'v', text: v})));
+    box.append(h('div', {class: 'dice3'}, dice));
+    const pts = res ? res.pts : null, win = res ? res.win : null;
+    const ptA = h('b', {class: pts && win === 'A' ? 'w' : '', text: pts ? String(pts.A) : '？'}), ptB = h('b', {class: pts && win === 'B' ? 'w' : '', text: pts ? String(pts.B) : '？'});
+    box.append(h('div', {class: 'dpts'}, h('span', {text: nameOf('A')}), ptA, h('i', {text: ':'}), ptB, h('span', {text: nameOf('B')})));
+    box.ptA = ptA; box.ptB = ptB;
+    box.append(h('div', {class: 'dsent', text: !res ? '摇一下，看看这一轮做什么'
+      : nameOf(win) + ' 惩罚 ' + nameOf(res.loser) + '：' + res.v[2] + '，在' + pron(res.loser) + '的' + res.v[1] + '上' + res.v[0]}));
+    S.punBusy = res ? punView(box, res, lv) : false;
+  } else {
+    const card = h('div', {class: 'dcard' + (res ? ' show' : '')},
+      h('div', {class: 'tag', text: S.diceMode === 'dare' ? (res ? nameOf(other(res.actor)) + ' 对 ' + nameOf(res.actor) + ' 做' : '挑战') : (res ? nameOf(other(res.actor)) + ' 问 ' + nameOf(res.actor) : '真心话')}),
+      h('div', {class: 't', text: res ? res.v : (S.diceMode === 'dare' ? '抽一张，撑住才算过关' : '抽一个问题，念给对方听，不许说谎')}));
+    dice = [card];
+    box.append(card);
+    if (res && S.diceMode === 'dare' && !res.fail){ const cdb = cdBtn(res.v); if (cdb) box.append(cdb); }
+    S.punBusy = false;
+    if (res && res.fail) S.punBusy = punView(box, {key: res.key, loser: res.actor, win: other(res.actor)}, lv, S.diceMode === 'truth' ? ' 不想说' : (res.why || ' 没撑住'));
+    else if (res){ const cum = S.diceMode === 'dare' && lv >= 4 && res.actor === diceMale() && /不许笑/.test(res.v);
+      box.append(h('button', {class: 'btn block dfail', style: {marginTop: '10px'}, text: S.diceMode === 'truth' ? '🤐 ' + nameOf(res.actor) + ' 不想说，接受惩罚' : cum ? '❌ ' + nameOf(res.actor) + ' 没撑住，接受惩罚' : '❌ ' + nameOf(res.actor) + ' 没撑住，接受惩罚',
+      onclick: () => { res.fail = true; if (cum) res.why = ' 没撑住'; haptic(); render(); }})); }
+  }
+  const go = h('button', {class: 'btn block dgo', text: rollMode ? (res ? '再摇一次' : '摇一摇') : (res ? '再抽一张' : '抽一张')});
+  go.onclick = (e, skip) => {
+    if (S.busy) return;
+    S.busy = true; go.disabled = true; haptic();
+    const mode = S.diceMode;
+    const rolls = mode === 'dice';
+    const lists = mode === 'dice' ? [DICE_ACT, DICE_PART, DICE_WAY] : [Object.assign(diceList(mode), {mode})];
+    // 摇骰子：两个人同时摇点数，点数大的动手；挑战卡 / 真心话按轮换
+    if (!rolls && res && !skip) S.diceTurn = other(who);  // 下一轮换另一个人
+    let pts = null, actor = diceTurn();
+    let win = null, loser = null;
+    if (rolls){
+      let a, b; do { a = 1 + Math.floor(Math.random() * 6); b = 1 + Math.floor(Math.random() * 6); } while (a === b);
+      pts = {A: a, B: b}; win = a > b ? 'A' : 'B'; loser = other(win);
+      actor = win;  // 点数大的动手惩罚
+    }
+    const raw = lists.map(l => dicePick(l, rolls ? null : actor));
+    const conv = () => raw.map(t => gtext(t, actor));
+    let picked = conv();
+    // 摇出不合理的搭配就重摇
+    const isBad = mode === 'dice' ? diceBad : null;
+    for (let i = 0; isBad && i < 40 && isBad(picked); i++){ lists.forEach((l, j) => { raw[j] = dicePick(l, rolls ? null : actor); }); picked = conv(); }
+    lists.forEach((l, i) => S.diceLast.set(l.mode || l, raw[i]));
+    const final = rolls ? picked : picked[0];
+    const t0 = Date.now();
+    dice.forEach(d => d.classList.add('rolling'));
+    const tick = setInterval(() => {
+      const el = Date.now() - t0;
+      if (rolls){
+        dice.forEach((d, i) => { if (el < 650 + i * 280) d.querySelector('.v').textContent = gtext(dicePick(lists[i]), actor); else { d.classList.remove('rolling'); d.querySelector('.v').textContent = picked[i]; } });
+        box.ptA.textContent = String(1 + Math.floor(Math.random() * 6)); box.ptB.textContent = String(1 + Math.floor(Math.random() * 6));
+      } else dice[0].querySelector('.t').textContent = gtext(dicePick(lists[0]), actor);
+      if (el > 650 + 2 * 280 || !rolls && el > 700){
+        clearInterval(tick); S.busy = false;
+        S.diceRes = {mode, v: final, raw: rolls ? null : raw[0], pts, actor, win, loser, key: Date.now()};
+        if (navigator.vibrate) try { navigator.vibrate([10, 40, 18]); } catch {}
+        render();
+      }
+    }, 70);
+  };
+  if (!S.punBusy){
+    box.append(go);
+    if (res) box.append(h('button', {class: 'dskip', text: '这个不想要，换一个', onclick: () => go.onclick(null, true)}));
+    if (res && !rollMode && res.raw) box.append(hideBtn(() => { diceHideAdd(hkey(res.raw, res.actor)); go.onclick(null, true); }));
+  }
+  p.append(box);
+  p.append(diceMineView(lv));
+  p.append(note);
+}
+
+function diceMineView(lv){
+  const mine = diceMine();
+  if (!S.diceMineMode) S.diceMineMode = S.diceMode === 'truth' ? 'truth' : 'dare';
+  const d = h('details', {class: 'card dmine'});
+  if (S.diceMineOpen) d.open = true;
+  d.addEventListener('toggle', () => { S.diceMineOpen = d.open; });
+  d.append(h('summary', null, h('span', {text: '✏️ 我们自己写'}), h('small', {text: mine.length ? mine.length + ' 条' : '展开'})));
+  d.append(h('p', {class: 'hint', text: '写你们自己想玩的，会混进挑战卡或真心话里，而且比别的更容易抽到。写在哪一档，就只在哪一档出现。'}));
+  const seg = h('div', {class: 'seg', style: {gridTemplateColumns: '1fr 1fr'}});
+  [['dare', '挑战卡'], ['truth', '真心话']].forEach(([k, label]) => seg.append(h('button', {'aria-pressed': String(S.diceMineMode === k), onclick: () => { S.diceMineMode = k; render(); }}, label)));
+  d.append(seg);
+  const lvName = DICE_LEVELS.find(x => +x[0] === lv);
+  const inp = h('input', {class: 'input', id: 'diceMineIn', type: 'text', maxlength: '60', enterkeyhint: 'done',
+    placeholder: S.diceMineMode === 'dare' ? '比如：TA 用嘴喂你吃一颗草莓（你 = 抽到的人）' : '比如：你最想我穿什么给你看？（你 = 回答的人）'});
+  const add = () => {
+    const t = inp.value.trim(); if (!t) return;
+    mine.push({t, m: S.diceMineMode, l: lv}); diceMineSave(); haptic(); toast('加好了，放进「' + lvName[1] + '」档');
+    render(); setTimeout(() => { const el = document.getElementById('diceMineIn'); el && el.focus(); }, 30);
+  };
+  inp.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.isComposing){ e.preventDefault(); add(); } });
+  d.append(h('div', {class: 'row'}, inp, h('button', {class: 'round rose', style: {width: '34px', height: '34px', boxShadow: 'none', flex: 'none'}, 'aria-label': '加上', html: I.plus, onclick: add})));
+  if (mine.length){
+    const ul = h('ul');
+    mine.slice().reverse().forEach(x => {
+      const lvI = DICE_LEVELS.find(y => +y[0] === x.l) || DICE_LEVELS[0];
+      ul.append(h('li', null,
+        h('span', {class: 'k', text: lvI[2] + (x.m === 'dare' ? ' 挑战' : ' 真心话')}),
+        h('span', {class: 't', text: x.t}),
+        h('button', {'aria-label': '删掉', text: '×', onclick: () => { S.diceMine = mine.filter(y => y !== x); diceMineSave(); haptic(); render(); }})));
+    });
+    d.append(ul);
+  }
+  return d;
+}
+
+/* =============== together: 心愿 / 去过的地方 / 爱的小券 =============== */
+function togetherPage(){
+  const p = h('div', {class: 'page'});
+  if (!S.togetherSeg) S.togetherSeg = 'wish';
+  const s = seenAt('coupons');
+  const todos = Store.all('todo'), places = Store.all('place');
+  const sub = S.togetherSeg === 'wish' ? (todos.length ? '一起完成了 ' + todos.filter(x => x.done).length + ' 个心愿' : '想和 TA 一起做的事')
+    : S.togetherSeg === 'places' ? '一起走过的地方' : S.togetherSeg === 'scratch' ? '每天一张，看看今天手气' : S.togetherSeg === 'wheel' ? '不知道去哪？转一下' : S.togetherSeg === 'dice' ? (S.diceOpen ? '只属于我们俩的小游戏' : '上了锁的小秘密') : '送给对方的小特权';
+  pageHead(p, '一起', sub, [['wish', '心愿清单'], ['places', '去过的地方'], ['coupons', '爱的小券', Store.all('coupon').some(c => (c.to === S.me && (c.at || 0) > s) || (c.from === S.me && (c.usedAt || 0) > s))], ['scratch', '刮刮乐', newScratch() > 0 || !(Store.get(todayCardId()) || {}).scratchedAt], ['wheel', '约会转盘', newDatePlans() > 0], ['dice', '🔒 小秘密']], 'togetherSeg');
+  if (S.togetherSeg === 'wish') todoView(p);
+  else if (S.togetherSeg === 'places') placesView(p);
+  else if (S.togetherSeg === 'scratch'){ scratchView(p); seenLater('scratch'); }
+  else if (S.togetherSeg === 'wheel'){ wheelView(p); seenLater('wheel'); }
+  else if (S.togetherSeg === 'dice') (S.diceOpen ? diceView : lockView)(p);
+  else { couponsView(p); seenLater('coupons'); }
+  return p;
+}
+
+const COUPONS = [['抱抱券', '随时兑换一个大大的拥抱'], ['按摩券', '肩颈按摩 15 分钟'], ['免生气券', '这次就算了，不许再生气'], ['你说了算券', '今天去哪、吃什么都听你的'], ['早餐券', '第二天的早餐我来做 / 我来买'], ['奶茶券', '请你喝一杯，甜度你定'], ['陪逛券', '陪你逛街，不喊累'], ['原谅券', '原谅一次小错误']];
+function couponsView(p){
+  if (!S.couponSeg) S.couponSeg = 'got';
+  const all = Store.all('coupon');
+  const got = all.filter(c => c.to === S.me).sort((a, b) => (!!a.usedAt - !!b.usedAt) || (b.at || 0) - (a.at || 0));
+  const gave = all.filter(c => c.from === S.me).sort((a, b) => (b.usedAt || 0) - (a.usedAt || 0) || (b.at || 0) - (a.at || 0));
+  p.append(h('div', {class: 'seg', role: 'group'},
+    h('button', {'aria-pressed': String(S.couponSeg === 'got'), text: '我收到的 ' + got.filter(c => !c.usedAt).length, onclick: () => { S.couponSeg = 'got'; render(); }}),
+    h('button', {'aria-pressed': String(S.couponSeg === 'gave'), text: '我送出的 ' + gave.length, onclick: () => { S.couponSeg = 'gave'; render(); }})));
+  p.append(h('button', {class: 'btn block', style: {marginBottom: '16px'}, onclick: couponSheet}, '送 ' + nameOf(other(S.me)) + ' 一张小券'));
+  const list = S.couponSeg === 'got' ? got : gave;
+  if (!list.length){ p.append(h('div', {class: 'card empty'}, h('span', {html: I.ticket, style: {display: 'contents'}}), h('div', {text: S.couponSeg === 'got' ? nameOf(other(S.me)) + ' 还没送你小券，暗示一下？' : '送一张「抱抱券」或者「免生气券」试试'}))); return; }
+  const box = h('div', {class: 'tickets'});
+  list.forEach(c => {
+    const used = !!c.usedAt; const mineGot = c.to === S.me;
+    const row = h('div', {class: 'row'}, h('span', {class: 's', text: used ? (mineGot ? '已在 ' : nameOf(c.to) + ' 在 ') + fmtMD(new Date(c.usedAt)) + ' 用掉' : (mineGot ? nameOf(c.from) + ' 送的 · ' : '送给 ' + nameOf(c.to) + ' · ') + ago(c.at)}));
+    if (mineGot && !used) row.append(h('button', {class: 'btn sm', text: '使用', onclick: () => confirmSheet('现在使用「' + c.title + '」？用了以后 ' + nameOf(c.from) + ' 会看到，要兑现哦', '使用', () => {
+      const d = Object.assign({}, c); delete d.id; d.usedAt = Date.now(); Store.put(c.id, 'coupon', d); toast('已使用，等 ' + nameOf(c.from) + ' 兑现'); haptic(); })}));
+    if (!mineGot && !used) row.append(h('button', {class: 'more', 'aria-label': '收回', html: I.more, onclick: () => confirmSheet('收回这张「' + c.title + '」？', '收回', () => { Store.remove(c.id); toast('收回了'); })}));
+    box.append(h('div', {class: 'ticket' + (used ? ' used' : '')},
+      h('div', {class: 'l'}, h('span', {html: I.ticket, style: {display: 'contents'}}), used ? '已使用' : '爱的小券'),
+      h('div', {class: 'r'}, h('div', {class: 't', text: c.title}), c.note ? h('div', {class: 'n', text: c.note}) : null, row)));
+  });
+  p.append(box);
+}
+function couponSheet(){
+  let pick = COUPONS[0];
+  const title = h('input', {class: 'input', id: 'cpT', type: 'text', maxlength: '12', placeholder: '小券名字'});
+  const note = h('input', {class: 'input', id: 'cpN', type: 'text', maxlength: '40', placeholder: '说明（选填）'});
+  const fill = () => { title.value = pick[0]; note.value = pick[1]; };
+  const g = h('div', {class: 'typegrid'});
+  const draw = () => { g.textContent = ''; COUPONS.forEach(c => g.append(h('button', {'aria-pressed': String(pick === c), text: c[0], onclick: () => { pick = c; fill(); draw(); }}))); };
+  draw(); fill();
+  openSheet('送一张爱的小券', h('div', null, g, title, h('div', {style: {height: '10px'}}), note, h('div', {style: {height: '16px'}}),
+    h('button', {class: 'btn block', text: '送给 ' + nameOf(other(S.me)), onclick: () => {
+      if (!title.value.trim()){ toast('给小券起个名字'); return; }
+      Store.put('c_' + uid(), 'coupon', {from: S.me, to: other(S.me), title: title.value.trim(), note: note.value.trim(), at: Date.now()});
+      closeSheet(); S.couponSeg = 'gave'; toast('送出去啦'); haptic();
+    }})));
+}
+
+/* =============== 刮刮乐：每人每天一张，奖品由对方兑现 =============== */
+const SCRATCH_TIERS = [['一等奖', '当一天皇帝，对方全天听你的', 0.6], ['二等奖', '一顿大餐，对方买单', 4.4], ['三等奖', '一份小礼物，100 元以内', 15], ['四等奖', '全身按摩 20 分钟', 30], ['五等奖', '一杯奶茶，对方跑腿', 50]];
+const dayKey = (d = new Date()) => d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
+function prizeNames(){ const c = Store.get('scratchcfg'); return SCRATCH_TIERS.map((t, i) => (c && c.names && c.names[i]) || t[1]); }
+function drawTier(){ let r = Math.random() * 100; for (let i = 0; i < SCRATCH_TIERS.length; i++){ r -= SCRATCH_TIERS[i][2]; if (r < 0) return i; } return SCRATCH_TIERS.length - 1; }
+const todayCardId = () => 'sc_' + S.me + '_' + dayKey();
+function newScratch(){ const s = seenAt('scratch'); return Store.all('scratch').filter(c => c.who !== S.me && (((c.scratchedAt || 0) > s) || ((c.redeemedAt || 0) > s))).length; }
+function burst(big){
+  const box = h('div', {class: 'burst'}); const set = big ? ['🎉', '💖', '✨', '🎊', '💝'] : ['💗', '✨', '🌸'];
+  for (let i = 0; i < (big ? 46 : 22); i++){
+    const e = h('i', {text: set[i % set.length]});
+    e.style.left = Math.random() * 100 + 'vw'; e.style.animationDelay = Math.random() * .7 + 's'; e.style.setProperty('--rot', (Math.random() * 720 - 360) + 'deg');
+    box.append(e);
+  }
+  document.body.append(box); setTimeout(() => box.remove(), 3600);
+}
+function scratchCard(card){
+  const tier = card ? card.tier : null;
+  const box = h('div', {class: 'scard' + (tier === 0 ? ' t1' : '')});
+  const prize = h('div', {class: 'prize'});
+  const fillPrize = c => { prize.textContent = ''; prize.append(h('div', {class: 'tier', text: SCRATCH_TIERS[c.tier][0]}), h('div', {class: 'pz', text: c.prize}), h('div', {class: 'by', text: nameOf(other(c.who)) + ' 请客'})); box.classList.toggle('t1', c.tier === 0); };
+  if (card) fillPrize(card);
+  box.append(prize);
+  if (card && card.scratchedAt) return box;
+  const cv = h('canvas'); box.append(cv);
+  let ctx, w, hgt, drawn = card, cardId = card ? card.id : null, moves = 0, done = false, last = null;
+  const paint = () => {
+    const r = box.getBoundingClientRect(); if (!r.width) return;
+    const dpr = window.devicePixelRatio || 1; w = r.width; hgt = r.height;
+    cv.width = Math.round(w * dpr); cv.height = Math.round(hgt * dpr);
+    ctx = cv.getContext('2d'); ctx.scale(dpr, dpr);
+    const g = ctx.createLinearGradient(0, 0, w, hgt); g.addColorStop(0, '#C9CDD3'); g.addColorStop(.5, '#EEF0F3'); g.addColorStop(1, '#B9BEC6');
+    ctx.fillStyle = g; ctx.fillRect(0, 0, w, hgt);
+    ctx.fillStyle = 'rgba(255,255,255,.35)';
+    for (let i = 0; i < 90; i++){ ctx.beginPath(); ctx.arc(Math.random() * w, Math.random() * hgt, Math.random() * 1.6 + .4, 0, 7); ctx.fill(); }
+    ctx.fillStyle = '#7A808A'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.font = '700 24px ' + getComputedStyle(document.body).getPropertyValue('--f-title');
+    ctx.fillText('刮开有惊喜', w / 2, hgt / 2 - 10);
+    ctx.font = '500 13px ' + getComputedStyle(document.body).getPropertyValue('--f-ui');
+    ctx.fillText('用手指刮这里', w / 2, hgt / 2 + 20);
+    ctx.globalCompositeOperation = 'destination-out'; ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.lineWidth = 34;
+  };
+  requestAnimationFrame(paint);
+  const pt = e => { const r = cv.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; };
+  const cleared = () => {
+    const d = ctx.getImageData(0, 0, cv.width, cv.height).data; let n = 0, k = 0;
+    for (let i = 3; i < d.length; i += 4 * 37){ k++; if (d[i] < 40) n++; }
+    return n / k;
+  };
+  const finish = () => {
+    if (done) return; done = true; cv.style.opacity = '0'; haptic();
+    burst(drawn.tier <= 1);
+    toast(drawn.tier <= 1 ? '哇！' + SCRATCH_TIERS[drawn.tier][0] + '！' : '中了' + SCRATCH_TIERS[drawn.tier][0]);
+    setTimeout(() => {
+      const d = Object.assign({}, drawn); delete d.id; d.scratchedAt = Date.now();
+      S.busy = false; Store.put(cardId, 'scratch', d);
+      if (S.dirty){ S.dirty = false; render(); }
+    }, 650);
+  };
+  cv.addEventListener('pointerdown', e => {
+    if (done || !ctx) return;
+    S.busy = true;
+    if (!drawn){
+      const t = drawTier();
+      drawn = {who: S.me, day: dayKey(), tier: t, prize: prizeNames()[t], at: Date.now()}; cardId = todayCardId();
+      Store.put(cardId, 'scratch', drawn); fillPrize(drawn);
+    }
+    cv.setPointerCapture(e.pointerId); last = pt(e);
+    ctx.beginPath(); ctx.arc(last[0], last[1], 17, 0, 7); ctx.fill();
+  });
+  cv.addEventListener('pointermove', e => {
+    if (!last || done) return;
+    const p = pt(e); ctx.beginPath(); ctx.moveTo(last[0], last[1]); ctx.lineTo(p[0], p[1]); ctx.stroke(); last = p;
+    if (++moves % 12 === 0 && cleared() > .5) finish();
+  });
+  const up = () => { if (!last) return; last = null; if (!done && cleared() > .5) finish(); };
+  cv.addEventListener('pointerup', up); cv.addEventListener('pointercancel', up);
+  return box;
+}
+function scratchView(p){
+  const mine = Store.get(todayCardId());
+  const today = mine ? Object.assign({id: todayCardId()}, mine) : null;
+  p.append(h('div', {class: 'label', text: today && today.scratchedAt ? '今天的刮刮乐 · 已刮开' : '今天的刮刮乐'}));
+  p.append(scratchCard(today));
+  p.append(h('p', {class: 'shint', text: today && today.scratchedAt ? '明天还能再刮一张，奖品找 ' + nameOf(other(S.me)) + ' 兑现' : '每人每天一张，刮开一半就揭晓，奖品由 ' + nameOf(other(S.me)) + ' 兑现'}));
+  if (!S.scratchSeg) S.scratchSeg = 'mine';
+  const all = Store.all('scratch').filter(c => c.scratchedAt);
+  const mineList = all.filter(c => c.who === S.me).sort((a, b) => (!!a.redeemedAt - !!b.redeemedAt) || (b.scratchedAt || 0) - (a.scratchedAt || 0));
+  const theirs = all.filter(c => c.who !== S.me).sort((a, b) => (!!a.redeemedAt - !!b.redeemedAt) || (b.scratchedAt || 0) - (a.scratchedAt || 0));
+  p.append(h('div', {class: 'seg', role: 'group'},
+    h('button', {'aria-pressed': String(S.scratchSeg === 'mine'), text: '我的奖品 ' + mineList.filter(c => !c.redeemedAt).length, onclick: () => { S.scratchSeg = 'mine'; render(); }}),
+    h('button', {'aria-pressed': String(S.scratchSeg === 'theirs'), text: nameOf(other(S.me)) + ' 的奖品 ' + theirs.filter(c => !c.redeemedAt).length, onclick: () => { S.scratchSeg = 'theirs'; render(); }})));
+  const list = S.scratchSeg === 'mine' ? mineList : theirs;
+  if (!list.length) p.append(h('div', {class: 'card empty'}, h('span', {html: I.ticket, style: {display: 'contents'}}), h('div', {text: S.scratchSeg === 'mine' ? '还没有奖品，先刮一张试试手气' : nameOf(other(S.me)) + ' 还没刮过，提醒 TA 一下？'})));
+  else {
+    const box = h('div', {class: 'tickets'});
+    list.forEach(c => {
+      const used = !!c.redeemedAt, my = c.who === S.me;
+      const row = h('div', {class: 'row'}, h('span', {class: 's', text: used ? (my ? '已在 ' : nameOf(c.who) + ' 在 ') + fmtMD(new Date(c.redeemedAt)) + ' 兑奖' : fmtMD(new Date(c.scratchedAt)) + ' 刮中 · ' + (my ? nameOf(other(c.who)) + ' 请客' : '你来请客')}));
+      if (my && !used) row.append(h('button', {class: 'btn sm', text: '兑奖', onclick: () => confirmSheet('现在兑奖「' + c.prize + '」？' + nameOf(other(S.me)) + ' 会看到，要兑现哦', '兑奖', () => {
+        const d = Object.assign({}, c); delete d.id; d.redeemedAt = Date.now(); Store.put(c.id, 'scratch', d); toast('已兑奖，等 ' + nameOf(other(S.me)) + ' 兑现'); haptic(); })}));
+      box.append(h('div', {class: 'ticket' + (used ? ' used' : '')},
+        h('div', {class: 'l'}, h('span', {html: I.ticket, style: {display: 'contents'}}), used ? '已兑奖' : SCRATCH_TIERS[c.tier][0]),
+        h('div', {class: 'r'}, h('div', {class: 't', text: c.prize}), row)));
+    });
+    p.append(box);
+  }
+  p.append(h('button', {class: 'btn block ghost', style: {marginTop: '16px'}, text: '看看奖品和中奖概率', onclick: prizeSheet}));
+}
+function prizeSheet(){
+  const names = prizeNames();
+  const inputs = SCRATCH_TIERS.map((t, i) => h('input', {class: 'input', type: 'text', maxlength: '20', value: names[i], 'aria-label': t[0]}));
+  const grid = h('div', {class: 'odds'});
+  SCRATCH_TIERS.forEach((t, i) => grid.append(h('b', {text: t[0]}), inputs[i], h('span', {text: t[2] + '%'})));
+  openSheet('刮刮乐奖品', h('div', null, h('p', {class: 'shint', style: {textAlign: 'left', margin: '0 0 12px'}, text: '奖品名字两个人都能改，改了以后新刮的卡按新名字算。右边是中奖概率。'}), grid,
+    h('button', {class: 'btn block', text: '保存', onclick: () => {
+      Store.put('scratchcfg', 'scratchcfg', {names: inputs.map((x, i) => x.value.trim() || SCRATCH_TIERS[i][1]), by: S.me, at: Date.now()});
+      closeSheet(); toast('奖品改好了');
+    }}),
+    h('button', {class: 'btn block ghost', style: {marginTop: '8px'}, text: '恢复默认', onclick: () => { Store.remove('scratchcfg'); closeSheet(); toast('恢复成默认奖品了'); }})));
+}
+
+/* =============== 约会盲盒转盘 =============== */
+const DATE_IDEAS = [
+  ['🍜', '探一家新店', '找一家两个人都没去过、评价不错的小店，好好吃一顿'],
+  ['🥞', '早午餐约会', '周末睡个懒觉，找家咖啡店慢慢吃早午餐'],
+  ['🍰', '甜品下午茶', '找一家好看的甜品店，各点一份换着吃'],
+  ['🍳', '一起做顿饭', '一起去超市买菜，回家合作做两三个菜'],
+  ['🍲', '在家吃火锅', '买点肉和菜，在家煮一锅火锅慢慢聊'],
+  ['🏮', '居酒屋小酌', '找家安静的小居酒屋，点几串烤串喝一杯'],
+  ['🍙', '便利店夜宵', '晚上散步去便利店，各挑一样对方没吃过的'],
+  ['☕', '咖啡馆各忙各的', '找家安静的咖啡馆，一个写论文一个处理工作，忙完一起去吃饭'],
+  ['🍱', '下班后晚饭', '等 TA 下班，一起吃顿晚饭，聊聊各自的一天'],
+  ['🧺', '公园野餐', '带点三明治和饮料，找片草地坐一下午'],
+  ['🌇', '看一场日落', '查好日落时间，找个视野好的地方一起看'],
+  ['🌊', '去水边走走', '去海边、湖边或河边散步吹风'],
+  ['🚲', '骑车兜风', '骑车沿着河边或者没去过的路骑一圈'],
+  ['⛰️', '爬一座小山', '挑一座不太累的小山，爬到山顶拍张合照'],
+  ['⛩️', '神社寺庙散步', '去附近的神社或寺庙走走，求个御守'],
+  ['🎬', '看一场电影', '选一部两个人都想看的电影，买好爆米花'],
+  ['🖼️', '逛展览', '去美术馆、博物馆或者最近的展览逛逛'],
+  ['📚', '书店约会', '一起逛书店，各给对方挑一本书当礼物'],
+  ['👕', '逛古着二手店', '去逛古着店或二手店，给对方挑一件'],
+  ['📷', '拍照散步', '选一条好看的街，边走边给对方拍照'],
+  ['🛋️', '窝家看剧', '准备零食，一起追一部剧或看一部老电影'],
+  ['🧩', '一起拼图', '买一盒拼图或小乐高，两个人合作拼完'],
+  ['🚶', '城市漫步', '选一个没去过的街区，随便走走、随便逛逛'],
+  ['🚆', '附近一日游', '坐电车去附近的小城或小镇玩一天'],
+  ['♨️', '泡个温泉', '找个温泉或钱汤，好好放松一下'],
+  ['🌸', '赏季节限定', '去看当季的花、红叶、灯光秀、花火大会或祭典'],
+];
+const WHEEL_COLORS = ['#FFE3EA', '#FFF0D6', '#DDF4EC', '#DCEBFF', '#FFE3EA', '#FFF0D6', '#DDF4EC', '#DCEBFF'];
+function hiddenIdeas(){ return (Store.get('datecfg') || {}).hidden || []; }
+function dateIdeas(){ const hid = hiddenIdeas(); return DATE_IDEAS.filter(x => !hid.includes(x[1])).map(x => ({ic: x[0], t: x[1], d: x[2]})).concat(Store.all('dateidea').map(x => ({ic: x.ic || '💗', t: x.t, d: x.d || '', custom: x.id}))); }
+function newWheelSet(){ const all = dateIdeas().slice(); for (let i = all.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [all[i], all[j]] = [all[j], all[i]]; } S.wheelSet = all.slice(0, 8);
+  if (S.wheelForce){ const f = S.wheelForce; S.wheelForce = null; if (!S.wheelSet.some(x => x.t === f.t)) S.wheelSet[Math.floor(Math.random() * 8)] = f; }
+  S.wheelRot = S.wheelRot || 0; }
+function newDatePlans(){ const s = seenAt('wheel'); return Store.all('dateplan').filter(x => x.by && x.by !== S.me && (((x.at || 0) > s) || ((x.doneAt || 0) > s && x.doneBy !== S.me))).length; }
+function wheelSvg(set){
+  const n = set.length, R = 160, c = 160; let out = '<svg viewBox="0 0 320 320">';
+  set.forEach((it, i) => {
+    const a0 = (i / n) * 2 * Math.PI - Math.PI / 2 - Math.PI / n, a1 = a0 + 2 * Math.PI / n;
+    const p = a => (c + R * Math.cos(a)).toFixed(2) + ' ' + (c + R * Math.sin(a)).toFixed(2);
+    out += '<path d="M' + c + ' ' + c + ' L' + p(a0) + ' A' + R + ' ' + R + ' 0 0 1 ' + p(a1) + ' Z" fill="' + WHEEL_COLORS[i % WHEEL_COLORS.length] + '" stroke="#fff" stroke-width="2"/>';
+    const mid = (i / n) * 360;
+    const esc = t => t.replace(/[&<>"]/g, ch => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[ch]));
+    out += '<g transform="rotate(' + mid + ' 160 160)"><text x="160" y="40" text-anchor="middle" font-size="22">' + esc(it.ic) + '</text>' +
+      '<text x="160" y="66" text-anchor="middle" font-size="13" font-weight="700" fill="#5E4652">' + esc(it.t.length > 6 ? it.t.slice(0, 6) : it.t) + '</text></g>';
+  });
+  return out + '</svg>';
+}
+function wheelView(p){
+  if (!S.wheelSet) newWheelSet();
+  const wheel = h('div', {class: 'wheel', html: wheelSvg(S.wheelSet)});
+  wheel.style.transform = 'rotate(' + (S.wheelRot || 0) + 'deg)';
+  const hub = h('button', {class: 'hub', text: '转！'});
+  hub.onclick = () => {
+    if (S.busy) return;
+    S.busy = true; hub.disabled = true; haptic();
+    const n = S.wheelSet.length, k = Math.floor(Math.random() * n);
+    const cur = ((S.wheelRot || 0) % 360 + 360) % 360;
+    const want = (360 - k * 360 / n) % 360;
+    const jitter = (Math.random() - .5) * (360 / n) * .6;
+    S.wheelRot = (S.wheelRot || 0) + 360 * 5 + ((want - cur + 360) % 360) + jitter;
+    wheel.style.transform = 'rotate(' + S.wheelRot + 'deg)';
+    let fired = false;
+    const end = () => { if (fired) return; fired = true; S.busy = false; hub.disabled = false; if (S.dirty){ S.dirty = false; render(); } dateResult(S.wheelSet[k]); };
+    wheel.addEventListener('transitionend', end, {once: true}); setTimeout(end, 4600);
+  };
+  p.append(h('div', {class: 'wheelbox'}, h('div', {class: 'pin'}), wheel, hub));
+  p.append(h('div', {class: 'wrow'},
+    h('button', {class: 'btn ghost', text: '换一批', onclick: () => { if (S.busy) return; newWheelSet(); render(); }}),
+    h('button', {class: 'btn ghost', text: '加我们的点子', onclick: ideaSheet})));
+  const plans = Store.all('dateplan');
+  const todo = plans.filter(x => !x.doneAt).sort((a, b) => (b.at || 0) - (a.at || 0));
+  const done = plans.filter(x => x.doneAt).sort((a, b) => (b.doneAt || 0) - (a.doneAt || 0));
+  p.append(h('div', {class: 'label', text: '约会计划 · ' + todo.length + ' 个待约'}));
+  if (!todo.length) p.append(h('div', {class: 'card empty', style: {marginTop: '10px'}}, h('div', {text: '转一下，把想去的加进计划里'})));
+  else p.append(h('div', {class: 'card', style: {marginTop: '10px', padding: 0}}, todo.map(x => h('div', {class: 'plan'},
+    h('span', {class: 'ic', text: x.ic || '💗'}),
+    h('div', {class: 'tx'}, h('div', {class: 't', text: x.t}), h('div', {class: 'd', text: (x.d ? x.d + ' · ' : '') + nameOf(x.by) + ' 转到的 · ' + ago(x.at)})),
+    h('button', {class: 'btn sm', text: '约过了', onclick: () => { const d = Object.assign({}, x); delete d.id; d.doneAt = Date.now(); d.doneBy = S.me; Store.put(x.id, 'dateplan', d); burst(false); toast('又一起完成了一次约会'); haptic(); }}),
+    h('button', {class: 'more', 'aria-label': '删掉', html: I.more, onclick: () => confirmSheet('不约「' + x.t + '」了？', '删掉', () => Store.remove(x.id))})))));
+  if (done.length){
+    p.append(h('div', {class: 'label', style: {marginTop: '18px'}, text: '约过的 · ' + done.length + ' 次'}));
+    p.append(h('div', {class: 'card', style: {marginTop: '10px', padding: 0}}, done.slice(0, 30).map(x => h('div', {class: 'plan done'},
+      h('span', {class: 'ic', text: x.ic || '💗'}),
+      h('div', {class: 'tx'}, h('div', {class: 't', text: x.t}), h('div', {class: 'd', text: fmtMD(new Date(x.doneAt)) + ' 约过'}))))));
+  }
+}
+function dateResult(it){
+  openSheet(null, h('div', {class: 'dresult'},
+    h('div', {class: 'ic', text: it.ic}), h('div', {class: 't', text: it.t}), h('div', {class: 'd', text: it.d}),
+    h('div', {class: 'actions'},
+      h('button', {class: 'btn block', text: '就它了，加进约会计划', onclick: () => {
+        Store.put('dp_' + uid(), 'dateplan', {ic: it.ic, t: it.t, d: it.d, by: S.me, at: Date.now()});
+        closeSheet(); toast('加进计划了，' + nameOf(other(S.me)) + ' 也能看到'); haptic(); }}),
+      h('button', {class: 'btn block ghost', text: '再转一次', onclick: closeSheet}),
+      h('button', {class: 'btn block ghost', style: {color: 'var(--muted)', fontWeight: 500, fontSize: '14px'}, text: '我们不喜欢这个，以后别出现', onclick: () => {
+        if (it.custom) Store.remove(it.custom);
+        else Store.put('datecfg', 'datecfg', {hidden: hiddenIdeas().concat(it.t), by: S.me, at: Date.now()});
+        S.wheelSet = null; closeSheet(); render(); toast('好，以后不转到它了'); }}))));
+}
+function ideaSheet(){
+  const t = h('input', {class: 'input', type: 'text', maxlength: '10', placeholder: '点子名字，比如：去吃那家烤肉'});
+  const d = h('input', {class: 'input', type: 'text', maxlength: '40', placeholder: '具体怎么约（选填）'});
+  const mine = Store.all('dateidea');
+  const list = mine.length ? h('div', {class: 'card', style: {padding: 0, marginTop: '18px'}}, mine.map(x => h('div', {class: 'plan'},
+    h('span', {class: 'ic', text: x.ic || '💗'}), h('div', {class: 'tx'}, h('div', {class: 't', text: x.t}), x.d ? h('div', {class: 'd', text: x.d}) : null),
+    h('button', {class: 'more', 'aria-label': '删掉', html: I.more, onclick: () => { Store.remove(x.id); closeSheet(); toast('删掉了'); }})))) : null;
+  const hid = hiddenIdeas();
+  const restore = hid.length ? h('button', {class: 'btn block ghost', style: {marginTop: '12px'}, text: '恢复 ' + hid.length + ' 个被隐藏的点子', onclick: () => { Store.remove('datecfg'); S.wheelSet = null; closeSheet(); toast('都恢复了'); }}) : null;
+  openSheet('加一个我们的点子', h('div', null, h('p', {class: 'shint', style: {textAlign: 'left', margin: '0 0 12px'}, text: '加进去的点子会和默认的一起出现在转盘上，两个人都能看到。'}),
+    t, h('div', {style: {height: '10px'}}), d, h('div', {style: {height: '16px'}}),
+    h('button', {class: 'btn block', text: '加到转盘', onclick: () => {
+      if (!t.value.trim()){ toast('给点子起个名字'); return; }
+      const idea = {ic: '💗', t: t.value.trim(), d: d.value.trim(), by: S.me, at: Date.now()};
+      S.wheelSet = null; S.wheelForce = idea; Store.put('di_' + uid(), 'dateidea', idea); closeSheet(); toast('加好了，转盘换了一批');
+    }}), list, restore));
+}
+
+function placesView(p){
+  const places = Store.all('place').sort((a, b) => (b.date || '').localeCompare(a.date || '') || (b.at || 0) - (a.at || 0));
+  const cities = new Set(places.map(x => x.city));
+  p.append(h('div', {class: 'pstats'},
+    h('div', {class: 'card'}, h('b', {class: 'tnum', text: String(cities.size)}), h('span', {text: '座城市'})),
+    h('div', {class: 'card'}, h('b', {class: 'tnum', text: String(places.length)}), h('span', {text: '个一起去过的地方'}))));
+  p.append(h('button', {class: 'btn block', style: {marginBottom: '16px'}, onclick: () => placeSheet()}, '记下一个地方'));
+  if (!places.length){ p.append(h('div', {class: 'card empty'}, h('span', {html: I.pin, style: {display: 'contents'}}), h('div', {text: '第一次约会的那家店、第一次一起旅行的城市……从最难忘的那个开始记吧'}))); return; }
+  const g = h('div', {class: 'stamps'});
+  places.forEach((x, i) => {
+    const d = parseD(x.date);
+    g.append(h('button', {class: 'stamp', style: {'--r': (((i * 7) % 5) - 2) * .6 + 'deg'}, onclick: () => placeSheet(x)},
+      h('div', {class: 'in'}, h('div', {class: 'mark'}), h('div', {class: 'city', text: x.city}), x.name ? h('div', {class: 'pl', text: x.name}) : null,
+        x.note ? h('div', {class: 's', style: {fontSize: '13px', color: 'var(--ink2)', overflowWrap: 'anywhere'}, text: x.note}) : null,
+        h('div', {class: 'dt', text: d ? fmt(d) : ''}))));
+  });
+  p.append(g);
+}
+function placeSheet(cur){
+  const city = h('input', {type: 'text', id: 'pC', maxlength: '10', placeholder: '比如：厦门'});
+  const name = h('input', {type: 'text', id: 'pN', maxlength: '20', placeholder: '比如：鼓浪屿'});
+  const date = h('input', {type: 'date', id: 'pD'});
+  const note = h('textarea', {class: 'bigta', id: 'pT', maxlength: '120', placeholder: '那天发生了什么？（选填）', style: {minHeight: '90px'}});
+  if (cur){ city.value = cur.city; name.value = cur.name || ''; date.value = cur.date || ''; note.value = cur.note || ''; }
+  openSheet(cur ? '修改这个地方' : '记下一个地方', h('div', null,
+    h('div', {class: 'group'},
+      h('label', {class: 'field'}, h('span', {text: '城市'}), city),
+      h('label', {class: 'field'}, h('span', {text: '地方'}), name),
+      h('label', {class: 'field'}, h('span', {text: '日期'}), date)),
+    note,
+    h('div', {class: 'actions'},
+      h('button', {class: 'btn block', text: cur ? '保存' : '盖个章', onclick: () => {
+        if (!city.value.trim()){ toast('城市要填哦'); return; }
+        Store.put(cur ? cur.id : 'p_' + uid(), 'place', {city: city.value.trim(), name: name.value.trim(), date: date.value, note: note.value.trim(), by: S.me, at: cur ? cur.at : Date.now()});
+        closeSheet(); toast(cur ? '改好了' : '盖章成功'); haptic();
+      }}),
+      cur ? h('button', {class: 'btn block ghost danger', text: '删除', onclick: () => confirmSheet('删除「' + cur.city + (cur.name ? ' · ' + cur.name : '') + '」？', '删除', () => { Store.remove(cur.id); toast('删掉了'); })}) : null)));
+}
+
+/* =============== us: TA 的说明书 / 留言 =============== */
+const MANUAL = [['food', '爱吃的'], ['nofood', '不吃的 / 过敏的'], ['drink', '奶茶、咖啡怎么点'], ['size', '尺码（衣服、鞋、戒指）'], ['like', '喜欢的花、颜色、牌子'], ['wish', '最近想要的东西'], ['mine', '雷区：千万别做的事'], ['coax', '不开心的时候怎么哄'], ['other', '其他要记住的']];
+function usPage(){
+  const p = h('div', {class: 'page'});
+  if (!S.usSeg) S.usSeg = 'manual';
+  pageHead(p, '我们', S.usSeg === 'manual' ? '记下对方的喜好和雷区' : '写给彼此的小便签', [['manual', '说明书'], ['notes', '留言', unreadNotes() > 0]], 'usSeg');
+  if (S.usSeg === 'manual') manualView(p); else { notesView(p); seenLater('notes'); }
+  return p;
+}
+function manualView(p){
+  if (!S.manualWho) S.manualWho = other(S.me);
+  const who = S.manualWho;
+  p.append(h('div', {class: 'mwho', role: 'group'}, ['A', 'B'].map(k => h('button', {'aria-pressed': String(who === k), onclick: () => { S.manualWho = k; render(); }}, avatar(k), h('span', {text: nameOf(k) + ' 的说明书'})))));
+  const filled = MANUAL.filter(([k]) => (Store.get('m_' + who + '_' + k) || {}).text).length;
+  const list = h('div', {class: 'card mlist'});
+  MANUAL.forEach(([k, label]) => {
+    const it = Store.get('m_' + who + '_' + k);
+    list.append(h('button', {class: 'mrow', onclick: () => manualSheet(who, k, label)},
+      h('div', {class: 'k'}, h('span', {text: label}), it && it.text ? h('span', {style: {fontWeight: 500}, text: nameOf(it.by) + ' 记的'}) : null),
+      h('div', {class: 'v' + (it && it.text ? '' : ' dim'), text: it && it.text ? it.text : (who === S.me ? '告诉 TA：点这里写' : '还不知道？点这里记下来')})));
+  });
+  p.append(list);
+  p.append(h('p', {class: 'hint', style: {textAlign: 'center', marginTop: '16px'}, text: filled + ' / ' + MANUAL.length + ' 项已记下 · 两个人都可以补充和修改'}));
+}
+function manualSheet(who, k, label){
+  const it = Store.get('m_' + who + '_' + k);
+  const ta = h('textarea', {class: 'bigta', id: 'mT', maxlength: '300', style: {minHeight: '140px'}, placeholder: '写下来，买礼物、点外卖的时候就不用猜了'});
+  if (it) ta.value = it.text || '';
+  openSheet(nameOf(who) + ' · ' + label, h('div', null, ta, h('button', {class: 'btn block', text: '保存', onclick: () => {
+    const text = ta.value.trim();
+    if (text) Store.put('m_' + who + '_' + k, 'manual', {who, key: k, text, by: S.me, at: Date.now()});
+    else if (it) Store.remove('m_' + who + '_' + k);
+    closeSheet(); toast('记下了');
+  }})));
+}
+
+/* =============== settings =============== */
+function settingsSheet(){
+  const i = info();
+  const f = (id, type, val, ph) => { const e = h('input', {type, id, placeholder: ph || ''}); if (val) e.value = val; if (type === 'text') e.maxLength = 12; return e; };
+  const nA = f('sA', 'text', i.nameA), nB = f('sB', 'text', i.nameB), sd = f('sS', 'date', i.start), bA = f('sBA', 'date', i.birthA), bB = f('sBB', 'date', i.birthB);
+  const photoRow = (label, k) => h('button', {class: 'field btnrow', onclick: () => k === 'cover' ? setCover().then(settingsSheet) : setAvatar(k).then(settingsSheet)},
+    h('span', {text: label}), h('span', {class: 'val'}, k === 'cover' ? h('span', {text: photo('cover') ? '已设置' : '未设置'}) : avatar(k), h('span', {html: I.chev, class: 'chev', style: {display: 'contents'}})));
+  const body = h('div', null,
+    h('div', {style: {fontSize: '12px', color: 'var(--muted)', fontWeight: 600, margin: '0 4px 6px'}, text: '我们'}),
+    h('div', {class: 'group'},
+      h('label', {class: 'field'}, h('span', {text: '名字 1'}), nA),
+      h('label', {class: 'field'}, h('span', {text: '名字 2'}), nB),
+      h('label', {class: 'field'}, h('span', {text: '在一起的日子'}), sd),
+      h('label', {class: 'field'}, h('span', {text: (i.nameA || '1') + ' 的生日'}), bA),
+      h('label', {class: 'field'}, h('span', {text: (i.nameB || '2') + ' 的生日'}), bB)),
+    h('button', {class: 'btn block', style: {marginBottom: '22px'}, text: '保存', onclick: () => {
+      if (!nA.value.trim() || !nB.value.trim() || !sd.value){ toast('名字和在一起的日子要填'); return; }
+      Store.put('info', 'info', {nameA: nA.value.trim(), nameB: nB.value.trim(), start: sd.value, birthA: bA.value || '', birthB: bB.value || ''});
+      closeSheet(); toast('保存好了');
+    }}),
+    h('div', {style: {fontSize: '12px', color: 'var(--muted)', fontWeight: 600, margin: '0 4px 6px'}, text: '照片'}),
+    h('div', {class: 'group'}, photoRow('首页合照', 'cover'), photoRow(nameOf('A') + ' 的头像', 'A'), photoRow(nameOf('B') + ' 的头像', 'B')),
+    h('div', {style: {fontSize: '12px', color: 'var(--muted)', fontWeight: 600, margin: '0 4px 6px'}, text: '这台手机是谁的'}),
+    h('div', {class: 'who2'}, ['A', 'B'].map(k => h('button', {'aria-pressed': String(S.me === k), onclick: () => { S.me = k; lsSet('sd-me', k); writeUrl(); closeSheet(); render(); toast('现在是 ' + nameOf(k)); }}, avatar(k), nameOf(k)))),
+    h('div', {style: {fontSize: '12px', color: 'var(--muted)', fontWeight: 600, margin: '0 4px 6px'}, text: '邀请 ' + nameOf(other(S.me))}),
+    inviteBlock());
+  openSheet('设置', body);
+}
+function inviteBlock(){
+  if (!REMOTE) return h('p', {class: 'hint', text: '同步功能还没开通。开通后这里会出现一个邀请链接，发给对方，两个人就能看到同一份内容。'});
+  const link = inviteLink();
+  const copy = async (txt, ok) => { try { await navigator.clipboard.writeText(txt); toast(ok); } catch { toast('长按上面的文字也能复制'); } };
+  const share = async () => { if (navigator.share){ try { await navigator.share({title: '我们的小日子', text: '点开这个链接，加入我们的小日子：', url: link}); } catch {} } else copy(link, '链接已复制，发给 TA 吧'); };
+  return h('div', null,
+    h('div', {class: 'codebox', text: fmtCode(S.room)}),
+    h('p', {class: 'hint', text: '把邀请链接发给 ' + nameOf(other(S.me)) + '，TA 点开就能进来，不用注册。也可以在开始页选“我有邀请码”，输入上面这串暗号。别把它发给别人哦。'}),
+    h('div', {class: 'actions'},
+      h('button', {class: 'btn block', onclick: share}, '发送邀请链接'),
+      h('button', {class: 'btn block ghost', onclick: () => copy(fmtCode(S.room), '暗号已复制')}, '复制暗号')));
+}
+
+/* =============== onboarding =============== */
+function feat(ic, tone, text){ return h('div', null, h('span', {class: 'dic ' + tone, html: I[ic]}), h('span', {text})); }
+function welcomePage(){
+  $('#tabbar').hidden = true;
+  const root = $('#root'); root.textContent = '';
+  root.append(h('div', {class: 'ob'},
+    h('div', {class: 'art'},
+      h('img', {class: 'logo', src: 'icons/icon-512.png', alt: ''}),
+      h('h1', {text: '我们的小日子'}),
+      h('p', {class: 'lead', text: '只属于你们两个人的小本子'}),
+      h('div', {class: 'feat'},
+        feat('mail', 'rose', '提前写好的信，TA 累了委屈了就能拆开'),
+        feat('rings', 'gold', '在一起的天数、纪念日和生日'),
+        feat('book', 'mint', 'TA 的说明书、爱的小券、一起去过的地方'))),
+    h('div', {class: 'actions'},
+      h('button', {class: 'btn block', text: '创建我们的空间', onclick: createPage}),
+      h('button', {class: 'btn block ghost', text: '我有邀请码', onclick: joinPage}))));
+}
+function createPage(){
+  const root = $('#root'); root.textContent = '';
+  const f = (id, type, ph) => { const e = h('input', {type, id, placeholder: ph || ''}); if (type === 'text') e.maxLength = 12; return e; };
+  const nA = f('cA', 'text', '比如：小鱼'), nB = f('cB', 'text', '比如：阿星'), sd = f('cS', 'date'), bA = f('cBA', 'date'), bB = f('cBB', 'date');
+  root.append(h('div', {class: 'ob'},
+    h('button', {class: 'back', onclick: welcomePage}, h('span', {html: I.back, style: {display: 'contents'}}), '返回'),
+    h('h2', {text: '先认识一下你们'}),
+    h('p', {class: 'hint', style: {marginTop: 0}, text: '填好就能开始数天数。以后都能在设置里改。'}),
+    h('div', {class: 'group'},
+      h('label', {class: 'field'}, h('span', {text: '你的名字'}), nA),
+      h('label', {class: 'field'}, h('span', {text: 'TA 的名字'}), nB),
+      h('label', {class: 'field'}, h('span', {text: '在一起的日子'}), sd)),
+    h('div', {class: 'group'},
+      h('label', {class: 'field'}, h('span', {text: '你的生日'}), bA),
+      h('label', {class: 'field'}, h('span', {text: 'TA 的生日'}), bB)),
+    h('p', {class: 'hint', style: {marginTop: '-6px'}, text: '生日可以先不填'}),
+    h('div', {style: {flex: 1}}),
+    h('button', {class: 'btn block', text: '开始我们的小日子', onclick: () => {
+      if (!nA.value.trim() || !nB.value.trim() || !sd.value){ toast('名字和在一起的日子要填哦'); return; }
+      const room = secret();
+      S.tab = 'home';
+      Store.open(room);
+      Store.put('info', 'info', {nameA: nA.value.trim(), nameB: nB.value.trim(), start: sd.value, birthA: bA.value || '', birthB: bB.value || ''});
+      enterRoom(room, 'A');
+      if (REMOTE) setTimeout(() => { settingsSheet(); setTimeout(() => { const s = $('#sheet'); s.scrollTop = s.scrollHeight; }, 350); toast('把邀请链接发给 ' + nameOf('B')); }, 700);
+    }})));
+}
+function joinPage(prefill){
+  const root = $('#root'); root.textContent = '';
+  const inp = h('input', {class: 'input', id: 'joinCode', type: 'text', placeholder: 'xxxx-xxxx-xxxx-xxxx-xxxx-xxxx', autocapitalize: 'off', autocomplete: 'off', spellcheck: 'false', style: {fontFamily: 'ui-monospace,Menlo,monospace', textAlign: 'center'}});
+  if (prefill) inp.value = fmtCode(prefill);
+  const btn = h('button', {class: 'btn block', text: '加入', onclick: async () => {
+    const code = cleanCode(inp.value);
+    if (code.length < 20){ toast('暗号不完整，再检查一下'); return; }
+    if (!REMOTE){ toast('同步还没开通，暂时不能加入'); return; }
+    btn.disabled = true; btn.textContent = '正在加入…';
+    Store.open(code); const ok = await Store.pull();
+    btn.disabled = false; btn.textContent = '加入';
+    if (!ok){ toast('连不上网，稍后再试'); return; }
+    if (!Store.get('info')){ toast('没找到这个空间，暗号可能不对'); return; }
+    S.room = code; lsSet('sd-room', code); S.me = null; writeUrl(); Store.start(); render();
+  }});
+  root.append(h('div', {class: 'ob'},
+    h('button', {class: 'back', onclick: welcomePage}, h('span', {html: I.back, style: {display: 'contents'}}), '返回'),
+    h('h2', {text: '输入邀请暗号'}),
+    h('p', {class: 'hint', style: {marginTop: 0}, text: '在对方手机的「设置 → 邀请」里能看到，一共 24 个字母和数字。直接点对方发来的邀请链接会更省事。'}),
+    inp, h('div', {style: {flex: 1, minHeight: '24px'}}), btn));
+}
+function pickWhoPage(){
+  const p = h('div', {class: 'ob'},
+    h('div', {class: 'art'},
+      h('div', {class: 'pair', style: {transform: 'scale(1.6)', marginBottom: '18px'}}, avatar('A'), avatar('B')),
+      h('h2', {text: '欢迎来到你们的小日子'}),
+      h('p', {class: 'lead', text: '这台手机是谁的？'}),
+      h('div', {class: 'who2', style: {width: '100%', maxWidth: '340px'}},
+        ['A', 'B'].map(k => h('button', {onclick: () => { S.me = k; lsSet('sd-me', k); writeUrl(); haptic(); render(); toast('你好，' + nameOf(k)); }}, avatar(k), nameOf(k))))));
+  return p;
+}
+function waitingPage(){
+  return h('div', {class: 'ob'}, h('div', {class: 'art'}, h('img', {class: 'logo', src: 'icons/icon-512.png', alt: ''}), h('p', {class: 'lead', text: '正在打开你们的小日子…'}), syncLine()));
+}
+
+/* =============== boot =============== */
+(function boot(){
+  inAppBanner();
+  const u = readUrl();
+  const savedRoom = lsGet('sd-room', null);
+  const room = u.room || savedRoom;
+  if (room && room.length >= 20){
+    S.room = room;
+    S.me = (u.me === 'A' || u.me === 'B') ? u.me : (room === savedRoom ? lsGet('sd-me', null) : null);
+    lsSet('sd-room', room); if (S.me) lsSet('sd-me', S.me);
+    Store.open(room); writeUrl(); Store.start(); render();
+  } else welcomePage();
+  setInterval(() => { if (S.room && !$('#sheet').classList.contains('show') && !document.hidden && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') render(); }, 60 * 60 * 1000);
+  if ('serviceWorker' in navigator && location.protocol === 'https:') navigator.serviceWorker.register('sw.js').catch(() => {});
+})();
+})();
+</script>
+</body>
+</html>
